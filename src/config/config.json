@@ -1,0 +1,13 @@
+{
+"sys": {
+  "mongodb":{"host":"127.0.0.1"}, # MONGODB
+	"customs":["stock"],
+   "db_prefix":"STOCK_", # 数据库前缀
+	"web": {
+	     "index" : "/" # 默认首页
+	},
+},
+	"tonglian":{
+		"token":"13d3ae777dfca314b3cfcabe0b6ae7c228e793dfd347ea41b2aba63660c2f1ff"
+	}
+}
