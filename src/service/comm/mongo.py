@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module  : 通用框架
-# Author  : Lijiajie
+# Author  : sys
 # Date    : 2015-01-07
 # Version : 1.0
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module  : 通用删除组件  all copy
-# Author  : Lijiajie
+# Author  : sys
 # Date    : 2014-10-13
 # Version : 1.0
 

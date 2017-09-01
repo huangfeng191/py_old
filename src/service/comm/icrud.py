@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module  : crud 接口 --all
-# Author  : Lijiajie
+# Author  : sys
 # Date    : 2015-01-07
 # Version : 1.0
 

@@ -5,10 +5,13 @@
 # Version : 1.0
 
 from ui import path, wildcard, CRUD
-from customs.stock.service import stock_store
-import tushare as ts
+from customs.stock.service import *
+# import tushare as ts
 import json
 import ctx
+
+####################### in use
+import service.comm as comm
 
 
 # 设备管理
@@ -54,3 +57,52 @@ class StockDivisionCRUD(CRUD):
     def aduit(self):
 
         return "ok111"
+
+
+##############################in use
+@path("/stock/test.html")
+class StockTest:
+    def GET(self, _cid=None, *args, **kwargs):
+        # return render_stock["test"]()
+        return "ok111"
+
+
+@wildcard("/stock/test/")
+class StockTestCRUD(CRUD):
+    def __init__(self):
+        self.module = stock_test
+
+    def queryByParent(self, pid):
+        return list(comm.memus.items(query={"pid": pid}))
+
+    def set_subMenus(self,id, menus):
+        """
+    根据传递过来的父菜单id，递归设置各层次父菜单的子菜单列表
+    
+    :param id: 父级id
+    :param menus: 子菜单列表
+    :return: 如果这个菜单没有子菜单，返回None;如果有子菜单，返回子菜单列表
+    """
+        # 记录子菜单列表
+        subMenus = []
+        # 遍历子菜单
+        for m in menus:
+            if m.parent == id:
+                subMenus.append(m)
+
+                # 把子菜单的子菜单再循环一遍
+        for sub in subMenus:
+            menus2 = self.queryByParent(sub.id)
+            # 还有子菜单
+        if len(menus):
+            sub.subMenus = self.set_subMenus(sub.id, menus2)
+
+            # 子菜单列表不为空
+        if len(subMenus):
+            return subMenus
+        else:  # 没有子菜单了
+            return None
+
+    def query(self, count=True, *args, **kwArgs):
+
+        return "ok"
