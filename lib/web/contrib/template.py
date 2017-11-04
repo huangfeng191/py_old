@@ -112,6 +112,9 @@ class render_mako:
         path = name + ".html"
         t = self._lookup.get_template(path)
         return t.render
+        
+    def __getitem__(self,name):
+        return self.__getattr__(name)
 
 class cache:
     """Cache for any rendering interface.

@@ -6,6 +6,8 @@ Session Management
 import os, time, datetime, random, base64
 import os.path
 from copy import deepcopy
+import threading
+import types
 try:
     import cPickle as pickle
 except ImportError:
@@ -88,10 +90,16 @@ class Session(object):
             return handler()
         finally:
             self._save()
-
+    
+    def _cookie_name(self):
+      
+      if isinstance(self._config.cookie_name, types.FunctionType):
+        return self._config.cookie_name()
+      return self._config.cookie_name
+    
     def _load(self):
         """Load the session from the store, by the id from cookie"""
-        cookie_name = self._config.cookie_name
+        cookie_name = self._cookie_name()
         cookie_domain = self._config.cookie_domain
         cookie_path = self._config.cookie_path
         httponly = self._config.httponly
@@ -140,7 +148,7 @@ class Session(object):
             self._setcookie(self.session_id, expires=-1)
             
     def _setcookie(self, session_id, expires='', **kw):
-        cookie_name = self._config.cookie_name
+        cookie_name = self._cookie_name()
         cookie_domain = self._config.cookie_domain
         cookie_path = self._config.cookie_path
         httponly = self._config.httponly
@@ -252,14 +260,27 @@ class DiskStore(Store):
             raise KeyError, key
 
     def __setitem__(self, key, value):
+        
         path = self._get_path(key)
-        pickled = self.encode(value)    
+        pickled = self.encode(value)
+        
         try:
-            f = open(path, 'w')
+            tname = path+"."+threading.current_thread().getName()
+            f = open(tname, 'w')
+            
             try:
                 f.write(pickled)
-            finally: 
+            finally:
+                
                 f.close()
+
+                try:
+                    if(os.path.exists(path)): os.remove(path)
+                except OSError:
+                    pass
+                finally:
+                    os.rename(tname, path) # atomary operation
+
         except IOError:
             pass
 

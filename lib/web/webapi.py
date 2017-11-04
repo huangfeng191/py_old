@@ -76,12 +76,9 @@ class Redirect(HTTPError):
         """
         newloc = urlparse.urljoin(ctx.path, url)
 
-        if newloc.startswith('/'):
-            if absolute:
-                home = ctx.realhome
-            else:
-                home = ctx.home
-            newloc = home + newloc
+        if absolute and newloc.startswith('/'):
+          home = ctx.realhome
+          newloc = home + newloc
 
         headers = {
             'Content-Type': 'text/html',

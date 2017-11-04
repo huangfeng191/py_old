@@ -1,3 +1,4 @@
+import logging
 __all__ = ["runsimple"]
 
 import sys, os
@@ -284,7 +285,7 @@ class LogMiddleware:
     """WSGI middleware for logging the status."""
     def __init__(self, app):
         self.app = app
-        self.format = '%s - - [%s] "%s %s %s" - %s'
+        self.format = '%s - - "%s %s %s" - %s'
     
         from BaseHTTPServer import BaseHTTPRequestHandler
         import StringIO
@@ -306,14 +307,14 @@ class LogMiddleware:
         return self.app(environ, xstart_response)
              
     def log(self, status, environ):
-        outfile = environ.get('wsgi.errors', web.debug)
+        
         req = environ.get('PATH_INFO', '_')
         protocol = environ.get('ACTUAL_SERVER_PROTOCOL', '-')
         method = environ.get('REQUEST_METHOD', '-')
         host = "%s:%s" % (environ.get('REMOTE_ADDR','-'), 
                           environ.get('REMOTE_PORT','-'))
 
-        time = self.log_date_time_string()
+        #time = self.log_date_time_string()
 
-        msg = self.format % (host, time, protocol, method, req, status)
-        print >> outfile, utils.safestr(msg)
+        msg = self.format % (host, protocol, method, req, status)
+        logging.debug(utils.safestr(msg))

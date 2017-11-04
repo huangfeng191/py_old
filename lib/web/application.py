@@ -400,7 +400,7 @@ class application:
         if f is None:
             raise web.notfound()
         elif isinstance(f, application):
-            return f.handle_with_processors()
+            return f.handle_with_processowrs()
         elif is_class(f):
             return handle_class(f)
         elif isinstance(f, basestring):
