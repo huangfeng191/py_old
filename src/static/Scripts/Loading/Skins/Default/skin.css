@@ -1,0 +1,10 @@
+﻿html,body{width:100%;height:100%;margin:0;padding:0}
+.loading_framework{position:absolute;z-index: 99999;top:0px;left:0px;width:100%;height:100%;background:url(Images/page_bg.png) repeat;}
+.loading_framework .load_box{width:270px;height:55px;margin:0 auto;border:solid 1px #9fcde6; background:#e5f2fc;padding-top:25px;padding-left:80px;}
+.loading_framework .load_box span{ display:block;font-size:12px;color:#333;float:left;}
+.loading_framework .load_box span.text{ text-indent:15px;line-height:32px;}
+.loading_framework .load_box span.img{ background:url(Images/load.gif) no-repeat;width:32px;height:32px;}
+
+
+body.nightmode .loading_framework .load_box{border:solid 1px #303030; background:#E6E6E6;}
+body.nightmode .loading_framework .load_box span.img{background:url(Images/nightmodeload.gif) no-repeat;}

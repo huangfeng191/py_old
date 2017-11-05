@@ -1,0 +1,228 @@
+﻿.quick
+{
+    display: inline-block;
+    margin: 0px 4px;
+    font-size: 12px;
+}
+.quick > input.value
+{
+    height: 24px;
+    line-height: 22px;
+    border: solid 1px #919191;
+    font-size: 12px;
+    padding: 0 2px;
+}
+.quick > span.combo
+{
+    margin-top: -1px;
+}
+.datetime
+{
+    float: none;
+}
+.datetime > input.value
+{
+    background: #fff url(Images/date.gif) right center no-repeat;
+    cursor: pointer;
+}
+.datetime > input[disabled].value
+{
+    background-color: rgb(235, 235, 228);
+}
+.datetime > div.operator
+{
+    display: inline-block;
+    height: 15px;
+    margin-left: -3px;
+}
+.datetime > div.operator > div
+{
+    width: 11px;
+    height: 11px;
+    background-image: url(Images/date_arrow.gif);
+    background-repeat: no-repeat;
+}
+.datetime > div.operator > div.prev
+{
+    background-position: -9px 4px;
+}
+.datetime > div.operator > div.prev:hover
+{
+    background-position: 2px 4px;
+}
+.datetime > div.operator > div.next
+{
+    background-position: -9px -8px;
+}
+.datetime > div.operator > div.next:hover
+{
+    background-position: 2px -8px;
+}
+.datetime_range > input.value
+{
+    background: #fff url(Images/date.gif) right center no-repeat;
+    cursor: pointer;
+}
+.datetime_range > input[disabled].value
+{
+    background-color: rgb(235, 235, 228);
+}
+.datetime_range > div.operator
+{
+    display: inline-block;
+    height: 15px;
+    margin-left: -3px;
+}
+.datetime_range > div.operator > div
+{
+    width: 11px;
+    height: 11px;
+    background-image: url(Images/date_arrow.gif);
+    background-repeat: no-repeat;
+}
+.datetime_range > div.operator > div.prev
+{
+    background-position: -9px 4px;
+}
+.datetime_range > div.operator > div.prev:hover
+{
+    background-position: 2px 4px;
+}
+.datetime_range > div.operator > div.next
+{
+    background-position: -9px -8px;
+}
+.datetime_range > div.operator > div.next:hover
+{
+    background-position: 2px -8px;
+}
+.checkbox > input.value
+{
+    height: auto;
+    line-height: normal;
+    border: 0;
+    padding: 0;
+    margin: 0px 0px -3px;
+    vertical-align: top;
+}
+.timepicker > span.input
+{
+    display: inline-block;
+    border: solid 1px #919191;
+    background-color: #ffffff;
+    height: 24px;
+}
+.timepicker > span.input > input.value
+{
+    width: 14px;
+    height: 22px;
+    line-height: 20px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+.timepicker > span.input > input.hh
+{
+    padding-left: 4px;
+    padding-right: 0px;
+    text-align: right;
+}
+.timepicker > span.input > input.mm
+{
+    padding-left: 0px;
+    padding-right: 4px;
+}
+.timepicker > div.operator
+{
+    display: inline-block;
+    height: 15px;
+    margin-left: -3px;
+}
+.timepicker > div.operator > div
+{
+    width: 11px;
+    height: 11px;
+    background-image: url(Images/date_arrow.gif);
+    background-repeat: no-repeat;
+}
+.timepicker > div.operator > div.prev
+{
+    background-position: -9px 4px;
+}
+.timepicker > div.operator > div.prev:hover
+{
+    background-position: 2px 4px;
+}
+.timepicker > div.operator > div.next
+{
+    background-position: -9px -8px;
+}
+.timepicker > div.operator > div.next:hover
+{
+    background-position: 2px -8px;
+}
+input.yyyy
+{
+    width: 49px;
+}
+input.yyyyMM
+{
+    width: 67px;
+}
+input.yyyyMMdd
+{
+    width: 85px;
+}
+input.yyyyMMddHH
+{
+    width: 120px;
+}
+input.yyyyMMddHHmm
+{
+    width: 120px;
+}
+input.yyyyMMddHHmmss
+{
+    width: 135px;
+}
+.autocomplete
+{
+}
+.number
+{
+}
+.number_range > input.value
+{
+    width: 60px;
+}
+
+
+.HD-Datetime-Range > div.operator
+{
+    display: inline-block;
+    height: 15px;
+    margin-left: 0px;
+}
+.HD-Datetime-Range > div.operator > div
+{
+    width: 11px;
+    height: 11px;
+    background-image: url(Images/date_arrow.gif);
+    background-repeat: no-repeat;
+}
+.HD-Datetime-Range > div.operator > div.prev
+{
+    background-position: -9px 4px;
+}
+.HD-Datetime-Range > div.operator > div.prev:hover
+{
+    background-position: 2px 4px;
+}
+.HD-Datetime-Range > div.operator > div.next
+{
+    background-position: -9px -8px;
+}
+.HD-Datetime-Range > div.operator > div.next:hover
+{
+    background-position: 2px -8px;
+}

@@ -1,0 +1,161 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+html, body, div,span, a,img,ol, ul, li,form, label, table, tbody, tr, th, td{   
+    margin:0;   
+    padding:0;   
+    border:0;   
+    outline:0;   
+    font-size:12px;
+	color:#000;
+}
+
+::-ms-clear { display: none; }
+
+html, body { width:100%; height:100%}
+A:link {
+	COLOR: #454545; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #7f7f7f; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR:#666; TEXT-DECORATION: underline
+}
+ol, ul {list-style: none;}   
+blockquote, q {quotes: none;} 
+body{font-family:"verdana","arial","宋体"; background:#fff;}
+.header, footer, loginform, background_bg{display:block;margin:0;padding:0;border:none}
+.headerLogo, .headerIntro, .headerNav{position:absolute}
+.headerLogo{height:50px;margin-top:20px;}
+.headerLogo img,.headerLogo span{float:left;}
+.headerLogo span{display:block;font-size:22px;color:#555; font-family:"微软雅黑","黑体","宋体","arial";font-weight:normal;height:50px;line-height:50px; text-indent:15px;}
+
+/* -------------头部-------------- */
+.header{width:970px;height:95px;position:relative;margin:0 auto;z-index:2;overflow:hidden;}
+.header h1{ top:5px;}
+.header ul{color:#000; right:0px;display:inline; width:220px; top:34px; padding-right:0px;}
+.header ul li{ float:left;}
+.header ul li img{ margin-top:-2px; padding:0 10px;}
+.header ul li span{ background:#01af68; color:#FFF}
+
+/*-------------登录--------------*/
+.loginForm{border:0; width: 100%; height: 470px; background: url(Images/bg_r.jpg) center repeat-x; position:relative;}
+.loginForm .loginBG{ width:100%; height:470px; background:url(Images/bg_1.jpg) no-repeat center center;}
+.loginForm .loginBG .box1{ width:320px; height:320px; background:#FFF; padding:16px 14px 15px;top:70px;left:54%;margin-left:88px;position:absolute;z-index:2; text-align:center;background:url(Images/boxbg.png);}
+.loginForm .loginBG .box1 .title{ font-size:16px; font-weight:bold; margin-left:-190px;margin-bottom:20px;margin-top:20px; }
+#typebar {
+    text-align: left;
+    font-weight: bold;
+    font-family: "微软雅黑 Light";
+    margin-bottom: 25px;
+}
+#typebar > .line {
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    color: #DDD;
+    font-size: 18px;
+}
+#typebar > a {
+    display: inline-block;
+    font-size: 16px;
+    padding: 0 20px;
+    height: 30px;
+    line-height: 30px;
+    color: #767676;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: visible;
+}
+#typebar > a:first-child {
+    padding-left: 30px;
+}
+#typebar > a:hover, #typebar > a.active {
+    color: #24B4D2;
+}
+.login-panel {
+    display: none;
+}
+.loginForm .loginBG .box1 .department{width:262px; font-size:16px;padding:9px 0;}
+.loginForm .loginBG .box1 .password {
+    line-height: 36px;
+    height: 38px;
+    box-sizing: border-box;
+    width: 260px;
+    background: url(Images/jiami.png) no-repeat center right;
+    border: solid 1px #cecece;
+    font-size: 16px;
+    background: #fff;
+    padding: 0;
+}
+.loginForm .loginBG .box1 .username {
+    line-height: 36px;
+    height: 38px;
+    box-sizing: border-box;
+    width: 260px;
+    background: url(Images/user.png) no-repeat right center;
+    border: solid 1px #cecece;
+    font-size: 16px;
+    background: #fff;
+    padding: 0;
+}
+.loginForm .loginBG .box1 .customer {
+    border: 1px solid #ccc;
+    width: 260px;
+    height: 38px;
+    box-sizing: border-box;
+    line-height: 36px;
+    font-size: 16px;
+    padding: 0;
+}
+.loginForm .loginBG .box1 .checkbox{ width:24px;}
+.loginForm .loginBG .box1 .submit {
+    background: url(Images/button_bg.jpg) repeat-x;
+    width: 260px;
+    box-sizing: border-box;
+    height: 43px;
+    border: none;
+    color: #FFF;
+    font-family: "黑体";
+    font-size: 20px;
+}
+
+.loginForm .loginBG .box1 .codelink{background:url(/static/Skins/Login/Images/codelink.png) 60px 60px;width:60px;height:60px;position:absolute;z-index:10;display:block;top:0px;left:288px;transition: background-position .2s cubic-bezier(0.25,.5,.5,.9);}
+.loginForm .loginBG .box1 .codelink.codelink-hide{background-position:0px 0px;}
+.loginForm .loginBG .box1 .titlecode{ font-size:16px; font-weight:bold; margin-top:20px; }
+.loginForm .loginBG .box1 .codebg{ text-align:center;}
+.loginForm .loginBG .box1 .usbkey-bg {
+    margin-top: -10px;
+    height: 148px;
+    background: url("/static/Skins/Login/Images/usbkey_bg.png") center center no-repeat;
+}
+.loginForm .loginBG .box1 .usbkey-title {
+    text-align: center;
+    font-weight: bold;
+    font-family: "微软雅黑 Light";
+    font-size: 14px;
+    margin: 0;
+}
+.loginForm .loginBG .box1 .usbkey-error.empty{
+    background:none;
+    border-color: transparent;
+}
+.loginForm .loginBG .box1 .usbkey-error {
+    width: 264px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px 25px;
+    height: 22px;
+    box-sizing: border-box;
+    text-align: left;
+    font-family: "微软雅黑";
+    border: 1px solid #FECD68;
+    overflow: hidden;
+    background: url("/static/Skins/Login/Images/usbkey_error.png") 5px center no-repeat #FEFFF1;
+}
+/*---------------脚部---------------*/
+.footer{width:980px;margin:0 auto; padding-top:25px; text-align:left; padding-left:10px;height:65px;}
+.footer ul{color:#000;display:inline;}
+.footer ul li{ float:left;color:#7f7f7f; line-height:28px; display:inline;}
+.footer ul li span{ background:url(Images/heidian.jpg) no-repeat center left; padding-left:10px; color:#7f7f7f}

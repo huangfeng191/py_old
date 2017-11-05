@@ -12,7 +12,7 @@ import ctx
 
 ####################### in use
 import service.comm as comm
-
+import second
 
 # 设备管理
 @path("/stock/equipmanage.html")

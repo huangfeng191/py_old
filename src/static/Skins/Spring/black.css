@@ -1,0 +1,49 @@
+.datagrid-header {background-color:#272727;font-size:14px;background-repeat:repeat-x;}
+.datagrid-row td {background:#000000;}
+.datagrid-cell {color:#d79702;}
+.datagrid-cell a {color:#00ff00;font-size:14px;font-weight:bold;}
+.datagrid-header .datagrid-cell span{font-size:14px;font-weight: bold;}
+.datagrid-row-over, .datagrid-header td.datagrid-header-over {background:#3d3d3d;color:#000000;cursor:default;}
+.datagrid-header, .datagrid-toolbar, .datagrid-pager, .datagrid-footer-inner {border-color: #313131;}
+.datagrid-body td, .datagrid-footer td, .datagrid-header td {border-color:#ffffff;}
+
+.panel-body{border-color:#ffffff;background-color:#000000;}
+.center_container{background:none;}
+
+.left_container .datagrid-header tr.datagrid-header-row, 
+.left_container .datagrid-header div.datagrid-header-inner, 
+.right_container .datagrid-header tr.datagrid-header-row, 
+.right_container .datagrid-header div.datagrid-header-inner {background-color:#272727;background-repeat:repeat-x;}
+
+.single-analysis-link{color:#d2d2d2;}
+.timeout-gray{color:#903535; background:#1F1F1F;} 
+.rise_red{color:#000000;background:#ff8040 url(Images/arrow-red.png) right center no-repeat;height:100%;}
+.drop_yellow{color:#000000;background:#ffff80 url(Images/arrow-yellow.png) right no-repeat;height:100%;display:block}
+.change-normal, .font-normal {color:#ffffff;font-weight:bold;}
+.scada6-multi-vals {height:auto;line-height:20px;}
+
+.crud_framework .top_container{}
+.crud_framework .separator_bar{background:white;}
+.crud_framework .separator_bar > div{border:1px #686868 solid;}
+.crud_framework .separator_bar > div:hover {background-color: #d7d7d7;  border: solid 1px #686868;}
+
+.crud_framework.division_monotor {background:#000000;}
+
+.datagrid-row-selected{background:#8E8E8E;}
+
+.change-normal{background:#000000;}
+
+
+.boldlink {background-color:#000000;}
+.boldlink.selected{background-color:#403D3D;}
+
+.datagrid-body td[field=zr_0] .datagrid-cell span, 
+.datagrid-body td[field=zr_1] .datagrid-cell span, 
+.datagrid-body td[field=zr_2] .datagrid-cell span {background-color:#000000;}
+
+.datagrid-body td[field$='_dvname'] {background-color:#000000;}
+.datagrid-body td[field$='_dvalarm'] {background-color:#000000;}
+
+.datagrid-body td[field$='_dvalarm'] .datagrid-cell {background-color:#000000;}
+.datagrid-body td[field$='_NAME'] .datagrid-cell {background-color:#000000;}
+

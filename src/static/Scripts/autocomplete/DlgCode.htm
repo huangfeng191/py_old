@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<script src="../jquery.min.js" type="text/javascript"></script>
+	<link href="jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+	<script src="jquery.autocomplete.min.js" type="text/javascript"></script>
+	<script src="../jquery.enplaceholder.js" type="text/javascript"></script>
+</head>
+<body>
+	<input id="txt" type="text" placeholder="自动完成" />
+</body>
+</html>
+<script>
+jQuery(document).ready(function()
+{
+	jQuery("#txt").placeholder({ isUseSpan: true });
+
+	//通过value模拟placeholder
+	//$('input').placeholder();
+	//通过插入元素模拟placeholder
+	//$('input').placeholder({ isUseSpan: true });
+
+	//window.top.StationTreeHandler.AllStation;
+
+	var Records =
+	[
+		{ Name: "name_a1", UserNo: "a1" },
+		{ Name: "name_a2", UserNo: "a2" },
+		{ Name: "name_a3", UserNo: "a3" },
+		{ Name: "name_a4", UserNo: "a4" },
+		{ Name: "name_a5", UserNo: "a5" }
+	];
+	$("#txt").autocomplete(Records, {
+		max: 10,
+		minChars: 1,
+		matchCase: false,
+		matchContains: true,
+		autoFill: false,
+		scroll: false,
+		mustMatch:true,
+		formatItem: function(row)
+		{
+			return row.UserNo + ":" + row.Name;
+		},
+		formatMatch: function(row)
+		{
+			return row.UserNo;
+		},
+		formatResult: function(row)
+		{
+			return row.UserNo;
+		}
+	}).result(function(event, row)
+	{
+		//alert(row.UserNo);
+	});
+
+});
+</script>

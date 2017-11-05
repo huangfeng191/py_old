@@ -1,0 +1,173 @@
+@charset "utf-8";
+/* ---------------------------------------------------- 网页初始化 ------------------------------------------------------------- */
+
+.area_divs html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, img, dl, dt, dd, ol, ul, li, table, tr, th, td
+{margin: 0; padding: 0;border: 0; outline: 0;font-size: 12px;}
+.area_divs html, body, form{height: 100%;}
+.area_divs body
+{font-family: "verdana","arial","宋体";color: #333;}
+.area_divs div{_zoom: 1;}
+.area_divs ol, ul{list-style: none;}
+table, th, td{border-collapse: collapse;border-spacing: 0;}
+.area_divs a{color: #024579;text-decoration: none;}
+.area_divs a:link{text-decoration: none;}
+.area_divs a:hover{color: #0274db;text-decoration: none;}
+.clear{clear: both;}
+.left{ float: left;}
+.right{float: right;}
+.height100{height: 100%;overflow: hidden;}
+.cursor{cursor: pointer;}
+/* ----- 左上角的搜索、视图切换 ----- */
+.icons-box01{position: relative;padding-top: 15px;padding-left: 15px;}
+.icons-box01 div.search{height: 31px;}
+.icons-box01 div.search input{background: url(../../im/gis_icon.png) -142px -276px;width: 176px;height: 31px;line-height: 30px;padding: 0;margin: 0;border: 0;text-indent: 10px;float: left;}
+.gis-icon{background: url(../../Images/gis_icon.png);display: block;width: 18px;height: 30px;}
+.area_divs a.icon-arrow-left{background-position: -604px -148px;height: 34px;width: 30px;float: left;cursor: default;}
+.area_divs a.icon-arrow-right{background-position: -665px -148px;height: 34px;width: 30px;float: right;cursor: default;}
+.area_divs li a.action{color:red !important;}
+.area_divs a.active{font-weight: bold;color: #ffffff !important;background: #3c8fec;/*display:block;*/}
+.area_divs .area-mid .area-content .area-root .sub ul li a.active {color: #ffffff!important;background: #3c8fec;}
+.area_divs .hasConfig{/*color: #171717;*/color: #085884;}
+.area_divs .noConfig{}
+/* ----- 片区切换 ----- */
+/*移除用到这个样式名称的样式效果*/
+#div_tabbar .area{bottom: 0;}
+.area_divs{position: absolute;/*bottom: -4px;*/width: 100%;height: 32px;z-index: 1000;}
+.area_divs .area-left{float: left;/*background: url(../../Images/area_left.png) center;*/width: 13px;height: 36px;}
+.area_divs .area-right{float: right;/*background: url(../../Images/area_right.png) center;*/width: 13px;height: 36px;}
+.area_divs .area-mid{margin: 0 13px;/*background: url(../../Images/area_mid.png) center repeat-x;*/height: 36px;padding: 1px 0;}
+.area_divs .area-mid .title{font-weight: bold;color: black;height: 34px;line-height: 34px;float: left;width: inherit;text-align: center;}
+.area_divs .area-mid .area-content{margin: 0 30px 0 65px;height: 34px;line-height: 34px;padding-right:30px;}
+.area_divs .area-mid .area-content .area-root{float: left;height: 34px;position: relative;}
+.area_divs .area-mid .area-content .area-root a{display: block;margin: 4px;padding: 0 8px;height: 26px;line-height: 26px;/*background: url(../../Images/line_bg.jpg) right center no-repeat;*/}
+.area_divs .area-mid .area-content .area-root a:hover{/*鼠标移动*/color:#fff;background: #3c8fec;}
+.area_divs .area-mid .area-content .area-root a.current{color: #ff6600;}
+.area_divs .area-mid .area-content .area-root .sub{position: absolute; bottom: 30px;/*max-height:600px;overflow-y:hidden;overflow-x:hidden;*/left: 4px;/*background: url(../../Images/gis_icon.png) right -1072px;*//*子片区*/border: 1px solid #93a4cf;background-color: #eff2f7;}
+.area_divs .area-mid .area-content .area-root .sub-con{/*background: url(../../Images/gis_icon.png) left -395px;*/margin-right: 0px;}
+.area_divs .area-mid .area-content .area-root .sub-con .sub-con-data{padding-top: 1px;}
+.area_divs .area-mid .area-content .area-root .sub-con .sub-con-data .sub-con-data-detail{max-height:385px;min-width:70px;overflow-y:auto;overflow-x:hidden;text-align: left;padding:0 1px;}
+.area_divs .area-mid .area-content .area-root .sub ul{/*background: url(../Images/gis_icon.png) left -395px;*//*margin-right: 10px;*//*padding-top: 15px;*//*padding-bottom: 5px;*/}
+.area_divs .area-mid .area-content .area-root .sub ul li{margin-left: 0px;margin-right: 0px;height: 26px;line-height: 26px;border-bottom: solid 1px #d6d6d6;clear: both;}
+.area_divs .area-mid .area-content .area-root .sub ul li a{display: block;height: 26px;margin: 0;line-height: 26px;cursor: pointer;color: #024579;background: none;white-space: nowrap;padding:0 6px;}
+.area_divs .area-mid .area-content .area-root .sub ul li a:hover{/*color: #f60;*/color: #fff;background: #3c8fec;}
+.three{
+}
+.three-box{
+	position: absolute;
+}
+.float-right{
+	float:right;
+	display: inline-block;
+}
+.three-div {
+    position: absolute;
+    background-color:#fff;
+	border:1px solid #93a4cf;
+}
+.three-menu{
+	margin-right: 0px;
+}
+.three-menu-box{
+	padding-top: 1px;
+}
+.three-menu-box-detail{
+	max-height:300px;
+	min-width: 70px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    text-align: left;
+    padding:0 1px;
+}
+.three-menu ul{
+}
+.three-menu ul li{
+	 margin-left: 0px;
+     margin: 0px;
+     height: 30px;
+     line-height: 30px;
+     border-bottom: solid 1px #d6d6d6;
+     clear: both;
+}	
+.three-menu ul li a{
+	display: block;
+    height: 30px;
+    margin: 0;
+    line-height: 30px;
+    cursor: pointer;
+    color: #171717;
+    background: none;
+    white-space: nowrap;
+    padding:0 6px;
+}
+.three-menu ul li a:hover
+{
+    color: #fff;background: #3c8fec;
+}
+.four{
+}
+.four-box{
+	position: absolute;
+}
+.four-float-right{
+	float:right;
+	display: inline-block;
+}
+.four-div {
+    position: absolute;
+    background-color:#fff;
+	border:1px solid #93a4cf;
+}
+.four-menu{
+	margin-right: 0px;
+}
+.four-menu-box{
+	padding-top: 1px;
+}
+.four-menu-box-detail{
+	max-height:300px;
+	min-width: 70px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    text-align: left;
+    padding:0 1px;
+}
+.four-menu ul{
+}
+.four-menu ul li{
+	 margin-left: 0px;
+     margin: 0px;
+     height: 30px;
+     line-height: 30px;
+     border-bottom: solid 1px #d6d6d6;
+     clear: both;
+}	
+.four-menu ul li a{
+	display: block;
+    height: 30px;
+    margin: 0;
+    line-height: 30px;
+    cursor: pointer;
+    color: #171717;
+    background: none;
+    white-space: nowrap;
+    padding:0 6px;
+}
+.four-menu ul li a:hover
+{
+    color: #fff;background: #3c8fec;
+}
+.thediv{color: #3c8fec !important;}
+.btn_active_left{cursor:pointer !important;}
+.btn_active_left:hover{background-position: -604px -201px;}
+.btn_active_right{cursor:pointer !important;}
+.btn_active_right:hover{background-position: -665px -201px;}
+/*夜间模式*/
+ body.nightmode .area_divs a{color:#515050;}
+ body.nightmode .area_divs .hasConfig {color:#383838;}
+ body.nightmode .area_divs a.active{color:#D79702!important;background: #383838;} 
+ body.nightmode .thediv{color:#2D892D!important;}
+ body.nightmode .area_divs .area-mid .area-content .area-root a:hover {background: #383838;color: #d79702;}
+ body.nightmode .area_divs .area-mid .area-content .area-root .sub {border: 1px #909090 solid;background-color: #E6E6E6;}
+ body.nightmode .area_divs .area-mid .area-content .area-root .sub ul li a{color: #383838;}
+ body.nightmode .area_divs .area-mid .area-content .area-root .sub ul li a:hover {background: #383838;color:#d79702;}
+ body.nightmode .area_divs .area-mid .area-content .area-root .sub ul li a.active {color:#D79702!important;background: #383838;}

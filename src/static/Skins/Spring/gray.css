@@ -1,0 +1,40 @@
+.datagrid-header {background-color:#272727;background-repeat:repeat-x;}
+.datagrid-row td {background:#393939;}
+.datagrid-cell {color:#d79702;}
+.datagrid-cell a {color:#D2D2D2;}
+.datagrid-row-over, .datagrid-header td.datagrid-header-over {background:#3d3d3d;color:#000000;cursor:default;}
+.datagrid-header, .datagrid-toolbar, .datagrid-pager, .datagrid-footer-inner {border-color: #313131;}
+.datagrid-body td, .datagrid-footer td, .datagrid-header td {border-color:#2F2F2F;}
+
+.panel-body{border-color:#686868;background-color:#686868;}
+.center_container{background:none;}
+
+.left_container .datagrid-header tr.datagrid-header-row, 
+.left_container .datagrid-header div.datagrid-header-inner, 
+.right_container .datagrid-header tr.datagrid-header-row, 
+.right_container .datagrid-header div.datagrid-header-inner {background-color:#272727;background-repeat:repeat-x;}
+
+.single-analysis-link{color:#d2d2d2;}
+.timeout-gray{background:#565656;display:block;height:100%;} 
+.rise_red{color:#c32b1e;background:#ff7f74 url(Images/arrow.png) right 0px no-repeat;}
+.drop_yellow{color:#3d6000;background:#b2e953 url(Images/arrow.png) right -81px no-repeat;}
+.change-normal, .font-normal {color:#00b9ff;font-weight:bold;}
+.scada6-multi-vals {height: auto; line-height: 20px;}
+
+.crud_framework .top_container{background:#AEAEAE;}
+.crud_framework .separator_bar{background:white;}
+.crud_framework .separator_bar > div{border:1px #686868 solid;}
+.crud_framework .separator_bar > div:hover {background-color: #d7d7d7;  border: solid 1px #686868;}
+.datagrid-row-selected{background:#8E8E8E;}
+
+.change-normal{background:#393939;}
+
+.boldlink {background-color:#393939;}
+.boldlink.selected{background-color:#8E8E8E;}
+
+.datagrid-body td[field=zr_0] .datagrid-cell span, 
+.datagrid-body td[field=zr_1] .datagrid-cell span, 
+.datagrid-body td[field=zr_2] .datagrid-cell span {background-color:#393939;}
+
+.datagrid-body td[field$='_dvname'] {background-color:#FFFFFF;}
+.datagrid-body td[field$='_dvalarm'] {background-color:#ECF4FE;}

@@ -1,0 +1,160 @@
+﻿/*common*/
+
+button { font-family: arial, simsun; }
+
+input.yyyy { width: 49px; }
+input.yyyyMM { width: 67px; }
+input.yyyyMMdd { width: 85px; }
+input.yyyyMMddHH { width: 120px; }
+input.yyyyMMddHHmm { width: 120px; }
+input.yyyyMMddHHmmss { width: 135px; }
+
+/*按钮相关*/
+span.line { display: inline-block; font-family: "verdana" , "arial" , "宋体"; font-size: 17px; width: 4px; height: 24px; background: url(Images/icons.png) no-repeat; background-position: -71px -4px; }
+
+button { display: inline-block; height: 26px; line-height: 24px; padding: 0 15px; margin: 2px 1px; text-decoration: none; font-size: 12px; cursor: pointer; border: solid 1px #989898; color: #222; background-color: #E9E8E8; }
+
+button:hover { background-color: #acdaff; border: solid 1px #128EDE; }
+button.icon_query:hover { background-color: #4db94c; }
+
+button.confirm { background-color: #43aa42; border: solid 1px #2d892d; color: #fff; }
+
+button.icon { background-repeat: no-repeat; background-image: url(Images/button_icon_normal.png); padding: 0 6px 0 24px; }
+
+button.iconly { height: 20px; line-height: 18px; background-repeat: no-repeat; background-image: url(Images/button_icon_normal.png); padding: 0 0 0 16px; padding: 0 0 0 16px\0; }
+@media (-webkit-min-device-pixel-ratio:0) {
+    button.iconly { padding: 0 0 0 16px; }
+}
+
+button.selected { background-color: #29aaff; border: solid 1px #128EDE; color: #fff; background-image: url(Images/button_icon_selected.png); background-repeat: no-repeat; }
+
+button.disabled { background-color: #dddddd; border: solid 1px #c3c3c3; color: #a8a8a8; background-image: url(Images/button_icon_disabled.png); background-repeat: no-repeat; }
+
+
+button.icon_reset { background-position: -4px -34px; }
+button.icon_filter { background-position: -4px -64px; }
+button.icon_order { background-position: -4px -94px; }
+button.icon_column { background-position: -4px -124px; }
+button.icon_insert { background-position: -4px -154px; }
+button.icon_upsert { background-position: -4px -768px; }
+button.icon_delete { background-position: -4px -184px; }
+button.icon_update { background-position: -4px -214px; }
+button.icon_export { background-position: -4px -244px; }
+button.icon_query { background-position: -2px -269px; background-color: #43aa42; border: solid 1px #2d892d; color: #fff; }
+button.icon_report { background-position: -4px -305px; }
+button.icon_chart { background-position: -4px -335px; }
+button.icon_copy { background-position: -4px -365px; }
+button.icon_paste { background-position: -4px -395px; }
+button.icon_cut { background-position: -4px -425px; }
+button.icon_import { background-position: -4px -458px; }
+button.icon_save { background-position: -2px -486px;}
+button.icon_confirm { background-position: -4px -583px; }
+button.icon_handle { background-position: -4px -613px; }
+button.icon_selector { background-position: -4px -640px; }
+button.icon_remote { background-position: -4px -674px; }
+button.icon_detail { background-position: -5px -705px; }
+button.icon_print { background-position: -4px -799px; }
+button.icon_sync { background-position: -4px -830px; }
+button.icon_share { background-position: -4px -860px; }
+button.icon_colchart { background-position: -4px -890px; }
+
+
+/*crud*/
+.crud_framework { overflow: hidden; }
+
+.crud_framework > .content_container{ position: relative; width: 100%;}
+.crud_framework > .content_container > .seperator_line { width: 100%; height: 61px; position: absolute; z-index: 999; background-image: url(Images/seperator_line.png); background-repeat: repeat-x; background-position: 0px center; cursor: s-resize; }
+.crud_framework > .content_container > .seperator_line.vertical { height: 100%; width: 61px; background-repeat: repeat-y; background-position: center 0px; cursor:w-resize; }
+.crud_framework .top_container { width: 100%; height: 36px; margin: 0; border: 0; padding: 0; }
+.crud_framework .top_container .left_container { }
+.crud_framework .top_container .left_container .title { background: #ffffff; border-left: 1px #98b8df solid; border-right: 1px #98b8df solid; border-top: 2px #3eb4fe solid; padding: 4px 10px 10px 10px; font-weight: bold; color: #061e36; display: inline-block; margin: 0px 0px -8px 0px; white-space: nowrap; word-break: keep-all; }
+.crud_framework .top_container .right_container { text-align: right; padding-right: 6px; }
+
+.crud_framework .grid_container { margin: 2px; border: 0; padding: 0; }
+
+.crud_framework .grid_active { margin: 0px; border: solid 2px #2D892D; }
+
+.crud_framework .separator_bar { margin: 0; border: 0; padding: 0; height: 12px; background: #aed6f0; border-top: solid 1px #79a4c5; }
+
+.crud_framework .separator_bar > div { padding: 0 14px; height: 8px; float: right; margin: 1px; border: solid 1px #aed6f0; background-image: url(Images/icons.png); cursor: pointer; }
+.crud_framework .separator_bar > div:hover { background-color: #d9eefd; border: solid 1px #98b8dd; }
+
+.crud_framework .separator_bar > div.max { background-position: 0px -5px; }
+.crud_framework .separator_bar > div.normal { background-position: -21px -5px; }
+.crud_framework .separator_bar > div.min { background-position: 0px -17px; }
+
+.crud_framework .form_container { margin: 1px; border: 0; padding: 0; font-size: 12px; border: 1px solid #95B8E7; overflow: hidden; cursor: default; }
+
+.crud_framework .form_active { margin: 0px; border: solid 2px #2D892D; }
+
+.crud_framework .form_container > div.group_container { overflow: auto; }
+.crud_framework .form_container > div.group_container > div.group { border: 0px; margin: 0px; padding: 0px; }
+.crud_framework .form_container > div.group_container > div.group > div.title { width: 100%; background: #cbdde8; height: 24px; border-bottom: solid 1px #96b2c0; }
+.crud_framework .form_container > div.group_container > div.group > div.title > span { font-weight: bold; color: #091e36; line-height: 28px; margin-left: 6px; }
+.crud_framework .form_container > div.group_container > div.group > table { width: 100%; border-collapse: collapse; margin: 2px 0px; }
+
+.crud_framework .form_container > div.group_container > div.group > table td { padding: 2px 4px; height: 26px; }
+
+.crud_framework .form_container > div.group_container > div.group > table .label { text-align: right; white-space: nowrap; word-break: keep-all; }
+
+.crud_framework .form_container > div.group_container > div.group > table .content { white-space: nowrap; word-break: keep-all; }
+
+.crud_framework .form_container > div.group_container > div.group > table .content > .wrap { position: relative; display: inline-block; }
+.crud_framework .form_container > div.group_container > div.group > table .content .border { display: block; position: absolute; top: 0; right: 6px; height: 26px; line-height: 26px; color: #999; }
+.crud_framework .form_container > div.group_container > div.group > table .content .border-with-combo { right: 24px; }
+.crud_framework .form_container > div.group_container > div.group > table .content .border-with-upload { right: 32px; }
+.crud_framework .form_container > div.group_container > div.group > table .content .border-with-combo { right: 24px; }
+.crud_framework .form_container > div.group_container > div.group > table .content input[type=text].default { height: 22px; width: 148px; line-height: 22px; }
+.crud_framework .form_container > div.group_container > div.group > table .content input[type=password].default { height: 22px; width: 148px; line-height: 22px; }
+.crud_framework .form_container > div.group_container > div.group > table .content input[type=checkbox].default { margin: 4px 0 3px 0; }
+.crud_framework .form_container > div.group_container > div.group > table .content input[type=text].text_button { width: 124px; }
+.crud_framework .form_container > div.group_container > div.group > table .content textarea.default { width: 148px; height: 50px; }
+.crud_framework .form_container > div.group_container > div.group > table .content button.upload { height: 26px; line-height: 22px; margin: 0px 1px; padding: 0px 6px; position: relative\9; top: -0px\9; }
+.crud_framework .form_container > div.group_container > div.group > table .content button.gispos { height: 26px; line-height: 22px; margin: 0px 1px; padding: 0px 6px; position: relative\9; top: -0px\9; }
+.crud_framework .form_container > div.group_container > div.group > table .content button.gisarea { height: 26px; line-height: 22px; margin: 0px 1px; padding: 0px 6px; position: relative\9; top: -0px\9; }
+
+.crud_framework .form_container > div.group_container > div.group > table .sign_red { border: solid 1px #FF0000; }
+.crud_framework .form_container > div.group_container > div.group > table .sign_yellow { border: solid 1px #FB851C; }
+
+.crud_framework .form_container > div.group_container > div.group > table span.required { color: Red; }
+
+.crud_framework .form_container > .button_container { margin: 0; height: 28px; padding: 4px 8px 4px 0px; border-top: 1px solid #bfcfdc; text-align: right; }
+
+/*横向布局*/
+.layout_lr > div > .grid_container { float: left; }
+.layout_lr > div > .separator_bar { float: left; height: 100%; width: 12px; border-left: solid 1px #79a4c5; border-right: solid 1px #79a4c5; }
+.layout_lr > div > .separator_bar > div { float: none; padding: 14px 0px; width: 8px; }
+.layout_lr > div > .separator_bar > div.max { background-position: -78px 3px; }
+.layout_lr > div > .separator_bar > div.normal { background-position: -90px 3px; }
+.layout_lr > div > .separator_bar > div.min { background-position: -103px 3px; margin-top: 60px; }
+.layout_lr > div > .form_container { float: right; }
+
+/*框架相关*/
+.combo { background-color: inherit !important; height: 24px; }
+.combobox-item > div.combocheckbox { padding-left: 20px; line-height: 18px; height: 18px; white-space: nowrap; word-break: keep-all; overflow: hidden; background-image: url(Images/icons.png); background-repeat: no-repeat; background-position: -580px -21px; }
+.combobox-item-selected > div.combocheckbox { background-position: -580px -2px; }
+
+
+/*夜间模式*/
+body.nightmode .crud_framework .separator_bar { background: #BCBCBC; border-top: solid 1px #A8A8A8; }
+body.nightmode .crud_framework .separator_bar > div { border: solid 1px #bcbcbc; background-image: url(Images/icons.png); }
+body.nightmode .crud_framework .separator_bar > div:hover { background-color: #e0e0e0; border: solid 1px #a6a6a6; }
+body.nightmode .layout_lr .separator_bar { height: 100%; width: 12px; border-left: solid 1px #a8a8a8; border-right: solid 1px #a8a8a8; }
+body.nightmode .crud_framework .form_container { border: 1px solid #6C6D6F; }
+body.nightmode button:hover { background-color: #55B755; border-color: #818181; }
+body.nightmode button.selected { background-color: #3D3D3D; border: solid 1px #818181; }
+body.nightmode button.disabled { background-color: #dddddd; border: solid 1px #c3c3c3; color: #a8a8a8; }
+body.nightmode button.icon_query:hover { background-color: #4db94c; }
+
+body.nightmode .crud_framework .form_container > div.group > table { background: #E7E7E7; }
+body.nightmode .crud_framework .form_container > div.group > div.title { background: #212121; }
+body.nightmode .crud_framework .form_container > div.group > div.title > span { color: #C9C9C9; }
+
+body.nightmode .crud_framework .form_container > div.group > table .label { color: #000; }
+
+body.nightmode .crud_framework .top_container .left_container .title { background: #e7e7e7; border-left: 1px #767676 solid; border-right: 1px #767676 solid; border-top: 2px #767676 solid; color: #393d40; }
+
+body.nightmode .crud_framework .form_container > .button_container { border-top: 1px solid #bec3c6; background-color: #dedede; }
+
+
+

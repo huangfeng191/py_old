@@ -1,0 +1,57 @@
+<!--<%inherit file="layout.html"/>-->
+<style>
+  input[cmd] {
+    margin: 10px!important;
+  }
+</style>
+<!-- 调试html -->
+
+<body>
+  <div id="divcmd" style=" margin:50px;">
+    <label>年度:</label> <input type="text" id="year" class="data value yyyy" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy'})">
+    <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM'})">
+    <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM-dd'})">
+    <label>code: <input type="text" id="code"   /></label>
+    <label>name: <input type="text" id="name"   /></label>
+    <br>
+    <div style="padding-left:40px;">
+      <label>tushare：</label>
+      <input type="button" cmd="basics" value="获取基本信息" />
+      <!-- <input type="button" cmd="flux" value="获取营收水量" />
+      <input type="button" cmd="fluxfh" value="获取fh营收水量" />
+      <input type="button" cmd="syn_flux" value="同步水量" /><br /> -->
+    </div>
+    <div id="result"></div>
+</body>
+<script type="text/javascript">
+  function act(tp, param) {
+    $.post("/stock/admin/" + tp + ".json", JSON.stringify(param), function(R) {
+      $("#result").html(R.Response);
+    }, "json");
+  }
+
+
+
+  $(function() {
+    var dt=new Date()
+    $("#year").val(dt.FormatString("yyyy"));
+    $("#month").val(dt.FormatString("yyyy-MM"));
+    $("#day").val(dt.FormatString("yyyy-MM-dd"));
+    $("#divcmd input[cmd]").on("click", function(e) {
+      var cmd = $(this).attr("cmd");
+      switch (cmd) {
+        case 'basics':
+          act(cmd, {});
+          break;
+        case 'bplanupdateone':
+          act(cmd, {
+            "sn": $("#sn").val()
+          });
+          break;
+      }
+    })
+
+
+
+  })
+</script>

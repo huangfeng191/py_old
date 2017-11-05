@@ -1,0 +1,7 @@
+﻿.grid_framework{}
+
+.grid_framework > table{margin: 0;padding: 0;border: 0;outline: 0;font-size: 12px;color: #111;border-collapse: collapse;}
+
+.grid_framework div.container{margin: 4px;border: solid 1px #DDDDDD;}
+
+.grid_framework div.selected{border: solid 2px #FF3300;margin: 3px;}

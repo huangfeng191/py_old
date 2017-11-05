@@ -1,0 +1,32 @@
+.popwin_framework{position: absolute;float:none;width:300px;height:210px;z-index: 999;background-color: #E4EBF1;}
+.popwin_framework > div.top_container{width: 300px;height: 26px;background-color: #AED6F0;border: solid 1px #85AECC;}
+.popwin_framework > div.top_container > span.title{display: inline-block;margin: 4px;font-size: 12px;line-height: 18px;font-weight: bold;}
+.popwin_framework > div.top_container > span.status{border: none;}
+.popwin_framework > div.top_container > span.close,.popwin_framework > div.top_container > span.config{display: inline-block;float: right;margin: 5px 8px 4px 4px;color: #74A4C7;font-size: 16px;line-height: 16px;width: 16px;text-align: center;cursor: pointer;}
+.popwin_framework > div.top_container > span.config{background: url(PopWin/Images/icons.png);background-position: 0px -40px;width:16px;height:16px;margin-right:0px;}
+.popwin_framework > div.top_container > span.close:hover,.popwin_framework > div.top_container > span.config:hover{background-color: #E4EBF1;border: solid 1px #85AECC;margin: 4px 7px 4px 4px;}
+.popwin_framework > div.top_container > span.config:hover{ margin-right:0px;}
+.popwin_framework > div.middle_container{width: 280px;height: 130px;border-left: solid 1px #85AECC;border-right: solid 1px #85AECC;padding: 6px 10px 10px 10px;text-indent: 20px;background-color: #E4EBF1;}
+.popwin_framework > div.bottom_container{width: 300px;height:35px;border-top: solid 1px #BEC3C6;border-left: solid 1px #85AECC;border-right: solid 1px #85AECC;border-bottom: solid 1px #85AECC;background-color: #E4EBF1;}
+.popwin_framework > div.bottom_container > table{width: 100px;margin: 0px;}
+.popwin_framework > div.bottom_container > table td{line-height: 0px;height: 28px;}
+.popwin_framework > div.bottom_container input.index{width: 36px;height: 14px;font-size: 12px;line-height: 14px;text-align: center;margin: 0 2px;}
+.popwin_framework > div.bottom_container a.button{background-image: url(PopWin/Images/icons.png);background-repeat: no-repeat;width: 16px;height: 16px;display: inline-block;margin: 1px 2px;}
+.popwin_framework > div.bottom_container a.button:hover{border: solid 1px #85AECC;margin: 0px 1px;}
+.popwin_framework > div.bottom_container a.first{background-position: 0px -2px;}
+.popwin_framework > div.bottom_container a.prev{background-position: -20px -2px;}
+.popwin_framework > div.bottom_container a.next{background-position: -40px -2px;}
+.popwin_framework > div.bottom_container a.last{background-position: -60px -2px;}
+.popwin_framework > div.bottom_container button{display: inline-block;height: 24px;line-height: 24px;padding: 0 12px;margin: 2px 1px;text-decoration: none;font-size: 12px;cursor: pointer;border: solid 1px #989898;color: #222;background-color: #E9E8E8;font-family: arial, simsun;}
+.popwin_framework > div.bottom_container button.confirm{background-color: #43aa42;border: solid 1px #2d892d;color: #fff;}
+.popwin_framework > div.bottom_container button.disabled{background-color: #ADADAD;border: solid 1px #2d892d;color: #fff;}
+.popwin_framework > div.config_container {position:absolute;top:30px;left:180px;width:110px;height:84px;border:1px solid;background: #FFFFFF;display:none;}
+
+
+
+/*夜间模式*/
+body.nightmode .popwin_framework > div.bottom_container button.disabled {border: solid 1px #7E817E;color: #dadada;}
+body.nightmode .popwin_framework > div.top_container > span.config{background-position: -20px -40px;}
+body.nightmode .popwin_framework > div.top_container > span.close{color:#dadada;}
+body.nightmode .popwin_framework > div.top_container > span.config:hover,body.nightmode .popwin_framework > div.top_container > span.close:hover{background-color: #4f4f4f;border: solid 1px #a7a7a7;}
+

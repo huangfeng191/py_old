@@ -1,0 +1,114 @@
+﻿/* ------------------- 网页初始化 ------------------------ */
+html, body, div,span, a,img,ol, ul, li,form, label,table,tbody,tr, th, td {   
+    margin:0;   
+    padding:0;   
+    border:0;   
+    outline:0;   
+    font-size:12px;
+	color:#000;
+}
+ol, ul {list-style: none;}   
+blockquote, q {quotes: none;} 
+body{font-family:"verdana","arial","宋体";}
+html,body{width:100%;height:100%;}
+
+p.clear, .clear {clear:both;}
+.left { float:left;}
+.right { float:right;}
+.height100 { overflow:hidden;}
+.icons{display:block;background:url(Images/icons.png) no-repeat;cursor:pointer;}
+.icon_add{ background-position:-245px -25px;}
+.icon_del{ background-position:-312px -25px;}
+.icon_edit{ background-position:-376px -25px;}
+.icon_undo{ background-position:-43px -25px;}
+.icon_sort{ background-position:-111px -25px;}
+.icon_col_set{ background-position:-181px -25px;}
+.icon_col_low{ background-position:-439px -25px;}
+.icon_report{ background-position:-508px -25px;}
+.icon_chart{ background-position:-579px -25px;}
+.icon_print{ background-position:-646px -25px;}
+.icon_export{ background-position:-714px -25px;}
+.icon_all{ background-position:-835px -25px;}
+.icon_composition{ background-position:-896px -25px;}
+.icon_filter{ background-position:-948px -25px;}
+.icon_count{ background-position:-46px -72px;}
+.icon_search2{background-position:-948px -72px;}
+
+
+/*grid和form的分隔线按钮*/
+.icon_form_min{background-position:-103px -125px;}
+.icon_form_max{background-position:-35px -126px;}
+.icon_form_normal{background-position:-307px -125px;}
+
+
+a{color:#00558b; text-decoration:none;}
+a:hover{color:#0086d0;}
+/* ------------20140902通用按纽----------- */
+.btn_box{clear:both;float:left;padding:8px 0;height:28px;border-top:solid 1px #bfcfdc;width:100%;margin:8px 0;}
+a.btn{ display:inline-block;height:24px;line-height:24px;padding:0 6px;margin-left:4px;text-decoration:none; cursor:pointer;}
+a.btn span{width:17px;height:22px;float:left;}
+a.btn_common{ background:#e9e8e8;border:solid 1px #989898;color:#222;}
+a.btn_common:hover,a.btn_current:hover{background:#f2f1f1;border:solid 1px #5d5d5d;}
+a.btn_current{background:#acdaff;border:solid 1px #92c1e9;color:#222;}
+a.btn_confirm{background:#43aa42;border:solid 1px #2d892d;color:#fff;}
+a.btn_confirm:hover{ background:#4db94c;}
+
+button.btn{ display:inline-block;height:26px;line-height:26px;padding:0 20px;margin-left:6px;text-decoration:none;font-size:12px; cursor:pointer;}
+button.btn_common{ background:#e9e8e8;border:solid 1px #989898;color:#222;}
+button.btn_common:hover,button.btn_current:hover{background:#f2f1f1;border:solid 1px #5d5d5d;}
+button.btn_current{background:#acdaff;border:solid 1px #92c1e9;color:#222;}
+button.btn_confirm{background:#43aa42;border:solid 1px #2d892d;color:#fff;}
+button.btn_confirm:hover{ background:#4db94c;}
+
+input[type=button].btn{ display:inline-block;height:26px;line-height:26px;padding:0 20px;margin-left:6px;text-decoration:none;font-size:12px; cursor:pointer;}
+input[type=button].btn_common{ background:#e9e8e8;border:solid 1px #989898;color:#222;}
+input[type=button].btn_common:hover,input[type=button].btn_current:hover{background:#f2f1f1;border:solid 1px #5d5d5d;}
+input[type=button].btn_current{background:#acdaff;border:solid 1px #92c1e9;color:#222;}
+input[type=button].btn_confirm{background:#43aa42;border:solid 1px #2d892d;color:#fff;}
+input[type=button].btn_confirm:hover{ background:#4db94c;}
+
+/*column_framework*/
+.column_framework{width:460px;}
+.column_framework .width30{width:30px; text-align:center;}
+.column_framework .width60{width:70px; text-align:center;}
+.column_framework .width200{width:190px; text-align:center;}
+.column_framework .width100{width:100px; text-align:center;}
+.column_framework .width50{width:50px; text-align:center;}
+.column_framework .title{height:28px; background:#dfeaf6;border-left:solid 1px #96b7c9;}
+.column_framework .title span{display:block;float:left;padding:0 6px;height:28px;line-height:28px;border-right:solid 1px #96b7c9;border-bottom:solid 1px #96b7c9;border-top:solid 1px #96b7c9;color:#11466b;}
+.column_framework .title span .allcheck{display:block;border:0px;padding:3px 0 0 0;}
+.column_framework .content{clear:both; overflow:auto;}
+.column_framework .content>div.condition{height: 29px;border-left:solid 1px #96b7c9;}
+.column_framework .content>div.condition>span{display:block; float:left; padding:0 6px;height:28px;line-height:28px;border-right:solid 1px #96b7c9;border-bottom:solid 1px #96b7c9;color:#000000;background:#fff;}
+.column_framework .content>div.condition>span .combo{margin:3px 0 0 0;}
+.column_framework .content>div.condition>span .validatebox-text{margin:3px 0 0 0;width:94px;}
+/*yucq checkbox居中问题*/
+.column_framework .title span .allcheck input[type="checkbox"]{margin-top:6px;margin-top:2px\9;}
+.column_framework .content>div.condition input[type="checkbox"]{margin-top:8px;margin-top:5px\9}
+
+.column_framework .content>div.condition>span .Wdate{margin:3px 0 0 0;width:94px;}
+/*end*/
+
+/* ---- 顶部按钮容器 ---- */
+.search_box{line-height:22px;line-height:24px\9;padding:8px 0;padding-bottom:6px; overflow: auto; zoom: 1; height: auto;}
+.search_box:after{ content: "..."; clear: both; display: block; height: 0; visibility: hidden;}
+.search_box .width60{width:60px;}
+.search_box .width100{width:100px;}
+.search_box .width120{width:120px;}
+.search_box .width150{width:150px;}
+.search_box span.space{display:block;width:10px;height:24px;float:left;}
+.search_box span.line{display:block;width:10px;height:24px; background-position:-897px -74px; cursor:auto;}
+.search_box input,.search_box select{float:left;}
+.search_box input[type=text]{float:left;height:24px;line-height:24px;border:solid 1px #919191;padding:0 2px;}
+.search_box .date_arrow{width:12px;height:24px;float:left;padding-top:1px;}
+.search_box .date_arrow a.before{ display:block;width:12px;height:12px; background-position:-239px -121px;}
+.search_box .date_arrow a.before:hover{background-position:-267px -121px;}
+.search_box .date_arrow a.after{ display:block;width:12px;height:12px; background-position:-183px -124px;}
+.search_box .date_arrow a.after:hover{background-position:-212px -123px;}
+.search_box select{height:22px;line-height:22px;}
+
+
+/* ---- 夜间模式 ---- */
+body.nightmode .column_framework .title{  background: #dedede;border-left: solid 1px #9d9d9d;}
+body.nightmode .column_framework .title span {border-right: solid 1px #9d9d9d;border-bottom: solid 1px #9d9d9d;border-top: solid 1px #6c6d6f;color: #000000;}
+body.nightmode .column_framework .title .width60 span{border:0px;}

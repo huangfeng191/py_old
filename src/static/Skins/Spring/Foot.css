@@ -1,0 +1,44 @@
+/* ---------------------------------------------------- 底部状态栏 ------------------------------------------------------------- */
+.foot{ background: url(Layout/Images/foot_bg.png) repeat-x;height:28px;}
+.foot div{height:28px;line-height:28px;}
+.foot .foot-icons{ display:block;}
+.foot .technical{text-indent:4px;color:#0f2031;float:left;}
+.foot .technical span{}
+.foot .alarm-box{ background-position:-19px -8px;float:left; color:#333;}
+.foot .sys-time{float:right;color:#0f2031;font-weight:bold;padding:0 10px;}
+.foot a.foot-icons-alarm,.foot a.foot-icons-record{float:right;width:28px;height:26px;margin-top:1px;}
+.foot a.foot-icons-alarm:hover,.foot a.foot-icons-record:hover{ background-color:#9fc6ff;}
+.foot a.foot-icons-alarm{background-position:-196px -48px;}
+.foot a.foot-icons-record{background-position:-131px -49px;}
+.foot a.foot-icons-qq{background-position:-17px -49px;margin-top:1px;height:26px;width:79px;float:right;}
+.foot .line{background-position:-269px -47px;width:15px;}
+
+.foot .voice{
+            display: inline-block;
+            height:25px;
+            width: 25px;
+            float: left;
+            line-height: 35px
+        }
+
+
+/*
+.foot table{width:100%;border:0;border-collapse:collapse; }
+.foot table td.time{height:28px;line-height:28px; text-align:left; text-align:right;color:#5b5b5b;}
+.foot table td.time span{color:#888;}
+.foot span.time{margin: 0 8px 0 0;}
+.foot table td.affich{height:28px;line-height:28px;color:#000;}
+.foot table td.affich span{color:#888;} */
+
+
+
+/* 夜间模式 */
+
+body.nightmode .foot{ background: url(Layout/Images/nightmodefoot_bg.png) repeat-x;height:28px;}
+body.nightmode .foot .technical{color:#dadada;}
+body.nightmode .foot .alarm-box{color:#dadada;}
+body.nightmode .foot .alarm-box a:link{color:#00ff00}
+body.nightmode .foot .sys-time{color:#dadada;}
+body.nightmode .foot .weather{color:#dadada;}
+
+body.nightmode .foot div{color:#DADADA;}

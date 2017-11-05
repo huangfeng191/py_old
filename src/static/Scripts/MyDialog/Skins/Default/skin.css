@@ -1,0 +1,199 @@
+﻿/*对话框默认样式*/
+/*蒙板*/
+div.my_dialog
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 6931;
+    cursor: default;
+    background-image: url('Images/bg.png');
+    background-repeat: repeat;
+}
+/*框体*/
+div.my_dialog > div
+{
+    position: absolute;
+}
+div.my_dialog > div > div
+{
+    border: solid 1px #234557;
+    background: #eff3f7;
+}
+div.my_dialog > div > div > div
+{
+    background: #4586d8;
+}
+div.my_dialog > div > div > div > div
+{
+    width: 100%;
+    cursor: move;
+    position: relative;
+}
+/*标题文字*/
+div.my_dialog > div > div > div > div > div.title
+{
+    color: #fff;
+    font-size: 12px;
+    text-indent: 10px;
+    line-height: 32px;
+}
+/*关闭按钮*/
+div.my_dialog > div > div > div > div > a.close
+{
+    display: block;
+    background: transparent url(Images/close.gif) no-repeat 6px -1px;
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+}
+div.my_dialog > div > div > div > div > a.close:hover
+{
+    background-position: 6px -42px;
+}
+div.my_dialog > div > div > div > div > a.close:active
+{
+    background-position: 6px -42px;
+}
+
+div.my_dialog > div > div > div > div > a.help
+{
+    display: block;
+    background: transparent url(Images/help.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 36px;
+}
+
+div.my_dialog > div > div div.body
+{
+    background-color: #eff3f7;
+}
+/*面板，放置内容页面iframe或提示table*/
+
+div.my_dialog > div > div div.body > div > div > div > div iframe
+{
+    background-color: #eff3f7;
+}
+div.my_dialog > div > div div.body > div
+{
+    padding: 5px 15px 10px 15px;
+}
+
+/*提示布局table*/
+div.my_dialog > div > div div.body > div > table
+{
+    width: 300px;
+    height: 150px;
+    border-collapse: collapse;
+    margin-left: 40px;
+}
+div.my_dialog > div > div div.body > div > table td
+{
+    border: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 25px;
+}
+/*提示图标单元格*/
+div.my_dialog > div > div div.body > div > table td.icon
+{
+    width: 50px;
+    height: 120px;
+}
+div.my_dialog > div > div div.body > div > table td.icon > div
+{
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+}
+/*提示图标*/
+div.my_dialog > div > div div.body > div > table
+{
+    margin-top: 10px;
+}
+div.my_dialog > div > div div.body > div > table td.icon > div.icon_error
+{
+    background-image: url(Images/icon-error.gif);
+}
+div.my_dialog > div > div div.body > div > table td.icon > div.icon_info
+{
+    background-image: url(Images/icon-info.gif);
+}
+div.my_dialog > div > div div.body > div > table td.icon > div.icon_question
+{
+    background-image: url(Images/icon-question.gif);
+}
+div.my_dialog > div > div div.body > div > table td.icon > div.icon_warning
+{
+    background-image: url(Images/icon-warning.gif);
+}
+/*提示框底部按钮*/
+div.my_dialog > div > div div.body > div > table div.button
+{
+    clear: both;
+    padding: 8px 0;
+    height: 28px;
+    margin: 8px 0;
+}
+div.my_dialog > div > div div.body > div > table div.button > a
+{
+    display: block;
+    float: right;
+    background: transparent url(Images/button.gif) no-repeat 0 -25px;
+    color: #1f384a;
+    font-size: 12px;
+    text-decoration: none;
+    height: 25px;
+    width: 54px;
+    line-height: 25px;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    word-break: keep-all;
+    font-weight: normal;
+}
+div.my_dialog > div > div div.body > div > table div.button > a:hover
+{
+    background-position: 0 0;
+    color: #111;
+    font-weight: normal;
+}
+div.my_dialog > div > div div.body > div > table div.button > a:active
+{
+    background-position: 0 0;
+    color: #111;
+    font-weight: normal;
+}
+
+
+/*夜间模式*/
+body.nightmode div.my_dialog > div > div div.body {background-color: #e7e7e7;}
+
+/*yucq 20161208解决bootstrap样式冲突*/
+div.my_dialog > div > div div.body > div > table div.button .btn
+{
+  display:inline-block;height:26px;line-height:26px;padding:0 20px;margin-left:6px;text-decoration:none;font-size:12px; cursor:pointer;border-radius:0;
+}
+div.my_dialog > div > div div.body > div > table div.button .btn_common:hover,button.btn_current:hover{
+	background:#f2f1f1;border:solid 1px #5d5d5d;
+}
+div.my_dialog > div > div div.body > div > table div.button .btn_current{
+	background:#acdaff;border:solid 1px #92c1e9;color:#222;
+}
+div.my_dialog > div > div div.body > div > table div.button .btn_confirm{
+    background:#43aa42;border:solid 1px #2d892d;color:#fff;
+}
+div.my_dialog > div > div div.body > div > table div.button .btn_confirm:hover{
+    background:#4db94c;
+}
+div.my_dialog > div > div div.body > div > table div.button .right{
+    float:right;
+}

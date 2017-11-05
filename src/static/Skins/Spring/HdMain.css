@@ -1,0 +1,44 @@
+.icon_refresh{ background-position:-232px -129px;width:24px;height:24px;float:right;margin:0 2px;border:solid 1px #c4e2f7;}
+.icon_fullscreen{ background-position:-295px -129px;width:24px;height:24px;float:right;margin:0 2px;border:solid 1px #c4e2f7;}
+.icon_arrow_left{background-position:-56px -126px;float:right;width:24px;height:24px; background:margin:0 2px;border:solid 1px #c4e2f7;}
+.icon_arrow_right{background-position:-116px -126px;float:right;width:24px;height:24px;margin:0 2px;border:solid 1px #c4e2f7;}
+.icon_refresh:hover,.icon_fullscreen:hover,.icon_arrow_left:hover,.icon_arrow_right:hover{ background-color:#d9eefd;border:solid 1px #98b8dd;}
+
+div.fullscreen{position:absolute;left:0px; top:30px;}
+
+.hdmain .tab{height:30px;margin-top:-30px;float:right;margin-right:0px;}
+.hdmain .tab .box{float:right;height:30px;overflow:hidden;}
+.hdmain .tab .box ul li{float:left;padding:0 6px 0 10px;height:22px;line-height:18px;padding-top:6px;background-color:#d9eefd;border:solid 1px #98b8dd;margin-left:1px; cursor:pointer;}
+.hdmain .tab .box ul li:hover{background-color:#e5f5fd;border:solid 1px #70b8ef;}
+.hdmain .tab .box ul li:hover span{color:#000;}
+.hdmain .tab .box ul li span{float:left;color:#00558c;}
+.hdmain .tab .box ul li span.close{ display:block;width:16px;height:16px; background-position:left top;margin-left:5px;}
+.hdmain .tab .box ul li.current{border:solid 1px #98b8dd;border-bottom:none;border-top:none;height:23px;line-height:19px;padding-top:7px;background:#fff url(Layout/Images/icons.png) 0 -80px;}
+.hdmain .tab .box ul li.current span{color:#000;font-weight:bold;}
+.hdmain .tab .box ul li.current span.close{ display:block;width:16px;height:16px; background-position:-379px -29px;margin-left:5px;}
+.hdmain .tab .box ul li.current span.close:hover{background-position:-469px -33px;}
+
+.hdmain div.windows{}
+.hdmain div.windows>div.window_container{overflow:hidden;}
+
+/* -- 三级菜单 -- */
+.hdmain .menu_3{height:30px;position:relative;}
+.hdmain .menu_3 .icon_arrow_left{border:solid 1px #fff;background-color:#fff;position:absolute;left:0;top:2px; z-index:2;margin-left:0;}
+.hdmain .menu_3 .icon_arrow_right{border:solid 1px #fff;background-color:#fff;position:absolute;right:0;top:2px;z-index:2;margin-right:0;}
+.hdmain .menu_3 .icon_arrow_left:hover,.layout_center .menu_3 .icon_arrow_right:hover{background-color:#d9eefd;border:solid 1px #98b8dd;}
+.hdmain .menu_3 .box{height:30px;position:absolute;left:30px;top:0;z-index:1;}
+.hdmain .menu_3 .box,.layout_center .menu_3 .box td,.layout_center .menu_3 .box td table.sub td,.layout_center .menu_3 .box td table.sub {border-collapse: collapse;border-spacing: 0;}
+.hdmain .menu_3 .box td{cursor:pointer;position:relative;}
+.hdmain .menu_3 .box td a{ display:block;height:24px;line-height:24px;padding:0 10px;color:#00558b; text-decoration:none;border:solid 1px #fff; white-space:nowrap; background:url(Layout/Images/menu_sub3_off.gif) right center no-repeat;margin:0 1px;}
+.hdmain .menu_3 .box td a:hover{ background:#d9eefd;border:solid 1px #98b8dd;}
+.hdmain .menu_3 .box td a.current{ background:#078cd5; border:solid 1px #0c7dc6;color:#fff;font-weight:bold;}
+.hdmain .menu_3 .box td div.arrow{}
+.hdmain .menu_3 .box td div.arrow_up{height:16px; background:#098ed7 url(Layout/Images/menu_sub3_up.gif) center no-repeat; cursor:pointer;border:solid 1px #1682c8;border-bottom:0;}
+.hdmain .menu_3 .box td div.arrow_down{height:16px; background:#098ed7 url(Layout/Images/menu_sub3_down.gif) center no-repeat; cursor:pointer;border:solid 1px #1682c8;border-top:0;}
+.hdmain .menu_3 .box td div.arrow_up:hover,.layout_center .menu_3 .box td div.arrow_down:hover{ background-color:#027dc0;}
+
+.hdmain .menu_3 .box td table.sub{border:solid 1px #1682c8; background:#299be4;width:100%}
+.hdmain .menu_3 .box td table.sub td{ position:relative;}
+.hdmain .menu_3 .box td table.sub td a{ background-image:none;border:solid 1px #299be4;margin:0;border-left:none;border-right:none;color:#fff;padding-right:20px;}
+.hdmain .menu_3 .box td table.sub td a.arrow{background:url(Layout/Images/menu_arrow.png) right center no-repeat;}
+.hdmain .menu_3 .box td table.sub td a:hover,.layout_center .menu_3 .box td table.sub td a.current{ background-color:#078cd5;border:solid 1px #0c7dc6;border-left:none;border-right:none;font-weight:normal;}

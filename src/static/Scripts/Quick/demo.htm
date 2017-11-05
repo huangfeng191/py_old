@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Skins/Default/skin.css" rel="stylesheet" type="text/css" />
+	<link href="../autocomplete/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+	<link href="../jquery-easyui-1.3.5/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+	<script src="../jquery.min.js" type="text/javascript"></script>
+	<script src="../jquery-easyui-1.3.5/jquery.easyui.min.js" type="text/javascript"></script>
+	<script src="../template.min.js" type="text/javascript"></script>
+	<script src="../autocomplete/jquery.autocomplete.min.js" type="text/javascript"></script>
+	<script src="../My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+	<script src="../Lib.js" type="text/javascript"></script>
+	<script src="Quick.js" type="text/javascript"></script>
+</head>
+<body>
+	<div>
+		<div style="width: 60%; float: left;">
+			<span class="qtext" label="标签:" field="F1">
+			</span>
+			<span class="qtext" label="标签:" field="F2" value="v2">
+			</span>
+			<span class="qcombox" label="标签:" field="F3" value="v3">
+			</span>
+			<span class="qcombox" label="标签:" field="F4">
+			</span>
+			<span class="qnumberrange" label="标签:" field="F5">
+			</span>
+			<span class="qnumber" label="数值:" field="F6">
+			</span>
+			<span class="qauto" label="代码:">
+			</span>
+			<span class="qdate" format="yyyy-MM">
+			</span>
+			<span class="qdaterange" format="yyyy-MM-dd HH:mm">
+			</span>
+		</div>
+		<div style="width: 40%; float: right;">
+			<span class="qtext" label="标签:" field="F1">
+			</span>
+			<span class="qtext" label="标签:" field="F2" value="v2">
+			</span>
+			<span class="qcombox" label="标签:" field="F3" value="v3">
+			</span>
+			<span class="qcombox" label="标签:" field="F4">
+			</span>
+			<span class="qnumberrange" label="标签:" field="F5">
+			</span>
+			<span class="qnumber" label="数值:" field="F6">
+			</span>
+			<span class="qauto" label="代码:">
+			</span>
+			<span class="qdate" format="yyyy-MM">
+			</span>
+			<span class="qdaterange" format="yyyy-MM-dd HH:mm">
+			</span>
+			<input type="button" value="button" />
+		</div>
+	</div>
+</body>
+</html>
+<script name="QuickQuery" type="text/javascript">
+jQuery(document).ready(function()
+{
+	
+
+	jQuery(".qtext").QText({ Value: "value" });
+	//jQuery("").QSelect({ Label: "", Field: "", Value: "", Items: "" });
+
+	jQuery(".qauto").QAutoComplete({ Label: "Code:", Field: "Code", Items: ["01", "02", "03"] });
+
+	jQuery(".qdate").QDatetime({ Field: "Date", Label: "日期：", Format: "yyyy-MM-dd HH:mm:ss", Value: "2014-09" });
+
+	jQuery(".qnumber").QNumber({});
+
+	jQuery(".qnumberrange").QNumberRange({ Seperator: "至" });
+
+	jQuery(".qcombox").QCombox({ Editable: false, Items: [{ Id: "01", Name: "n01" }, { Id: "02", Name: "n02" }, { Id: "03", Name: "n03"}] });
+
+	jQuery(".qdaterange").QDatetimeRange({ Label: "起止时间", Seperator: "至", Field: "DR" });
+
+	//	setTimeout(function()
+	//	{
+	//		jQuery(".qcombox").QCombox().Set("3");
+	//	}, 3000);
+
+
+
+	jQuery("input[type=button]").click(function()
+	{
+
+		alert(jQuery("body>div").height());
+		alert(Proxy.Json.ToString(jQuery(".quick").Quick().Get()));
+	});
+});
+</script>

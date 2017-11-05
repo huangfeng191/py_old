@@ -19,7 +19,7 @@ render_jsb = render_mako(directories=['test'], input_encoding='utf-8', output_en
 @path("/")
 class Index:
     def __init__(self):
-        self.index = ctx.get("web", "index", "/stock/index.html?tp=1")
+        self.index = ctx.get("web", "index", "/stock/admin.html")
 
     def GET(self, _cid=None, _customer=None, _role=None, *args, **kwArgs):
         index = self.index
