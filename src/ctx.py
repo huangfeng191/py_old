@@ -65,6 +65,7 @@ db_source = {'default':mdb}
 cmdb = get_db("config")
 # stock数据库
 stockdb = get_db("mystock")
+rabbitdb = get_db("rabbit")
 # 结点前缀
 ND_PREFIX = get("sys","node_prefix","")
 
