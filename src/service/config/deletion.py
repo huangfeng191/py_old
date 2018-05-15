@@ -3,7 +3,7 @@
 # Author  : sys
 # Date    : 2014-10-13
 # Version : 1.0
-
+# desc 删除的 时候，记录日志
 import ctx
 import misc
 import time

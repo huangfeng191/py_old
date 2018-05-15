@@ -129,13 +129,6 @@ def _cookie_name():
 import modules
 
 
-# 暂时没用
-def preheat(app, session):
-    def session_hook():
-        web.ctx.session = session
-        web.header("Content-Type", "text/html; charset=UTF-8", unique=True)
-
-    app.add_processor(web.loadhook(session_hook))
 
 
 def main(argv=None):
@@ -153,9 +146,6 @@ def main(argv=None):
     app = web.application(urls, globals())
     app.notfound = lambda: web.seeother("/static/notfound.html")
 
-    # session = web.session.Session(app, misc.mongos.MongoStore(ctx.sssdb,'sessions'))
-    #
-    # preheat(app,session)
-
+    
 
     app.run()

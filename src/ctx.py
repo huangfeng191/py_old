@@ -73,3 +73,6 @@ ND_PREFIX = get("sys","node_prefix","")
 customs = get("sys", "customs", [])
 
 tltoken=get("tonglian", "token", [])
+
+
+# 上面是mongodb

@@ -1,0 +1,7 @@
+
+mako: 模板
+requests: url请求
+  bs4
+web： web框架
+PlatLib：库
+redis:数据库连接库      

@@ -13,6 +13,9 @@ import ctx
 LEVEL_USER  = 1
 LEVEL_ADMIN = 8
 
+# 2018-05-04
+import service
+
 # mongodb 添加索引
 def indexing(db=None, *indexes):
 
@@ -31,19 +34,28 @@ def indexing(db=None, *indexes):
 
         name = pymongo.helpers._gen_index_name(idx)
 
-        # if not ctx.rdb.sismember("%s:indexes" % (ctx.DB_PREFIX, ) , db.full_name + ":" + name):
-        #
-        #   now = time.time()
-        #   logging.debug("Ensuring index %s->%s" % (repr(idx),repr(db)))
-        #
-        #   if name not in _indexes: db.ensure_index(idx, **options)
-        #
-        #   if time.time() - now > 1.0:
-        #     logging.info("Ensured index %s->%s" % (repr(idx),repr(db)))
-        #
-        #   ctx.rdb.sadd("%s:indexes" % (ctx.DB_PREFIX, ) , db.full_name + ":" + name)
-
     return lambda func: func
+
+
+
+def deletion(typo):
+
+  def _decor(func):
+
+    def __decor(_id, *args, **kwArgs):
+
+      if _id:
+
+        obj = func(_id, *args, **kwArgs)
+        if obj:
+          service.config.deletion.upsert(typo, _id, obj)
+        return obj;
+
+      return None
+
+    return __decor
+  return _decor
+
 
 class event(object):
 

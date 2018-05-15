@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module  : 分布式服务组件
-# Author  : Lijiajie
+# Author  :
 # Date    : 2016-02-21
 # Version : 1.0
 
