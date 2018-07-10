@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # datetime是Python处理日期和时间的标准库。
 import datetime
-import time
+import testTime
 dNow=datetime.datetime.now() 
 # datetime.now()返回当前日期和时间，其类型是datetime。
 print dNow
