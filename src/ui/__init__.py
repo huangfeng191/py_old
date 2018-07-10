@@ -129,6 +129,8 @@ def _cookie_name():
 import modules
 
 
+import misc.mongos
+
 
 
 def main(argv=None):

@@ -11,12 +11,12 @@ import hashlib
 
 _db = ctx.cmdb['deletion']
 
-@misc.indexing(_db, 
-    [('id', 1)], 
-    [('changed',-1),('typo', 1)]
-)
+# @misc.indexing(_db,
+#     [('id', 1)],
+#     [('changed',-1),('typo', 1)]
+# )
 def __db():
-  
+
     '@rtype : pymongo.Collection'
     return _db;
 
