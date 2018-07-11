@@ -5,7 +5,7 @@
 # Version : 1.0
 import logging
 import time
-import pymongo.helpers
+
 import web
 import ctx
 
@@ -13,8 +13,7 @@ import ctx
 LEVEL_USER  = 1
 LEVEL_ADMIN = 8
 
-# 2018-05-04
-import service
+import pymongo.helpers
 
 # mongodb 添加索引
 def indexing(db=None, *indexes):
@@ -132,3 +131,6 @@ def privileged(level):
         return __privileged
 
     return _privileged
+
+# 2018-05-04
+import service
