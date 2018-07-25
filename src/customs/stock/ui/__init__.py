@@ -13,7 +13,7 @@ import ctx
 ####################### in use
 import service.comm as comm
 import second
-
+import common
 # 设备管理
 @path("/stock/equipmanage.html")
 class StockEquipManage:

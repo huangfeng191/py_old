@@ -1,20 +1,29 @@
+# -*- coding: utf-8 -*-
+# Module  :
+# Author  : fengfeng
+# Date    : 2018-07-25
+# Version : 1.0
 
 from ui import path, wildcard, CRUD,web
 from customs.stock.service import *
+from service.biz import user,customer
 import web
 import json
 from misc import utils
 @path("/ctx.js")
-class JsbDids:
+class Ctx:
 
 
     def GET(self, _customer=None, _cid=None, _role=None, *args, **kwArgs):
 
         web.header("Content-Type", "text/javascript", True)
-        user=utils.get_session_value('user')
+        # user=utils.get_session_value('user')
+        u=user.get({"acc":"sandy"})
+        c = customer.get({"code": "uniscada"})
         GCtx={}
 
-        GCtx["user"]=user
+        GCtx["user"]=u
+        GCtx["customer"]=c
         return "var GCtx = %s; " % json.dumps(GCtx)
 
 

@@ -4,181 +4,192 @@ Author Wujj
 Date : 2018/07/25
 -->
 <style>
-	#customer {
-		/*    width: 180px;
+  #customer {
+    /*    width: 180px;
         height: 100%;
         float: left;
         margin-left: 6px !important;
         overflow-x: auto; */
-	}
+  }
 
-	#interfaceconfig {
-		height: 100%;
-		/*margin-left:190px;*/
-
-	}
+  #interfaceconfig {
+    height: 100%;
+    /*margin-left:190px;*/
+  }
 </style>
 <div style="width:100%;height: 100%;">
-	<div id='customer' class='customer'>
-		&nbsp;
-	</div>
-	<div id='interfaceconfig'>
-		&nbsp;
-	</div>
+  <div id='customer' class='customer'>
+    &nbsp;
+  </div>
+  <div id='interfaceconfig'>
+    &nbsp;
+  </div>
 </div>
 <script type="text/javascript">
-    var PCRUD;
-    var Divisions = [];
-    var Cid;
-    var Cnm;
-    var Uid = GCtx.user._id;
-    var Pf = null;
-    var btnNn = "";
-    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
-    var Title1 = "";
+  var PCRUD;
+  var Divisions = [];
+  var Cid;
+  var Cnm;
+  var Uid = GCtx.user._id;
+  var Pf = null;
+  var btnNn = "";
 
-    var cols = [
+  var Title1 = "";
+
+  var cols = [
+    [
+      { "field": "method", "title": "方法名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "param", "title": "方法参数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "sn", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "desc", "title": "备注", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "colInp", "title": "列配置", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+    ]
+  ];
+
+
+  var inp1 = [
+    [{ "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [{ "Field": "nm", "Name": "记录名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [{ "Field": "desc", "Name": "备注", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "colInp", "Name": "列配置", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+
+  ];
+  var props = [];
+
+  var quics = [];
+  var btnNm = "";
+
+  function init() {
+
+    PCRUD = jQuery.CRUD('#interfaceconfig', {
+      View: {
+        AfterRender: function() {
+          this.Button.Hide(["filter", "order"]);
+          //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
+          //        jQuery("button[command=audit]").click(
+          //           function () {
+
+
+          //           }
+          //        );
+
+
+        },
+        Form: {
+          AfterEnable: function() {
+
+          },
+          AfterDisable: function() {
+
+          },
+          AfterSet: function(Record, IsNew) { // 点击新建后
+            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+            //PCRUD.View.Form.Enable([]);
+            if (!IsNew) {
+              //FormContainer.find(".button_container").css("display", "none");
+            } else {
+
+            }
+          },
+          BeforeGet: function(Record, u, Valids) {},
+          AfterGet: function(Record, u, Valids) {
+
+          },
+          BeforeSet: function(Record, IsNew) {
+
+          }
+        }
+      },
+      Behavior: {
+        BeforeQuery: function(Filters, Orders) {
+          if (Cid) {
+            // Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+
+
+            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+          
+            return true;
+          } else {
+            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+            return false;
+          }
+          debugger
+        
+        },
+        AfterQuery: function(Result) {
+            debugger
+         
+          return true;
+        },
+        BeforeSave: function(Record, Callback) {
+          if (Cid) {
+            Record.cid = Cid;
+            Record.cnm = Cnm;
+          }
+
+          return true;
+        },
+        AfterSave: function(Result) {
+          //  PCRUD.View.Grid.Query();
+          return true;
+        },
+        Grid: {
+          //   RowDblClick: function (Row) {
+
+          // }
+        }
+      },
+      Service: {
+        Path: "stock/",
+        Target: "interfaceconfig",
+        Base: "../"
+      }
+    }, {
+
+      "Bindings": GBindings,
+      "FrozenColumns": [
         []
-    ];
-
-
-    var inp1 = [
-        []
-
-    ];
-    var props = [];
-
-    var quics = [];
-    var btnNm = "";
-
-    function init() {
-
-        PCRUD = jQuery.CRUD('#interfaceconfig',
-            {
-                View: {
-                    AfterRender: function () {
-                        this.Button.Hide(["filter", "order"]);
-                        //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-                        //        jQuery("button[command=audit]").click(
-                        //           function () {
-
-
-                        //           }
-                        //        );
-
-
-                    },
-                    Form: {
-                        AfterEnable: function () {
-
-                        },
-                        AfterDisable: function () {
-
-                        },
-                        AfterSet: function (Record, IsNew) {  // 点击新建后
-                            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
-                            //PCRUD.View.Form.Enable([]);
-                            if (!IsNew) {
-                                //FormContainer.find(".button_container").css("display", "none");
-                            } else {
-
-                            }
-                        },
-                        BeforeGet: function (Record, u, Valids) {
-                        },
-                        AfterGet: function (Record, u, Valids) {
-
-                        },
-                        BeforeSet: function (Record, IsNew) {
-
-                        }
-                    }
-                },
-                Behavior: {
-                    BeforeQuery: function (Filters, Orders) {
-                        if (Cid) {
-                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
-
-
-                            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
-                            Loading.Show();
-                            return true;
-                        }
-                        else {
-                            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
-                            return false;
-                        }
-                        Loading.Show();
-                    },
-                    AfterQuery: function (Result) {
-                        Loading.Hide();
-                        return true;
-                    },
-                    BeforeSave: function (Record, Callback) {
-                        if (Cid) {
-                            Record.cid = Cid;
-                            Record.cnm = Cnm;
-                        }
-
-                        return true;
-                    },
-                    AfterSave: function (Result) {
-                        //  PCRUD.View.Grid.Query();
-                        return true;
-                    },
-                    Grid: {
-                        //   RowDblClick: function (Row) {
-
-                        // }
-                    }
-                },
-                Service: {
-                    Path: "stock/",
-                    Target: "interfaceconfig",
-                    Base: "../"
-                }
-            },
-            {
-
-                "Bindings": GBindings,
-                "FrozenColumns": [[]],
-                "Columns": cols,
-                "Form": [
-                    {
-                        "Title": Title1,
-                        "Inputs": inp1
-                    }
-
-
-                ],
-                "Properties": props,
-                "Quicks": quics,
-                "Rights": "CUD",
-                "Target": "interfaceconfig",
-                "Title": "",
-                "ExportFmt": true,
-                Layout: "POP" ? "POP" : "POP",
-                ExportName: ""
-            });
-
-
-    }
-
-    jQuery(document).ready(function () {
-        if (window["GCtx"] && GCtx.customer) {
-            //特定客户
-            jQuery("#customer").hide();
-            Cid = GCtx.customer._id;
-            Cnm = GCtx.customer.nm;
-            Pf = GCtx.customer.pf || "";
-            //  $("#interfaceconfig").width($(window).width());
-        } else {
-            alert("请刷新");
+      ],
+      "Columns": cols,
+      "Form": [{
+          "Title": Title1,
+          "Inputs": inp1
         }
 
-        init();
 
+      ],
+      "Properties": props,
+      "Quicks": quics,
+      "Rights": "CUD",
+      "Target": "interfaceconfig",
+      "Title": "",
+      "ExportFmt": true,
+      Layout: "POP" ? "POP" : "POP",
+      ExportName: ""
     });
 
 
+  }
+
+  jQuery(document).ready(function() {
+    if (window["GCtx"] && GCtx.customer) {
+      //特定客户
+      jQuery("#customer").hide();
+      Cid = GCtx.customer._id;
+      Cnm = GCtx.customer.nm;
+      Pf = GCtx.customer.pf || "";
+      //  $("#interfaceconfig").width($(window).width());
+    } else {
+      alert("请刷新");
+    }
+
+    init();
+
+  });
 </script>
