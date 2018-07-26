@@ -51,11 +51,12 @@ jQuery.extend(jQuery.CRUD,
 	                </tr></table>
 	                */
 	            }));
-
+debugger
 	            //Form
 	            jQuery.ImplantTemplate("crud_temp_form", jQuery.GetTemplate(function ()
 	            {
-	                /*
+
+					/*
 	                {{each Form as Group g}}
 	                <div group="{{Group.Code}}" class="group">
 	                {{if Form.length > 1}}<div class="title"><span>{{Group.Title}}</span></div>{{/if}}
@@ -120,7 +121,18 @@ jQuery.extend(jQuery.CRUD,
 	                </table></div>
 	                {{/each}}
 	                */
-	            }));
+
+				
+				}));
+					
+					/* 
+					 {{each Form as Group g}}
+	                <div group="{{Group.Code}}" class="group">
+					{{if Form.length > 1}}<div class="title"><span>{{Group.Title}}</span></div>{{/if}}
+					</div>
+					 {{/each}}
+					*/
+				
 	        }
 
 	        var CRUD = this;
@@ -681,7 +693,7 @@ jQuery.extend(jQuery.CRUD,
                                     Orders.Clear = OrderClear;
                                     State = CRUD.Behavior.BeforeQuery(Filters, Orders, Params.rows, Params.page);
                                 }
-                               
+								
                                 if (State === true)
                                 {
                                     var Pars =
@@ -703,11 +715,12 @@ jQuery.extend(jQuery.CRUD,
                                     {
                                         CRUD.View.Button.Normal("order");
                                     }
-
+									
                                     CRUD.Service.Query(Pars, function (Result)
                                     {
                                         if (Result.Code == 0)
                                         {
+											
                                             var State = true;
                                             V.Button.Normal(["insert", "upsert", "update", "delete"]);
                                             V.Button.Disable(["update", "delete", "confirm", "cancel"]);
@@ -1782,6 +1795,7 @@ jQuery.extend(jQuery.CRUD,
                     },
                     Set: function (Command)
                     {
+						debugger
                         V.FormContainer.find(".sign_red").removeClass("sign_red");
                         V.FormContainer.find(".sign_yellow").removeClass("sign_yellow");
 
@@ -2894,8 +2908,8 @@ jQuery.extend(jQuery.CRUD,
 			        {
 			            /*
 			            <div class="form_container">
-			            <div class="group_container">
-			            {{include "crud_temp_form"}}
+						<div class="group_container">
+						  {{include "crud_temp_form"}}
 			            </div>
 			            <div class="button_container">
 			            <button command="confirm" class="confirm" type="button">确定</button>
@@ -2903,7 +2917,10 @@ jQuery.extend(jQuery.CRUD,
 			            </div>
 			            </div>
 			            */
-			        }), { escape: false })(V.Object));
+					}), { escape: false })(V.Object));
+					
+				
+
 			        if (Container.prop("scrollHeight") > Container.prop("clientHeight"))
 			        {
 			            Container.css("overflow", "auto");

@@ -4,8 +4,8 @@
 # Date    : 2014-05-18
 # Version : 1.0
 
-class HDScadaException(Exception):
+class RetException(Exception):
     
     code = 60000
-    msg = "common scada exception"
+    msg = "返回值出错"
     
