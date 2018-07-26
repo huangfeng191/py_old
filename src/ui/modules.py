@@ -10,7 +10,7 @@ from ui import path
 import ctx
 import web
 from web.contrib.template import render_mako
-
+import urllib
 
 # render_jsb = render_mako(directories=['templates/jsb','templates/page/jsb','templates/biz','templates'], input_encoding='utf-8', output_encoding='utf-8',)
 render_jsb = render_mako(directories=['test'], input_encoding='utf-8', output_encoding='utf-8',)
@@ -51,3 +51,24 @@ for o in ctx.customs:
         importlib.import_module("customs.%s.ui" % o)
     except Exception, e:
         logging.error(e)
+
+
+@path("/export")
+class DataExport:
+    def POST(self):
+
+        params = web.input(exportContent=None, FileName=None)
+
+        web.header('Content-Type', 'application/vnd.ms-excel')
+        # web.header('Transfer-Encoding','chunked')
+        fn = urllib.unquote(params["FileName"].encode("UTF-8"))
+
+        if 'MSIE' in web.ctx.environ['HTTP_USER_AGENT']:
+            fn = fn.decode('UTF-8').encode('GBK')
+        elif 'rv:1' in web.ctx.environ['HTTP_USER_AGENT']:
+            fn = fn.decode('UTF-8').encode('GBK')
+
+        web.header('Content-Disposition', 'attachment;filename=' + fn)
+
+        return "<html><head><meta http-equiv='content-type' content='application/ms-excel; charset=UTF-8'/></head><body>" + \
+               params["exportContent"] + "</body></html>"
