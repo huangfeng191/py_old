@@ -9,11 +9,9 @@ import logging
 from ui import path
 import ctx
 import web
-from web.contrib.template import render_mako
 import urllib
 
-# render_jsb = render_mako(directories=['templates/jsb','templates/page/jsb','templates/biz','templates'], input_encoding='utf-8', output_encoding='utf-8',)
-render_jsb = render_mako(directories=['test'], input_encoding='utf-8', output_encoding='utf-8',)
+
 
 # 跳转根目录
 @path("/")
@@ -30,17 +28,7 @@ class Index:
 class StockIndex:
     def GET(self, _cid=None, *args, **kwargs):
         return "Hello world!"
-@path("/stock/index1.html")
-class StockIndex1:
-    def GET(self, _cid=None, *args, **kwargs):
-        print 1
-        return render_jsb["temp"]()
 
-@path("/stock/index2.html")
-class StockIndex2:
-    def GET(self, _cid=None, *args, **kwargs):
-        print 1
-        return render_jsb.temp()
 
 # 动态导入模块
 import importlib
@@ -51,6 +39,8 @@ for o in ctx.customs:
         importlib.import_module("customs.%s.ui" % o)
     except Exception, e:
         logging.error(e)
+
+
 
 # html 格式导出
 @path("/export")
