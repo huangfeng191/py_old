@@ -35,7 +35,7 @@ Date : 2018/07/29
   var btnNn = "";
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
-
+  var expnm="";
   var cols = [
     [
       { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
@@ -76,6 +76,7 @@ Date : 2018/07/29
 
     PCRUD = jQuery.CRUD('#interfacedata', {
       View: {
+        GridOptions: { pageSize: 30 },
         AfterRender: function() {
           this.Button.Hide(["filter", "order"]);
           //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
@@ -103,6 +104,8 @@ Date : 2018/07/29
             } else {
 
             }
+            var FormContainer = $(".my_dialog") || this.Container;
+            FormContainer.find(".group_container .group").css("overflow-x","hidden");
           },
           BeforeGet: function(Record, u, Valids) {},
           AfterGet: function(Record, u, Valids) {
@@ -174,7 +177,7 @@ Date : 2018/07/29
       "Title": "",
       "ExportFmt": true,
       Layout: "POP" ? "POP" : "POP",
-      ExportName: ""
+      ExportName: expnm
     });
 
 
@@ -194,6 +197,7 @@ Date : 2018/07/29
     interfaceConfigO=getInterfaceConfig({})
     cols[0]=interfaceConfigO.columns;
     inp1=interfaceConfigO.inputsRet;
+    expnm=interfaceConfigO.nm;
 
     init();
 

@@ -35,3 +35,4 @@ class StockAdminCRUD(CRUD):
     def basics(self, record=None, *args, **kwArgs):
         tushare_api.get_stock_basics()
         print 1
+        return "OK"

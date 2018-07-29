@@ -30,6 +30,7 @@ $.po = function (url,data, opts) {
 
 function getInterfaceConfig({table_name="stock_basics"}){
         var retO={
+            nm:"",
             columns:[],
             inputs:[],
             inputsRet:[[]]
@@ -41,13 +42,14 @@ function getInterfaceConfig({table_name="stock_basics"}){
             if(json.rows[0].colInp){
                 let tempStr=json.rows[0].colInp;
                 temp2a=tempStr.split("\n");
+                retO.nm=json.rows[0].nm
                 temp2a=temp2a.map(function(v){return v.split(",")})
                 temp2a.forEach(element => {
                     var sn=element[0]||""
                     var nm=element[1]||""
                     
                     var templateCols=`
-                        { "field": "${sn}","title":"${nm}","width": 100}
+                        { "field": "${sn}","title":"${nm}","width": 100, "halign": "center"}
                     `
                     var templateInputs=`
                     { "Field": "${sn}", "Name": "${nm}" }

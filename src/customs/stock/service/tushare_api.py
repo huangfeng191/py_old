@@ -11,13 +11,17 @@ import ctx
 from service import comm
 stock_basics = comm.CRUD(ctx.tusharedb, "stock_basics", [("cid", 1)])
 
-
-
+import json
+import time
 
 import tushare as ts
 
 
 def get_stock_basics():
-    print 1
-    l=ts.get_stock_basics()
-    print 2
+    t=time.time()
+    df=ts.get_stock_basics()
+    l=json.loads(df.to_json(orient='records'))
+    for r in l:
+        stock_basics.upsert(**r)
+    print time.time()-t
+    return "OK"
