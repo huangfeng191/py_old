@@ -39,7 +39,7 @@ Date : 2018/07/25
   var cols = [
     [
       { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
-      { "field": "sn", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
+      { "field": "table_nm", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
       { "field": "method", "title": "方法名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
       { "field": "param", "title": "方法参数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
       { "field": "colInp", "title": "列配置", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 460, },
@@ -51,7 +51,7 @@ Date : 2018/07/25
   var inp1 = [
     [
       { "Field": "nm", "Name": "记录名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "table_nm", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
     ],
     [
       { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
@@ -157,7 +157,8 @@ Date : 2018/07/25
       Service: {
         Path: "stock/",
         Target: "interfaceconfig",
-        Base: "../"
+        Base: "../",
+      
       }
     }, {
 

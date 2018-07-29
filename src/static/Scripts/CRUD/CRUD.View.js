@@ -51,7 +51,7 @@ jQuery.extend(jQuery.CRUD,
 	                </tr></table>
 	                */
 	            }));
-debugger
+
 	            //Form
 	            jQuery.ImplantTemplate("crud_temp_form", jQuery.GetTemplate(function ()
 	            {
@@ -1795,7 +1795,7 @@ debugger
                     },
                     Set: function (Command)
                     {
-						debugger
+						
                         V.FormContainer.find(".sign_red").removeClass("sign_red");
                         V.FormContainer.find(".sign_yellow").removeClass("sign_yellow");
 

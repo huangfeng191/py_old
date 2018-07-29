@@ -9,7 +9,7 @@
 
 import ctx
 from service import comm
-stock_basics = comm.CRUD(ctx.cmdb, "stock_basics", [("cid", 1)])
+stock_basics = comm.CRUD(ctx.tusharedb, "stock_basics", [("cid", 1)])
 
 
 

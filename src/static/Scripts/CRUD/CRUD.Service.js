@@ -3,6 +3,10 @@
         Service : function(Options, CView) {
             var CRUD = this;
             var Records = [];
+            var paramStr=""
+            if(Options.paramStr){
+                paramStr="?"+Options.paramStr
+            }
             var S = {
                 Core : CRUD,
                 Base : Options.Base || "",
@@ -19,7 +23,7 @@
                             path : S.Path,
                             target : S.Target
                         }),
-                        url : S.Base + S.Path + S.Target + "/view.json",
+                        url : S.Base + S.Path + S.Target + "/view.json"+paramStr,
                         contentType : "application/json",
                         dataType : "json",
                         success : function(json) {
@@ -38,7 +42,7 @@
                     jQuery.ajax({
                         type : "POST",
                         data : JSON.stringify(Pars),
-                        url : S.Base + S.Path + S.Target + "/insert.json",
+                        url : S.Base + S.Path + S.Target + "/insert.json"+paramStr,
                         contentType : "application/json",
                         dataType : "json",
                         success : function(json) {
@@ -54,7 +58,7 @@
                         data : JSON.stringify({
                             record : Record
                         }),
-                        url : S.Base + S.Path + S.Target + "/update.json",
+                        url : S.Base + S.Path + S.Target + "/update.json"+paramStr,
                         contentType : "application/json",
                         dataType : "json",
                         success : function(json) {
@@ -70,7 +74,7 @@
                         data : JSON.stringify({
                             record : Record
                         }),
-                        url : S.Base + S.Path + S.Target + "/delete.json",
+                        url : S.Base + S.Path + S.Target + "/delete.json"+paramStr,
                         contentType : "application/json",
                         dataType : "json",
                         success : function(json) {
@@ -89,7 +93,7 @@
                             size : Arguments.Size,
                             index : Arguments.Index
                         }),
-                        url : S.Base + S.Path + S.Target + "/query.json",
+                        url : S.Base + S.Path + S.Target + "/query.json"+paramStr,
                         contentType : "application/json",
                         dataType : "json",
                         success : function(json) {
