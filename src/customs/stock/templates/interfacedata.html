@@ -82,7 +82,10 @@ Date : 2018/07/29
         GridOptions: { pageSize: 30 },
         AfterRender: function() {
           this.Button.Hide(["filter", "order"]);
-        
+          $("span[qfield]").keydown(function (event) {
+            if (event.which == 13)
+            $("[command=query]").click();
+            });
 
 
         },
