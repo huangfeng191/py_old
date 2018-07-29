@@ -29,9 +29,14 @@ class StockAdminCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
         if act == 'basics':
             return self.basics(*args, **kwArgs)
+        if act == 'getInfo':
+            return self.getInfo(*args, **kwArgs)
         else:
             return CRUD.action(self, act, *args, **kwArgs)
-
+    def getInfo(self, table_nm=None, *args, **kwArgs):
+        tushare_api.getInfo(table_nm)
+        print 1
+        return "OK"
     def basics(self, record=None, *args, **kwArgs):
         tushare_api.get_stock_basics()
         print 1

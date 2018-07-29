@@ -24,40 +24,92 @@ $.po = function (url,data, opts) {
      });
  }
 
+function getBindConfig(){
+    let p=co($.po("/stock/interfaceconfig/query.json",{ query: {},order:[{"Field":"w", "Type": false}] },{"async":false})).done(function(json){
+        if(json.rows&&json.rows.length>0){
+            let records=[];  
+            json.rows.forEach(element => {
+                records.push({"name":element.nm,"value":element.table_nm})
+            });
+            GBindings.push({
+                Code: 'StockConfig',
+                Records: records
+               });
+        }
+    });
+  
+}
 
 
 
-
-function getInterfaceConfig({table_name="stock_basics"}){
+function getInterfaceConfig({table_nm}){
         var retO={
             nm:"",
+            oOne:{},
             columns:[],
             inputs:[],
+            orders:[],
+            quicks:[],
             inputsRet:[[]]
         };
 
-      var p= co($.po("/stock/interfaceconfig/query.json",{ query: {'table_nm':table_name} },{"async":false})).done(function(json)
+      var p= co($.po("/stock/interfaceconfig/query.json",{ query: {'table_nm':table_nm} },{"async":false})).done(function(json)
       {
           if(json.rows&&json.rows.length>0){
             if(json.rows[0].colInp){
                 let tempStr=json.rows[0].colInp;
                 temp2a=tempStr.split("\n");
                 retO.nm=json.rows[0].nm
-                temp2a=temp2a.map(function(v){return v.split(",")})
+                temp2a=temp2a.map(function(v){
+                    if(v.split(",").length>1){
+                        return v.split(",")
+                    }else{
+                        return v.split("：")
+                    }
+                })
                 temp2a.forEach(element => {
                     var sn=element[0]||""
                     var nm=element[1]||""
-                    
+                    retO["oOne"][sn]={sn,nm}
                     var templateCols=`
                         { "field": "${sn}","title":"${nm}","width": 100, "halign": "center"}
                     `
                     var templateInputs=`
                     { "Field": "${sn}", "Name": "${nm}" }
                     `
-
                     retO.columns.push(JSON.parse(templateCols))
                     retO.inputs.push(JSON.parse(templateInputs))
                 });
+            }
+            if(json.rows[0].orders){
+                let ordersStr=json.rows[0].orders;
+                aOrdersStr=ordersStr.split(",")
+                aOrdersStr.forEach(element => {
+                    let sn=element||""
+                    var templateOrder=`
+                    { "Field": "${sn}", "Type": false }
+                   `
+                   retO.orders.push(JSON.parse(templateOrder))
+                });
+               
+            };
+            if(json.rows[0].quicks){
+                let quicksStr=json.rows[0].quicks;
+                aQuicksStr=quicksStr.split(",")
+                aQuicksStr.forEach(element => {
+                    let sn=element||""
+                    
+                 
+                   if(retO["oOne"][sn]){
+                       let nm=retO["oOne"][sn].nm
+                       var templateQuicks=`
+                       { "Field": "${sn}", "Label": "${nm}",  "Type"   : "QText", "Width": 70 }
+                      `
+                    retO.quicks.push(JSON.parse(templateQuicks))
+                   }
+                   
+                });
+               
             }
           }
       })

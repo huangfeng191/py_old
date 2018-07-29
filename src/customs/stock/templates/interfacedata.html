@@ -35,7 +35,7 @@ Date : 2018/07/29
   var btnNn = "";
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
-  var expnm="";
+  var expnm = "";
   var cols = [
     [
       { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
@@ -69,7 +69,10 @@ Date : 2018/07/29
   ];
   var props = [];
 
-  var quics = [];
+  var quicks = [
+  ];
+  var orders = [
+  ];
   var btnNm = "";
 
   function init() {
@@ -79,13 +82,7 @@ Date : 2018/07/29
         GridOptions: { pageSize: 30 },
         AfterRender: function() {
           this.Button.Hide(["filter", "order"]);
-          //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-          //        jQuery("button[command=audit]").click(
-          //           function () {
-
-
-          //           }
-          //        );
+        
 
 
         },
@@ -105,7 +102,7 @@ Date : 2018/07/29
 
             }
             var FormContainer = $(".my_dialog") || this.Container;
-            FormContainer.find(".group_container .group").css("overflow-x","hidden");
+            FormContainer.find(".group_container .group").css("overflow-x", "hidden");
           },
           BeforeGet: function(Record, u, Valids) {},
           AfterGet: function(Record, u, Valids) {
@@ -118,6 +115,11 @@ Date : 2018/07/29
       },
       Behavior: {
         BeforeQuery: function(Filters, Orders) {
+          if(orders){
+            orders.forEach(element => {
+              Orders.Merge([element]);
+            });
+          }
           if (Cid) {
             PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
             Loading.Show();
@@ -154,7 +156,7 @@ Date : 2018/07/29
         Path: "stock/",
         Target: "interfacedata",
         Base: "../",
-        "paramStr":    getUrlParam("table_nm")?"table_nm="+getUrlParam("table_nm"):'' 
+        "paramStr": getUrlParam("table_nm") ? "table_nm=" + getUrlParam("table_nm") : ''
       }
     }, {
 
@@ -171,7 +173,7 @@ Date : 2018/07/29
 
       ],
       "Properties": props,
-      "Quicks": quics,
+      "Quicks": quicks,
       "Rights": "CUD",
       "Target": "interfacedata",
       "Title": "",
@@ -194,10 +196,13 @@ Date : 2018/07/29
     } else {
       alert("请刷新");
     }
-    interfaceConfigO=getInterfaceConfig({})
-    cols[0]=interfaceConfigO.columns;
-    inp1=interfaceConfigO.inputsRet;
-    expnm=interfaceConfigO.nm;
+    debugger
+    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"stock_basics"})
+    cols[0] = interfaceConfigO.columns;
+    inp1 = interfaceConfigO.inputsRet;
+    expnm = interfaceConfigO.nm;
+    orders = interfaceConfigO.orders;
+    quicks = interfaceConfigO.quicks;
 
     init();
 

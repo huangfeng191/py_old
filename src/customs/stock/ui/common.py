@@ -5,7 +5,7 @@
 # Version : 1.0
 
 from ui import path, wildcard, CRUD,web
-from customs.stock.service import *
+from customs.stock.service.tushare_api import *
 from service.biz import user,customer
 import web
 import json

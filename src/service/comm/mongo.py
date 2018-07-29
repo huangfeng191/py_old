@@ -115,24 +115,36 @@ class MongoCRUD(icrud.ICRUD):
         @param module - 注入目标
         @parma field  - 注入目标字段
         @param id_key - 注入参考字段
+        208-07-29 新加
+        @param id_key_def - 注入所取字段，非_id时使用
       '''
 
-    def inject(self, module, field, id_key, deleteCascade=False):
+    def inject(self, module, field, id_key, deleteCascade=False,id_key_def=None):
 
         if self == module:
             logging.warn("Self equals module!")
             return
 
         def inject_on_insert(_id, obj):
-            self.db.update({id_key: _id}, {'$set': {field: obj}}, multi=True)
+            if id_key_def:
+                self.db.update({id_key: obj.get(id_key_def)}, {'$set': {field: obj}}, multi=True)
+            else:
+                self.db.update({id_key: _id}, {'$set': {field: obj}}, multi=True)
 
         def inject_on_update(_id, obj, old):
-            self.db.update({id_key: _id}, {'$set': {field: obj}}, multi=True)
+            if id_key_def:
+                self.db.update({id_key: obj.get(id_key_def)}, {'$set': {field: obj}}, multi=True)
+            else:
+                self.db.update({id_key: _id}, {'$set': {field: obj}}, multi=True)
 
         def inject_on_delete(_id, obj):
-
-            for o in self.items(query={id_key: _id}):
-                self.delete(o['_id'])
+            if id_key_def:
+                if obj.get(id_key_def):
+                    for o in self.items(query={id_key: obj.get(id_key_def)}):
+                        self.delete(o['_id'])
+            else:
+                for o in self.items(query={id_key: _id}):
+                    self.delete(o['_id'])
 
         def self_inject_on_upsert(_id, obj, old):
 
@@ -140,7 +152,11 @@ class MongoCRUD(icrud.ICRUD):
                 return
 
             if obj[id_key]:
-                self.db.update({'_id': _id}, {'$set': {field: module.get(obj[id_key])}})
+                if id_key_def:
+                    self.db.update({id_key_def: obj[id_key]}, {'$set': {field: module.get({id_key_def:obj[id_key]})}})
+                else:
+                    self.db.update({'_id': _id}, {'$set': {field: module.get(obj[id_key])}})
+
 
         module.on_insert += inject_on_insert;
         module.on_update += inject_on_update;
