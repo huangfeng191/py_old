@@ -179,7 +179,7 @@ def getTMFromStr(ss,fmt= "%Y-%m-%d %H:%M:%S"):
     timeArray = time.strptime(ss, fmt)
     return int(time.mktime(timeArray))
 
-print "test"
+
 def test():
   print u"当前时间时间戳 s 以及毫秒"
   print int(time.time())

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module  : 数据类型系统参数
-# Author  : Liujinxiao
+# Author  :
 # Date    : 2014-8-14
 # Version : 1.0
 
