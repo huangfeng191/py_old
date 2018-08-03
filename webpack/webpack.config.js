@@ -5,13 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     entry: './src/main.js',
     output: {
-        // 打包后文件存放的地方
         path: path.resolve(__dirname, './dist'),
-        // publicPath 并不会对生成文件的路径造成影响，
-        // 主要是对你的页面里面引入的资源的路径做对应的补全，常见的就是css文件里面引入的图片
-        // 换句话说就是引入路径*************
-        // publicPath: './',
+        publicPath: '/dist/',
         filename: 'build.js'
+
     },
     externals: {
 
@@ -125,7 +122,7 @@ if (process.env.NODE_ENV === 'production') {
             // 已某个文件作为模板,在把生成的添加进去
             template:'./indexpro.html'
         }) */
-        //  暂时还不会如何打包
+        //  此设置 是将index.html 移动到目标 output.path 
 
         new HtmlWebpackPlugin({
             filename: 'index.html',
