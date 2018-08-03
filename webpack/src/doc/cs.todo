@@ -1,0 +1,15 @@
+ 
+ 1  单击事件的命名规则：
+
+ changeState
+ changeInfo
+
+ b:button
+ p:input
+
+ Insert
+ Update
+ Query
+ Delete
+ Info
+ State
