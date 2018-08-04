@@ -3,11 +3,18 @@ var webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 //path:编译路径地址， 原来 ./dist
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        app:path.join(__dirname,'src','main.js'),
+        out:path.join(__dirname,'src',"framework",'main.js'),
+    },
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
-        filename: 'build.js'
+    //  导入的资源 
+        // publicPath: '/dist/',
+        // publicPath : 'www.baidu.com'//若有地址，则打包会变为上线地址
+        // filename: 'build.js'
+        // filename: '[name]-[chunkhash].js'
+        filename: '[name].js'
 
     },
     externals: {
@@ -73,6 +80,8 @@ module.exports = {
      */
 
     devServer: {
+        // contentBase: path.join(__dirname, "dist"),
+        // 它指定了服务器资源的根目录，如果不写入contentBase的值，那么contentBase默认是项目的目录。
         historyApiFallback: true,
         noInfo: true,
         proxy: {
@@ -88,7 +97,27 @@ module.exports = {
     },
     devtool: '#eval-source-map'
 }
-
+if(process.env.NODE_ENV==="development"){
+    module.exports.plugins=(module.exports.plugins||[]).concat([
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'index.html',
+            inject: true,
+            // 关联 entry 里面的 key
+            // 就是绑定的js 生成
+            // inject是生成html文件的时候要不要把模板中的的html引入的js也一起带进去;默认是true的;
+            chunks:['app']
+          }),
+        new HtmlWebpackPlugin({
+            filename: 'out.html',
+            template: 'out.html',
+            inject: true,
+            // 关联 entry 里面的 key
+            // 就是绑定的js 生成
+            chunks:['out']
+          }),
+    ])
+}
 if (process.env.NODE_ENV === 'production') {
 
     module.exports.devtool = '#source-map'
@@ -128,7 +157,19 @@ if (process.env.NODE_ENV === 'production') {
             filename: 'index.html',
             template: 'index.html',
             inject: true,
+            hash:true,
+            // 关联 entry 里面的 key
+            // 就是绑定的js 生成
+            // inject是生成html文件的时候要不要把模板中的的html引入的js也一起带进去;默认是true的;
             chunks:['app']
+          }),
+        new HtmlWebpackPlugin({
+            filename: 'out.html',
+            template: 'out.html',
+            inject: true,
+            // 关联 entry 里面的 key
+            // 就是绑定的js 生成
+            chunks:['out']
           }),
 
 

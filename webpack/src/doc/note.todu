@@ -1,0 +1,16 @@
+webpack output is served from /
+404s will fallback to /index.html
+
+未配置路径  会跳转到 index.html,也可以指定页面，比如此项目的out.html
+node 会启动一个服务，比如8084
+模板变更不会触发热加载
+
+
+当前路径 下  ./ 可去掉
+./dist.js == dist.js
+
+
+webpack:
+    html-webpack-plugin
+    
+https://www.cnblogs.com/zzcit/p/6054603.html

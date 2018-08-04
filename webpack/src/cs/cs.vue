@@ -1,6 +1,6 @@
 <template>
 <div id="cs">
-  <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
+  <el-button type="text" @click="dialogVisible = true">点击打开Dialog</el-button>
   <el-button type="text" @click="changeInfo">触发事件</el-button>
   <el-dialog
     title="提示"

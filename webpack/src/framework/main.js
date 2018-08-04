@@ -2,26 +2,26 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import App from './App.vue'
+import Out from './Out.vue'
 import router from './router'
 import $ from 'jquery';
 Vue.use(ElementUI)  
 debugger
 new Vue({
   router,
-  el: '#app',
+  el: '#out',
   data() {
     return {
-       msg: 'Welcome to Your Vue.js App',
+       msg: 'Welcome to Your Vue.js Out',
       "sss": "main_"
     }
   },
 
     /**
-  template: '<App/>',
-  components: { App }
-  与  render: h => h(App) 写法相同
+  template: '<Out/>',
+  components: { Out }
+  与  render: h => h(Out) 写法相同
  */
-  template: "<App :sss='sss'/>",
-  components: { App }
+  template: "<Out/>",
+  components: { Out }
 })
