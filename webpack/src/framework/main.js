@@ -5,7 +5,8 @@ import 'element-ui/lib/theme-default/index.css'
 import Out from './Out.vue'
 import router from './router'
 import $ from 'jquery';
-Vue.use(ElementUI)  
+Vue.use(ElementUI) 
+require("../../static/css/layout.less") 
 debugger
 new Vue({
   router,

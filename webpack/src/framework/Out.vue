@@ -26,6 +26,8 @@ export default {
 </script>
 <style lang="less">
 #out {
+  @head-h:60px;
+  @menu-w:200px;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -33,20 +35,20 @@ export default {
   background-color: turquoise;
   .head {
     background-color: yellow;
-    height: 50px;
+    height: @head-h;
     width: 100%;
   }
   .contant {
-    height: calc(100% - 50px);
+    height: calc(~"100% - "@head-h);
     width: 100%;
     .menu {
-      width: 200px;
+      width: @menu-w;
       height: 100%;
       float: left;
       background-color: gray;
     }
     .detail {
-      width: calc(100% - 200px);
+      width: calc(~"100% - "@menu-w);
       height: 100%;
       float: left;
       background-color: burlywood;
