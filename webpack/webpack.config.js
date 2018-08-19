@@ -19,6 +19,7 @@ module.exports = {
         // publicPath : 'www.baidu.com'//若有地址，则打包会变为上线地址
         // filename: 'build.js'
         // filename: '[name]-[chunkhash].js'
+        // filename: '../../static/webpack/[name].js'
         filename: '[name].js'
 
     },
