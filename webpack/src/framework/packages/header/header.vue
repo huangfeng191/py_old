@@ -1,6 +1,6 @@
 <template>
-    <div class="hd-header">
-      <header :style="{height:headerHeight,width:headerWidth,background:headerBackground}">
+    <div class="ff-header">
+      <header :style="{height:headerHeight,width:headerWidth}">
         <div class="left">
           <slot name="left"></slot>
         </div>
@@ -15,19 +15,15 @@
 </template>
 <script type="text/babel">
   export default {
-    name: 'HdHeader',
+    name: 'ffHeader',
     props: {
       headerHeight:{
         type:String,
-        default:'50px'
+        default:'100%'
       },
       headerWidth:{
         type:String,
         default:'100%'
-      },
-      headerBackground:{
-        type:String,
-        default:'rgb(43, 46, 54)'
       }
     },
     data () {

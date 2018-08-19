@@ -5,6 +5,22 @@ import 'element-ui/lib/theme-default/index.css'
 import App from './App.vue'
 import router from './router'
 import $ from 'jquery';
+
+debugger 
+var s=$.post({
+  url:"/stock/interfaceconfig/query.json",
+  async:false,
+  type:'POST',
+  // data:JSON.stringify(data),
+  contentType:'application/json; charset=utf-8',
+  dataType:'json',
+  success:function(ret){
+    "ok"
+  }
+})
+debugger
+
+
 Vue.use(ElementUI)  
 debugger
 new Vue({

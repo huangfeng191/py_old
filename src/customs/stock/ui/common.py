@@ -10,6 +10,12 @@ from service.biz import user,customer
 import web
 import json
 from misc import utils
+
+from web.contrib.template import render_mako
+render_out = render_mako(directories=[ "templates"], input_encoding="utf-8",
+                       output_encoding="utf-8")
+
+
 @path("/ctx.js")
 class Ctx:
 
@@ -53,3 +59,10 @@ class Bindings:
         ]}
       )
       return "var GBindings = %s; " % json.dumps(bindings)
+
+
+@path("/out/index.html")
+class OutIndex:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_out["webpack/out"]()
+

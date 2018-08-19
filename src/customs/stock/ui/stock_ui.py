@@ -19,6 +19,13 @@ class StockInterfaceconfig:
 class StockInterfaceconfigCRUD(CRUD):
     def __init__(self):
         self.module = stock_interface_config
+    def query(self, count=True, *args, **kwArgs):
+
+       res = CRUD.query(self, count=count, *args, **kwArgs)
+
+       return res
+
+
 
 @path("/stock/interfacedata.html")
 class StockInterfaceData:
@@ -34,3 +41,6 @@ class StockInterfaceDataCRUD(CRUD):
     @bindinterfaceConfig
     def action(self, act, *args, **kwArgs):
          return CRUD.action(self, act, *args, **kwArgs)
+
+
+

@@ -1,6 +1,10 @@
 var path = require('path')
 var webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+var config = require('./config')
+
+
 //path:编译路径地址， 原来 ./dist
 module.exports = {
     entry: {
@@ -8,7 +12,8 @@ module.exports = {
         out:path.join(__dirname,'src',"framework",'main.js'),
     },
     output: {
-        path: path.resolve(__dirname, './dist'),
+        // path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../src/templates/webpack'),
     //  导入的资源 
         // publicPath: '/dist/',
         // publicPath : 'www.baidu.com'//若有地址，则打包会变为上线地址
@@ -84,13 +89,7 @@ module.exports = {
         // 它指定了服务器资源的根目录，如果不写入contentBase的值，那么contentBase默认是项目的目录。
         historyApiFallback: true,
         noInfo: true,
-        proxy: {
-            '***/*.json': {
-                target: 'http://localhost:8084',
-                changeOrigin: true,
-                secure: false
-            }
-        }
+        proxy: config.dev.proxyTable
     },
     performance: {
         hints: false

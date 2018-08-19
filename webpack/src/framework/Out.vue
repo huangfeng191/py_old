@@ -1,33 +1,40 @@
 <template>
-    <div id="out">
-        <div class="head">
-            <a>跳转</a>
-        </div>
-
-        <section class="contant">
-            <div class="menu"></div>
-            <div class="detail">
-                112121
-            </div>
-            <!--       <iframe src="part.html#anchor_1" width="100%" height="100%"></iframe> -->
-
-        </section>
-
+  <div id="out">
+    <div class="head">
+      <ff-header></ff-header>
     </div>
+
+    <section class="contant">
+      <div class="menu"></div>
+      <div class="detail">
+        <detail-index></detail-index>
+      </div>
+      <!--       <iframe src="part.html#anchor_1" width="100%" height="100%"></iframe> -->
+
+    </section>
+
+  </div>
 </template>
 <script>
+import ffHeader from "./components/header/index.vue" ;
+import detailIndex from "./components/detail/index.vue";
 export default {
   name: "out",
   props: [],
   data() {
     return {};
+  },
+  components: {
+    ffHeader,
+    detailIndex
   }
 };
 </script>
 <style lang="less">
 #out {
-  @head-h:60px;
-  @menu-w:200px;
+  @head-h: 80px;
+
+  @menu-w: 0px;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -39,7 +46,7 @@ export default {
     width: 100%;
   }
   .contant {
-    height: calc(~"100% - "@head-h);
+    height: calc(~"100% - " @head-h);
     width: 100%;
     .menu {
       width: @menu-w;
@@ -48,7 +55,7 @@ export default {
       background-color: gray;
     }
     .detail {
-      width: calc(~"100% - "@menu-w);
+      width: calc(~"100% - " @menu-w);
       height: 100%;
       float: left;
       background-color: burlywood;
