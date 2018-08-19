@@ -4,7 +4,7 @@ deploy/
 dist/
 npm-debug.log
 yarn-error.log
-
+src/template/webpack/
 # Editor directories and files
 .idea
 *.suo
