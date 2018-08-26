@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 import $ from 'jquery';
 
-debugger 
+ 
 var s=$.post({
   url:"/stock/interfaceconfig/query.json",
   async:false,
@@ -18,11 +18,11 @@ var s=$.post({
     "ok"
   }
 })
-debugger
+
 
 
 Vue.use(ElementUI)  
-debugger
+
 new Vue({
   router,
   el: '#app',

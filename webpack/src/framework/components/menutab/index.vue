@@ -57,7 +57,7 @@ export default {
         self.tabs= self.tabs.filter(function(v){
             return v.id==id?false:true
         })
-        debugger
+        
         self.activeId=self.tabs[self.tabs.length-1].id;
         self.val=self.tabs[self.tabs.length-1].val;
     },

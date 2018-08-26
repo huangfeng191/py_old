@@ -3,6 +3,9 @@ var webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var config = require('./config')
+var utils = require('./build/utils')
+
+
 
 
 //path:编译路径地址， 原来 ./dist
@@ -13,14 +16,19 @@ module.exports = {
     },
     output: {
         // path: path.resolve(__dirname, './dist'),
-        path: path.resolve(__dirname, '../src/templates/webpack'),
-    //  导入的资源 
+        
+        // path: path.resolve(__dirname, '../src/templates/webpack'),
+        //  导入的资源	 
         // publicPath: '/dist/',
         // publicPath : 'www.baidu.com'//若有地址，则打包会变为上线地址
         // filename: 'build.js'
         // filename: '[name]-[chunkhash].js'
         // filename: '../../static/webpack/[name].js'
-        filename: '[name].js'
+
+        // filename: '[name].js'
+        path: config.build.assetsRoot,
+        filename: utils.assetsPath('[name].js')
+
 
     },
     externals: {
@@ -67,24 +75,6 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js'
         }
     },
-    /**
-     devServer: {
-    historyApiFallback: true,
-    hot: true,
-    inline: true,
-    progress: true,
-    port: 3000,
-    host: '10.0.0.9',
-    proxy: {
-      '/test/*': {
-        target: 'http://localhost',
-        changeOrigin: true,
-        secure: false
-      }
-    }
-  },
-     */
-
     devServer: {
         // contentBase: path.join(__dirname, "dist"),
         // 它指定了服务器资源的根目录，如果不写入contentBase的值，那么contentBase默认是项目的目录。

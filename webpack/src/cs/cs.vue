@@ -28,7 +28,7 @@ export default {
     },
     methods: {
       changeInfo:()=>{
-        debugger
+        
       },
       handleClose(done) {
         this.$confirm('确认关闭？')

@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     appSelect(index) {
-      debugger;
+      ;
       if (index != this.actV) {
         this.actV = index;
       }

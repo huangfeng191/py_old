@@ -8,7 +8,7 @@ import $ from 'jquery';
 Vue.use(ElementUI) 
 require("../../static/css/layout.less") 
 require('../../static/fonts/iconfont.css');
-debugger
+
 new Vue({
   router,
   el: '#out',
