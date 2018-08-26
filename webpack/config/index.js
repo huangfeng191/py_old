@@ -12,11 +12,14 @@ for (let i = 0; i < mods.length; i++) {
 }
 module.exports = {
     build: {
-      assetsSubDirectory: 'dist/webpack',
-      assetsRoot: path.resolve(__dirname, './dist'),
+      index: path.resolve(__dirname, '../dist/templates/index.html'),
+      out: path.resolve(__dirname, '../dist/templates/out.html'),
+      assetsSubDirectory: 'webpack',
+      assetsRoot: path.resolve(__dirname, '../dist'),
+      
     },
     dev: {
-      assetsSubDirectory: 'dist/webpack',
+      assetsSubDirectory: 'webpack',
       proxyTable: proxy,
     }
   }
