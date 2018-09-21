@@ -21,7 +21,11 @@ module.exports = {
         // filename: '../../static/webpack/[name].js'
 
         // filename: '[name].js'
+        // 打包目的路径
         path: config.build.assetsRoot,
+        publicPath: process.env.NODE_ENV === 'production'
+        ? config.build.assetsPublicPath
+        : config.dev.assetsPublicPath,
         filename: utils.assetsPath('[name].js')
 
 
@@ -48,12 +52,17 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]?[hash]'
+                    limit: 10000,
+                    name: utils.assetsPath('[name].[hash:7].[ext]')
                 }
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-                loader: 'file-loader'
+                loader: 'file-loader',
+                options: {
+                    limit: 10000,
+                    name: utils.assetsPath('[name].[hash:7].[ext]')
+                  }
             },
             {
                 test: /\.css$/,

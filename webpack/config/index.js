@@ -12,14 +12,22 @@ for (let i = 0; i < mods.length; i++) {
 }
 module.exports = {
     build: {
-      index: path.resolve(__dirname, '../dist/templates/index.html'),
-      out: path.resolve(__dirname, '../dist/templates/out.html'),
-      assetsSubDirectory: 'webpack',
-      assetsRoot: path.resolve(__dirname, '../dist'),
+      // index: path.resolve(__dirname, '../dist/templates/index.html'),
+      // out: path.resolve(__dirname, '../dist/templates/out.html'),
+
+      index: path.resolve(__dirname, '../../src/templates/webpack/index.html'),
+      out: path.resolve(__dirname, '../../src/templates/webpack/out.html'),
+      
+      assetsSubDirectory: 'static/webpack',
+      // assetsSubDirectory: 'webpack',
+      // assetsRoot: path.resolve(__dirname, '../dist'),
+      assetsRoot: path.resolve(__dirname, '../../src'),
+      assetsPublicPath: '/',
       
     },
     dev: {
       assetsSubDirectory: 'webpack',
       proxyTable: proxy,
+      assetsPublicPath: '/',
     }
   }
