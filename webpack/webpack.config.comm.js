@@ -94,6 +94,10 @@ module.exports = {
 }
 if(process.env.NODE_ENV==="development"){
     module.exports.plugins=(module.exports.plugins||[]).concat([
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+          }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html',
