@@ -2,6 +2,7 @@
     <div id="app">
         <div style="height:25px;">
             <router-link to="/cs_js">cs_js</router-link>
+            <router-link to="/hmenu">hmenu</router-link>
         </div>
         <router-view></router-view>
     </div>

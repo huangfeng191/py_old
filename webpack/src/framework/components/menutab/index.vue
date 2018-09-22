@@ -47,7 +47,8 @@ export default {
         { id: "11", val: "/stock/interfacedata.html?table_nm=stock_basics", nm: "获取股票基本信息" },
         { id: "12", val: "/stock/interfacedata.html?table_nm=industry_classified", nm: "行业分类" },
         { id: "13", val: "/stock/interfacedata.html?table_nm=concept_classified", nm: "概念分类" },
-        { id: "14", val: "/stock/interfacedata.html?table_nm=area_classified", nm: "地域分类" }
+        { id: "14", val: "/stock/interfacedata.html?table_nm=area_classified", nm: "地域分类" },
+        { id: "61", val: "/out.html#/hdmenu", nm: "cs顶部menu" },
       ],
       current: {
         id: "1",
