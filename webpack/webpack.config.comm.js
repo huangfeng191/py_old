@@ -11,8 +11,9 @@ var utils = require('./build/utils')
 //path:编译路径地址， 原来 ./dist
 module.exports = {
     entry: {
-        app:path.join(__dirname,'src','main.js'),
         out:path.join(__dirname,'src',"framework",'main.js'),
+        app:path.join(__dirname,'src','main.js')
+      
     },
     output: {
         // path: path.resolve(__dirname, './dist'),

@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Description 查询数据
 from ui import path, CRUD, wildcard
+import web
 from web.contrib.template import render_mako
 from customs.stock.service.tushare_api import *
 render_stock = render_mako(directories=["customs/stock/templates", "templates"], input_encoding="utf-8",
@@ -44,3 +45,29 @@ class StockInterfaceDataCRUD(CRUD):
 
 
 
+
+@path("/stock/bindings.js")
+class StockBindings:
+
+
+    def GET(self, _customer=None, _cid=None, _role=None, *args, **kwArgs):
+
+      web.header("Content-Type", "text/javascript", True)
+
+      #用户自定义数据字典
+      bindings, codeset = [], set([])
+      for r in stock_interface_config.items(query={'cid':_cid}):
+          if   'code' in r:
+              for rr in r.get("dtls"):
+                  rr["name"]=r.get("nm")
+                  rr["value"]=r.get("code")
+              bindings.append(
+        {"Code":r.get("code"),"Records":r.get("dtls",[])}
+      )
+      bindings.append(
+        {"Code":"STATE","Records":[
+          {"_id":"1","name":"启用", "value":"1"},
+          {"_id":"2","name":"停用", "value":"2"},
+        ]}
+      )
+      return "var GBindings = %s; " % json.dumps(bindings)

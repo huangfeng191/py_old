@@ -1,6 +1,20 @@
 var path=require("path")
 var proxy = {};
-var mods = ["**/*.json","/stock/interfaceconfig.html"];
+// var mods = ["**/*.json","/stock/interfaceconfig.html"];
+var mods = ["**/*.json","**/ctx.js", "/ctx.js",
+"/static/Scripts/****",
+"/static/stock/****",
+"/static/Skins/****",
+"/static/Scripts/MyDialog/****",
+"/stock/**.html",
+"/static/graphic/****",
+"/upload",
+"/static/gis/****",
+"/static/spread/****",
+"/static/Scripts/CRUD/****",
+"/static/baoxing/js/localBand.js",
+"/static/Scripts/CRUD/**",
+"/stock/bindings.js","/v.png","/upload","/export","/logout.html"];
 var server="http://localhost:8087";
 for (let i = 0; i < mods.length; i++) {
   const mod = mods[i];

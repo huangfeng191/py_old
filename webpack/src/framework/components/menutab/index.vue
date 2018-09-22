@@ -43,8 +43,10 @@ export default {
     return {
       val:"http://www.baidu.com",
       tabs: [
-          { id: "1", val: "/out.html", nm: "cs" },
-          { id: "2", val: "/stock/interfaceconfig.html", nm: "cs1" },
+          { id: "1", val: "/stock/interfaceconfig.html", nm: "页面配置" },
+          { id: "2", val: "/stock/interfacedata.html", nm: "页面数据" },
+          { id: "3", val: "/stock/admin.html", nm: "接口数据获取" },
+        
       ]
     };
   },
