@@ -117,7 +117,7 @@ window.mh = {
         return uuid.join('');
     },
     Open: function(Url, Title) {
-        debugger
+        
         var mm = /^([^\?]+)\??/.exec(Url);
         if (mm != null && mm.length > 1) {
             if (Url.startsWith("#")) {

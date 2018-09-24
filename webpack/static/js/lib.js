@@ -1,7 +1,7 @@
 
 function Open(Url, Name)
 {
-    debugger
+    
     if (Name && Url.indexOf("?") < 0) Url += "?";
 
     try
