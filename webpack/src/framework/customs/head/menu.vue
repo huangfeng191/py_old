@@ -2,12 +2,12 @@
   <div class="head-menu">
     <div class="app-list">
       <div class="el-submenu__title" style="position:relative;" :class="[actV==i?'is-active':'']" v-for="(menu1,i) in SingleMenu" :key="menu1.sn">
-        <div @mouseenter="appSelect(i)">
+        <div @mouseenter="appSelect(i)" @click="initPages(menu1)">
           <i :class='menu1.style||"iconfont icon-setting"' style="font-size: 38px; position: absolute; top: -18px; right: 10px;"></i>
           <span style=" display: inline-block; margin-right: 3px; position: relative; right: 16px; bottom: -4px; font-size: 12px; ">{{menu1.nm}}</span>
         </div>
-        <div v-if="actShow==i"  @mouseleave="appSelect(i)"  style="position:absolute;z-index:100" :style="{width:((menu1.Children.length)*140+30)+'px'}">
-          <el-row style="margin-left:10px;" >
+        <div v-if="actShow==i" @mouseleave="appSelect(i)" style="position:absolute;z-index:100" :style="{width:((menu1.Children.length)*140+30)+'px'}">
+          <el-row style="margin-left:10px;">
             <div class="menu-list" style="display:inline-block;box-sizing:border-box;vertical-align: top;" v-for="child in menu1.Children" :key="child.sn">
               <p style="width:140px;word-wrap:normal;font-size:15px; padding-bottom:10px;    line-height: 20px; margin: 0;">{{child.nm}}</p>
               <i style="font-size:14px;line-height:24px; display:block;font-style:normal;" v-for="c1 in child.Children" :key="c1.sn">
@@ -40,15 +40,32 @@ export default {
     SingleMenu: function() {
       //   return this.$store.state.Menus.Children;
       // {sn  style nm}
-      return window.mh.Menus
+      return window.mh.Menus;
     }
   },
   methods: {
     openUrl(url) {
       Open(url);
     },
+    initPages(menu) {
+      mh.History.Pages = [];
+      mh.History.Current = {};
+      function getChildren(menus) {
+        $.each(menus, function(mi, mv) {
+          if (mv.val) {
+            if (mv.open) {
+              mh.History.Pages.push(mv);
+              mh.History.Current = { Id: mv.Id, Item: mv };
+            }
+          }
+          if (mv.Children && mv.Children.length > 0) {
+            getChildren(mv.Children);
+          }
+        });
+      }
+      getChildren(menu.Children);
+    },
     appSelect(index) {
-      
       if (index != this.actV) {
         this.actV = index;
         this.actShow = index;
