@@ -4,13 +4,16 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import Out from './Out.vue'
 import router from './router'
+
+import store from './store'
 import $ from 'jquery';
 Vue.use(ElementUI) 
 require("../../static/css/layout.less") 
 require('../../static/fonts/iconfont.css');
-
-new Vue({
+ 
+window.App=new Vue({
   router,
+  store,
   el: '#out',
   data() {
     return {

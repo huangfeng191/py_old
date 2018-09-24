@@ -4,6 +4,6 @@
 
 export default{
 	routes:[
-		// {path:'/Header', component:Header},
+		// { path: '/', redirect:window.location.hash.replace("#","") },
 	]
 }

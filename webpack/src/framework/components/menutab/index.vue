@@ -1,21 +1,21 @@
 <template>
   <div class="menutab-index">
-    <div class="tabs">
-      <template v-for="(item, index) in tabs">
+    <div class="Pages">
+      <template v-for="(item, index) in Pages">
 
-        <template v-if="item.id==current.id">
-          <div :data-index='index' :class="['menu-name','is-active',item.id]" :key="item.id">
-            <span slot="label" class="showCurrent" @click="selectMenu(item.val,item.id)">
+        <template v-if="item.Id==Current.Id">
+          <div :data-index='index' :class="['menu-name','is-active',item.Id]" :key="item.Id">
+            <span slot="label" class="showCurrent" @click="selectMenu(item.val,item.Id)">
               <i class="el-icon-date"></i> {{item.nm}}</span>
-            <span v-if='tabs.length>1' class="el-icon-close" @click="closeMenu(item.val,item.id)"></span>
+            <span v-if='Pages.length>1' class="el-icon-close" @click="closeMenu(item.val,item.Id)"></span>
           </div>
 
         </template>
         <template v-else>
-          <div :data-index='index' :class="['menu-name',item.id]" :key="item.id">
-            <span slot="label" class="showCurrent" @click="selectMenu(item.val,item.id)">
+          <div :data-index='index' :class="['menu-name',item.Id]" :key="item.Id">
+            <span slot="label" class="showCurrent" @click="selectMenu(item.val,item.Id)">
               <i class="el-icon-date"></i> {{item.nm}}</span>
-            <span class="el-icon-close" @click="closeMenu(item.val,item.id)"></span>
+            <span class="el-icon-close" @click="closeMenu(item.val,item.Id)"></span>
           </div>
         </template>
       </template>
@@ -23,7 +23,7 @@
     </div>
     <div class="content">
 
-      <div v-for="item in tabs" :key="item.id" :style="[item.id==current.id?{'height':'auto','overflow':'visible'}:{'height':'0','overflow':'hidden'}]">
+      <div v-for="item in Pages" :key="item.Id" :style="[item.Id==Current.Id?{'height':'auto','overflow':'visible'}:{'height':'0','overflow':'hidden'}]">
         <iframe :src="item.val" width=100% :style="stl" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
       </div>
 
@@ -40,43 +40,43 @@ export default {
   data() {
     return {
       stl: "",
-      val: "http://www.baidu.com",
-      tabs: [
-        { id: "1", val: "/stock/interfaceconfig.html", nm: "页面配置" },
-        { id: "3", val: "/stock/admin.html", nm: "接口数据获取" },
-        { id: "11", val: "/stock/interfacedata.html?table_nm=stock_basics", nm: "获取股票基本信息" },
-        { id: "12", val: "/stock/interfacedata.html?table_nm=industry_classified", nm: "行业分类" },
-        { id: "13", val: "/stock/interfacedata.html?table_nm=concept_classified", nm: "概念分类" },
-        { id: "14", val: "/stock/interfacedata.html?table_nm=area_classified", nm: "地域分类" },
-        { id: "61", val: "/out.html#/hdmenu", nm: "cs顶部menu" },
-      ],
-      current: {
-        id: "1",
-        val: ""
-      }
+    
     };
   },
   created() {},
   mounted() {
-    debugger;
+    ;
     var h = $(".menutab-index").height() - 40;
     this.stl = "width: 100%;height:" + h + "px";
   },
-  computed: {},
+  computed: {
+        Pages: function () {
+          
+            return this.$store.state.History.Pages;
+        },
+         Current: function () {
+            return this.$store.state.History.Current.Item;
+        },
+  },
   methods: {
-    closeMenu(val, id) {
-      let self = this;
-      self.tabs = self.tabs.filter(function(v) {
-        return v.id == id ? false : true;
-      });
 
-      self.current.id = self.tabs[self.tabs.length - 1].id;
-      self.current.val = self.tabs[self.tabs.length - 1].val;
-    },
-    selectMenu(val, id) {
+
+
+    closeMenu(val, Id) {
       let self = this;
-      self.current.id = id;
-      self.current.val = val;
+       self.$store.commit("removeMenu", Id);
+    },
+    selectMenu(val, Id) {
+
+
+      let self = this;
+      let menu=self.Pages.find(page=>{
+        return page.Id==Id
+      })
+      if(menu){
+        
+        self.$store.commit("selectMenu", menu);
+      }
     }
   },
   watch: {},
@@ -84,14 +84,15 @@ export default {
 };
 </script>
 <style lang="less" >
-@tabs-height: 36px;
+@Pages-height: 36px;
 
 .menutab-index {
   height: 100%;
   width: 100%;
-  .tabs {
-    height: @tabs-height;
+  .Pages {
+    height: @Pages-height;
     background-color: yellow;
+    background-color: #0481C4;
 
     .menu-name {
       padding: 0 16px;
@@ -152,7 +153,7 @@ export default {
   }
   .content {
     width: 100%;
-    height: calc(~"100%" - @tabs-height + 4px);
+    height: calc(~"100%" - @Pages-height + 4px);
   }
 }
 </style>

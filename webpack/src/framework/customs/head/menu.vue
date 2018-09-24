@@ -2,17 +2,17 @@
   <div class="head-menu">
     <div class="app-list">
       <div class="el-submenu__title" style="position:relative;" :class="[actV==i?'is-active':'']" v-for="(menu1,i) in SingleMenu" :key="menu1.sn">
-        <div @click="appSelect(i)">
+        <div @mouseenter="appSelect(i)">
           <i :class='menu1.style||"iconfont icon-setting"' style="font-size: 38px; position: absolute; top: -18px; right: 10px;"></i>
-          <span style=" display: inline-block; margin-right: 3px; position: relative; right: 16px; bottom: -4px; font-size: 12px; ">{{menu1.name}}</span>
+          <span style=" display: inline-block; margin-right: 3px; position: relative; right: 16px; bottom: -4px; font-size: 12px; ">{{menu1.nm}}</span>
         </div>
-        <div v-if="actShow==i" style="position:absolute;z-index:100" :style="{width:((menu1.Children.length)*120+30)+'px'}">
-          <el-row style="margin-left:10px;">
+        <div v-if="actShow==i"  @mouseleave="appSelect(i)"  style="position:absolute;z-index:100" :style="{width:((menu1.Children.length)*140+30)+'px'}">
+          <el-row style="margin-left:10px;" >
             <div class="menu-list" style="display:inline-block;box-sizing:border-box;vertical-align: top;" v-for="child in menu1.Children" :key="child.sn">
-              <p style="width:110px;word-wrap:normal;font-size:16px;     line-height: 20px; margin: 0;">{{child.name}}</p>
-              <i style="font-size:14px;line-height:18px; display:block;" v-for="c1 in child.Children" :key="c1.sn">
-                <span class="pointer" @click="openUrl(c1.val)" style="color: black;">
-                  {{c1.name}}
+              <p style="width:140px;word-wrap:normal;font-size:15px; padding-bottom:10px;    line-height: 20px; margin: 0;">{{child.nm}}</p>
+              <i style="font-size:14px;line-height:24px; display:block;font-style:normal;" v-for="c1 in child.Children" :key="c1.sn">
+                <span class="pointer" @click="openUrl(c1.val)" style="color: rgb(102, 102, 102)">
+                  {{c1.nm}}
                 </span>
               </i>
             </div>
@@ -39,43 +39,8 @@ export default {
   computed: {
     SingleMenu: function() {
       //   return this.$store.state.Menus.Children;
-      // {sn  style name}
-      return [
-        {
-          sn: 1,
-          style: null,
-          name: "页面维护",
-          Children: [
-            {
-              sn: 11,
-              name: "12",
-              Children: [
-                { sn: 111, name: 111, val: "http://www.baidu.com" },
-                { sn: 111, name: 111, val: "http://www.baidu.com" },
-                { sn: 111, name: 111, val: "http://www.baidu.com" },
-                { sn: 111, name: 111, val: "http://www.baidu.com" }
-              ]
-            }
-          ]
-        },
-        {
-          sn: 2,
-          style: null,
-          name: "配置页面",
-          Children: [
-            {
-              sn: 11,
-              name: "34",
-              Children: [
-                { sn: 111, name: 22, val: "http://www.baidu.com" },
-                { sn: 111, name: 222, val: "http://www.baidu.com" },
-                { sn: 111, name: 222, val: "http://www.baidu.com" },
-                { sn: 111, name: 222, val: "http://www.baidu.com" }
-              ]
-            }
-          ]
-        }
-      ];
+      // {sn  style nm}
+      return window.mh.Menus
     }
   },
   methods: {
@@ -83,6 +48,7 @@ export default {
       Open(url);
     },
     appSelect(index) {
+      
       if (index != this.actV) {
         this.actV = index;
         this.actShow = index;
