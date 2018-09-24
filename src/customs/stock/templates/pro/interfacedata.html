@@ -1,0 +1,213 @@
+<!--<%inherit file="layout.html" /> -->
+<!-- 
+Author Wujj
+Date : 2018/07/29
+-->
+<style>
+  #customer {
+    /*    width: 180px;
+        height: 100%;
+        float: left;
+        margin-left: 6px !important;
+        overflow-x: auto; */
+  }
+
+  #interfacedata {
+    height: 100%;
+    /*margin-left:190px;*/
+  }
+</style>
+<div style="width:100%;height: 100%;">
+  <div id='customer' class='customer'>
+    &nbsp;
+  </div>
+  <div id='interfacedata'>
+    &nbsp;
+  </div>
+</div>
+<script type="text/javascript">
+  var PCRUD;
+  var Divisions = [];
+  var Cid;
+  var Cnm;
+  var Uid = GCtx.user._id;
+  var Pf = null;
+  var btnNn = "";
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var Title1 = "";
+  var expnm = "";
+  var cols = [
+    [
+      { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
+      { "field": "table_nm", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
+      { "field": "method", "title": "方法名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
+      { "field": "param", "title": "方法参数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
+      { "field": "colInp", "title": "列配置", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 460, },
+      { "field": "desc", "title": "备注", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 160, },
+
+    ]
+  ];
+
+
+  var inp1 = [
+    [
+      { "Field": "nm", "Name": "记录名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "table_nm", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [
+      { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+
+    [
+      { "Field": "colInp", "Name": "列配置", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
+    ],
+    [
+      { "Field": "desc", "Name": "备注", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
+    ]
+
+  ];
+  var props = [];
+
+  var quicks = [
+  ];
+  var orders = [
+  ];
+  var btnNm = "";
+
+  function init() {
+
+    PCRUD = jQuery.CRUD('#interfacedata', {
+      View: {
+        GridOptions: { pageSize: 30 },
+        AfterRender: function() {
+          this.Button.Hide(["filter", "order"]);
+          $("span[qfield]").keydown(function (event) {
+            if (event.which == 13)
+            $("[command=query]").click();
+            });
+
+
+        },
+        Form: {
+          AfterEnable: function() {
+
+          },
+          AfterDisable: function() {
+
+          },
+          AfterSet: function(Record, IsNew) { // 点击新建后
+            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+            //PCRUD.View.Form.Enable([]);
+            if (!IsNew) {
+              //FormContainer.find(".button_container").css("display", "none");
+            } else {
+
+            }
+            var FormContainer = $(".my_dialog") || this.Container;
+            FormContainer.find(".group_container .group").css("overflow-x", "hidden");
+          },
+          BeforeGet: function(Record, u, Valids) {},
+          AfterGet: function(Record, u, Valids) {
+
+          },
+          BeforeSet: function(Record, IsNew) {
+
+          }
+        }
+      },
+      Behavior: {
+        BeforeQuery: function(Filters, Orders) {
+          if(orders){
+            orders.forEach(element => {
+              Orders.Merge([element]);
+            });
+          }
+          if (Cid) {
+            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+            Loading.Show();
+            return true;
+          } else {
+            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+            return false;
+          }
+          Loading.Show();
+        },
+        AfterQuery: function(Result) {
+          Loading.Hide();
+          return true;
+        },
+        BeforeSave: function(Record, Callback) {
+          if (Cid) {
+            Record.cid = Cid;
+            Record.cnm = Cnm;
+          }
+
+          return true;
+        },
+        AfterSave: function(Result) {
+          //  PCRUD.View.Grid.Query();
+          return true;
+        },
+        Grid: {
+          //   RowDblClick: function (Row) {
+
+          // }
+        }
+      },
+      Service: {
+        Path: "stock/",
+        Target: "interfacedata",
+        Base: "../",
+        "paramStr": getUrlParam("table_nm") ? "table_nm=" + getUrlParam("table_nm") : ''
+      }
+    }, {
+
+      "Bindings": GBindings,
+      "FrozenColumns": [
+        []
+      ],
+      "Columns": cols,
+      "Form": [{
+          "Title": Title1,
+          "Inputs": inp1
+        }
+
+
+      ],
+      "Properties": props,
+      "Quicks": quicks,
+      "Rights": "CUD",
+      "Target": "interfacedata",
+      "Title": "",
+      "ExportFmt": true,
+      Layout: "POP" ? "POP" : "POP",
+      ExportName: expnm
+    });
+
+
+  }
+
+  jQuery(document).ready(function() {
+    if (window["GCtx"] && GCtx.customer) {
+      //特定客户
+      jQuery("#customer").hide();
+      Cid = GCtx.customer._id;
+      Cnm = GCtx.customer.nm;
+      Pf = GCtx.customer.pf || "";
+      //  $("#interfacedata").width($(window).width());
+    } else {
+      alert("请刷新");
+    }
+    
+    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"stock_basics"})
+    cols[0] = interfaceConfigO.columns;
+    inp1 = interfaceConfigO.inputsRet;
+    expnm = interfaceConfigO.nm;
+    orders = interfaceConfigO.orders;
+    quicks = interfaceConfigO.quicks;
+
+    init();
+
+  });
+</script>

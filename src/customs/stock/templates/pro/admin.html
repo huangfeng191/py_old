@@ -1,0 +1,71 @@
+<!--<%inherit file="layout.html"/>-->
+<style>
+  input[cmd] {
+    margin: 10px!important;
+  }
+</style>
+<!-- 调试html -->
+
+<body>
+  <div id="divcmd" style=" margin:50px;">
+    <label>年度:</label> <input type="text" id="year" class="data value yyyy" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy'})">
+    <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM'})">
+    <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM-dd'})">
+   
+    <br>
+    <!-- <div style="padding-left:40px;">
+      <label>tushare：</label>
+      <input type="button" cmd="basics" value="获取基本信息" />
+      
+    </div> -->
+    <div style="padding-left:40px;">
+      <label>tushare：</label>
+      <input id="getInfoOn" name="接口名称">
+      <input type="button" cmd="getInfo" value="获取信息" />
+      
+    </div>
+    <div id="result"></div>
+</body>
+<script type="text/javascript">
+  function act(tp, param) {
+    $.post("/stock/admin/" + tp + ".json", JSON.stringify(param), function(R) {
+      $("#result").html(R.Response);
+    }, "json");
+  }
+
+
+
+  $(function() {
+    getBindConfig();
+    
+    $('#getInfoOn').combobox({
+    data:GetBindRecords("StockConfig"),
+    valueField:'value',
+    textField:'name',
+    value:"stock_basics",
+    editable:false
+    });
+
+    var dt=new Date()
+    $("#year").val(dt.FormatString("yyyy"));
+    $("#month").val(dt.FormatString("yyyy-MM"));
+    $("#day").val(dt.FormatString("yyyy-MM-dd"));
+    $("#divcmd input[cmd]").on("click", function(e) {
+      var cmd = $(this).attr("cmd");
+      $("#result").html("start:");
+      switch (cmd) {
+        case 'basics':
+          act(cmd, {});
+          break;
+        case 'getInfo':
+          act(cmd, {
+            "table_nm": $("#getInfoOn").combobox("getValue")
+          });
+          break;
+      }
+    })
+
+
+
+  })
+</script>
