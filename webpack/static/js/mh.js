@@ -15,15 +15,15 @@ window.mh = {
                 nm: "配置页面",
                 Children: [{
                         Id: "1",
-                        val: "/stock/interfaceconfig.html",
+                        val: "/prostock/interfaceconfig.html",
                         nm: "页面配置",
-                        open:1
+                        open:0
                     },
                     {
                         Id: "3",
-                        val: "/stock/admin.html",
+                        val: "/prostock/admin.html",
                         nm: "接口数据获取",
-                        open:1
+                        open:0
                     }
                 ]
             }]
@@ -37,25 +37,10 @@ window.mh = {
                 nm: "接口原始数据",
                 Children: [{
                         Id: "11",
-                        val: "/stock/interfacedata.html?table_nm=stock_basics",
+                        val: "/prostock/interfacedata.html?table_nm=stock_basic",
                         nm: "获取股票基本信息",
                         open:1
-                    },
-                    {
-                        Id: "12",
-                        val: "/stock/interfacedata.html?table_nm=industry_classified",
-                        nm: "行业分类"
-                    },
-                    {
-                        Id: "13",
-                        val: "/stock/interfacedata.html?table_nm=concept_classified",
-                        nm: "概念分类"
-                    },
-                    {
-                        Id: "14",
-                        val: "/stock/interfacedata.html?table_nm=area_classified",
-                        nm: "地域分类"
-                    },
+                    }
                 ]
             }]
         }
@@ -85,7 +70,7 @@ window.mh = {
 
         ],
         Current: {}
-        // Current:{"Id":"3","Item": { Id: "3", val: "/stock/admin.html", nm: "接口数据获取" }}
+        // Current:{"Id":"3","Item": { Id: "3", val: "/prostock/admin.html", nm: "接口数据获取" }}
     },
     uuid: function(len, radix) {
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');

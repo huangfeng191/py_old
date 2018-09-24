@@ -3,12 +3,20 @@
 from ui import path, CRUD, wildcard
 import web
 from web.contrib.template import render_mako
-from customs.stock.service.tushare_api import *
 render_stock = render_mako(directories=["customs/stock/templates", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
 
-from customs.stock.ui import bindinterfaceConfig
+from customs.stock.service.tushare_api import *
 
+def bindinterfaceConfig(func):
+    def _bindinterfaceConfig(self,act, *args, **kwArgs):
+        params = web.input(table_nm='')
+        if( act in ["query","insert","update","delete","importData"]) and params.get("table_nm"):
+          # self.module=eval(params.get("table_nm"))
+          self.module=eval(params.get("table_nm"))
+          return func(self,act, *args, **kwArgs)
+        return func(self,act, *args, **kwArgs)
+    return _bindinterfaceConfig
 
 @path("/stock/interfaceconfig.html")
 class StockInterfaceconfig:

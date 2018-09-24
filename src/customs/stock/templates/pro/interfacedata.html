@@ -156,7 +156,7 @@ Date : 2018/07/29
         }
       },
       Service: {
-        Path: "stock/",
+        Path: "prostock/",
         Target: "interfacedata",
         Base: "../",
         "paramStr": getUrlParam("table_nm") ? "table_nm=" + getUrlParam("table_nm") : ''
@@ -200,7 +200,7 @@ Date : 2018/07/29
       alert("请刷新");
     }
     
-    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"stock_basics"})
+    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"prostock_basics"})
     cols[0] = interfaceConfigO.columns;
     inp1 = interfaceConfigO.inputsRet;
     expnm = interfaceConfigO.nm;

@@ -9,35 +9,28 @@
 from ui import path, CRUD, wildcard
 from web.contrib.template import render_mako
 from customs.stock.service import *
-import customs.stock.service.tushare_api  as tushare_api
-render_stock = render_mako(directories=["customs/stock/templates", "templates"], input_encoding="utf-8",
+import customs.stock.service.tushare_proapi  as tushare_proapi
+render_prostock = render_mako(directories=["customs/stock/templates/pro", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
 
 
 
 
-@path("/stock/admin.html")
+@path("/prostock/admin.html")
 class StockAdmin:
     def GET(self, _cid=None, *args, **kwargs):
-        return render_stock["admin"]()
+        return render_prostock["admin"]()
 
 
-@wildcard("/stock/admin/")
+@wildcard("/prostock/admin/")
 class StockAdminCRUD(CRUD):
     def __init__(self):
-        self.module = stock_adminsave
+        self.module = tushare_proapi.stock_admin_save
     def action(self, act, *args, **kwArgs):
         if act == 'basics':
             return self.basics(*args, **kwArgs)
-        if act == 'getInfo':
-            return self.getInfo(*args, **kwArgs)
-        else:
-            return CRUD.action(self, act, *args, **kwArgs)
-    def getInfo(self, table_nm=None, *args, **kwArgs):
-        tushare_api.getInfo(table_nm)
-        print 1
-        return "OK"
-    def basics(self, record=None, *args, **kwArgs):
-        tushare_api.get_stock_basics()
+        return CRUD.action(self, act, *args, **kwArgs)
+    def getProInfo(self, table_nm=None, *args, **kwArgs):
+        tushare_proapi.getProInfo(table_nm)
         print 1
         return "OK"

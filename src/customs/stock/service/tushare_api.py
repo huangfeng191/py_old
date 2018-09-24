@@ -9,7 +9,7 @@
 
 import ctx
 from service import comm
-
+stock_admin_save = comm.CRUD(ctx.tusharedb, "stock_admin_save", [("cid", 1)])
 stock_interface_config = comm.CRUD(ctx.tusharedb, "stock_interface_config" )
 # 获取股票基本信息
 stock_basics = comm.CRUD(ctx.tusharedb, "stock_basics", [("code", 1)])

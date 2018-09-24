@@ -25,7 +25,7 @@ class StockAdmin:
 @wildcard("/stock/admin/")
 class StockAdminCRUD(CRUD):
     def __init__(self):
-        self.module = stock_adminsave
+        self.module = tushare_api.stock_admin_save
     def action(self, act, *args, **kwArgs):
         if act == 'basics':
             return self.basics(*args, **kwArgs)

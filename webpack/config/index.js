@@ -4,9 +4,11 @@ var proxy = {};
 var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/static/Scripts/****",
 "/static/stock/****",
+"/static/prostock/****",
 "/static/Skins/****",
 "/static/Scripts/MyDialog/****",
 "/stock/**.html",
+"/prostock/**.html",
 "/static/graphic/****",
 "/upload",
 "/static/gis/****",
@@ -14,7 +16,9 @@ var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/static/Scripts/CRUD/****",
 "/static/baoxing/js/localBand.js",
 "/static/Scripts/CRUD/**",
-"/stock/bindings.js","/v.png","/upload","/export","/logout.html"];
+"/stock/bindings.js",
+"/prostock/bindings.js",
+"/v.png","/upload","/export","/logout.html"];
 var server="http://localhost:8087";
 for (let i = 0; i < mods.length; i++) {
   const mod = mods[i];

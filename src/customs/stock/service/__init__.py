@@ -7,8 +7,7 @@
 
 import ctx
 from service import comm
-stock_store = comm.CRUD(ctx.cmdb, "stock_store", [("cid", 1)])
-stock_adminsave = comm.CRUD(ctx.stockdb, "adminsave", [("cid", 1)])
 
-stock_test = comm.CRUD(ctx.stockdb, "test", [("cid", 1)])
-import tushare_api
+
+
+import tushare_proapi

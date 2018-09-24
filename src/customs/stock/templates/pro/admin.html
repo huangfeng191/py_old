@@ -28,7 +28,7 @@
 </body>
 <script type="text/javascript">
   function act(tp, param) {
-    $.post("/stock/admin/" + tp + ".json", JSON.stringify(param), function(R) {
+    $.post("/prostock/admin/" + tp + ".json", JSON.stringify(param), function(R) {
       $("#result").html(R.Response);
     }, "json");
   }
@@ -42,7 +42,7 @@
     data:GetBindRecords("StockConfig"),
     valueField:'value',
     textField:'name',
-    value:"stock_basics",
+    value:"stock_basic",
     editable:false
     });
 
