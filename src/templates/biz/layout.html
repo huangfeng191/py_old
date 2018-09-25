@@ -26,7 +26,7 @@
 	<script src="/static/Scripts/CRUD/CRUD.Service.js" type="text/javascript"></script>
 	<script src="/static/Scripts/Quick/Quick.js" type="text/javascript"></script>
 	<script src="/static/Scripts/Loading/Loading.js" type="text/javascript"></script>
-	<script src="/static/stock/JS/Lib.js" type="text/javascript"></script>
+	<script src="/static/stock/JS/proLib.js" type="text/javascript"></script>
 
 	<link href="/static/Skins/Spring/style.css" rel="stylesheet" type="text/css" />
   <link id="theme_Light" href="/static/Skins/Light/style.css" rel="stylesheet" type="text/css"/>
@@ -36,7 +36,8 @@
 
 <!-- above 为 crud 必要插件 -->
 	<script type="text/javascript">
-        $.ajax({cache: false, async: false, url: "/stock/bindings.js", dataType: "script"});
+	
+        $.ajax({cache: false, async: false, url: "/prostock/bindings.js", dataType: "script"});
         $.ajax({cache: false, async: false, url: "/ctx.js", dataType: "script"});
 	</script>
 </head>

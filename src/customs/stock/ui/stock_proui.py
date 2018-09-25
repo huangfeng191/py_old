@@ -10,7 +10,7 @@ import json
 
 import customs.stock.service.tushare_proapi as tushare_proapi
 from customs.stock.service.tushare_proapi  import *
-
+import service.biz
 def bindinterfaceConfig(func):
     def _bindinterfaceConfig(self,act, *args, **kwArgs):
         params = web.input(table_nm='')
@@ -67,6 +67,12 @@ class ProStockBindings:
 
       #用户自定义数据字典
       bindings, codeset = [], set([])
+
+      for dd in service.biz.ddics.items(size=99999):
+          if dd.get('Code', '') not in codeset:
+              bindings.append(dd)
+
+
       for r in tushare_proapi.pro_interface_config.items(query={'cid':_cid}):
           if   'code' in r:
               for rr in r.get("dtls"):
@@ -81,6 +87,13 @@ class ProStockBindings:
           {"_id":"2","name":"停用", "value":"2"},
         ]}
       )
+      aRelation=[]
+
+      for r in service.biz.ddics.items(query={"Relation":{'$ne':""}}):
+          aRelation.append({"_id":r.get("Relation"),"name":r.get("Name"),"value":r.get("Code")})
+      bindings.append(
+        {"Code":"Relation","Records":aRelation}
+      )     
       return "var GBindings = %s; " % json.dumps(bindings)
 
 

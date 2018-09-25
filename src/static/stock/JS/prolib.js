@@ -72,9 +72,13 @@ function getInterfaceConfig({table_nm}){
                     // var tp=element[1]||""; 数据类型，暂时不用
                     var nm=element[2]||""
                     var width=element[3]||"100"
-                    retO["oOne"][sn]={sn,nm}
+                    retO["oOne"][sn]={sn,nm};
+                    
+                    let oDdic=GetBindRow(sn,"Relation");
                     var templateCols=`
-                        { "field": "${sn}","title":"${nm}","width": `+width+`, "halign": "center"}
+                        { "field": "${sn}","title":"${nm}","width": `+width+`, "halign": "center"`+
+                        ( oDdic?(`,"binding":"`+oDdic.value+`"`):"")+
+                        `}
                     `
                     var templateInputs=`
                     { "Field": "${sn}", "Name": "${nm}" }
