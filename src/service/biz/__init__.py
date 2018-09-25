@@ -9,3 +9,6 @@ menus = comm.CRUD(ctx.cmdb, 'menu', [('sn', 1), ('lv', 1)], [('pid', 1), ('id', 
 user = comm.CRUD(ctx.cmdb, 'user')
 customer = comm.CRUD(ctx.cmdb, 'customer')
 
+
+
+ddics = comm.CRUD(ctx.cmdb, 'ddic', [('Code', 1)], [('Records._id', 1)])

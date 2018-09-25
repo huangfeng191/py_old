@@ -17,7 +17,7 @@ import urllib
 @path("/")
 class Index:
     def __init__(self):
-        self.index = ctx.get("web", "index", "/stock/admin.html")
+        self.index = ctx.get("web", "index", "/prostock/admin.html")
 
     def GET(self, _cid=None, _customer=None, _role=None, *args, **kwArgs):
         index = self.index
@@ -29,6 +29,8 @@ class StockIndex:
     def GET(self, _cid=None, *args, **kwargs):
         return "Hello world!"
 
+
+import ui.biz
 
 # 动态导入模块
 import importlib

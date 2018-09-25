@@ -69,8 +69,11 @@ Date : 2018/07/25
     ],
     [
       { "Field": "orders", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "quicks", "Name": "查询条件", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
       { "Field": "indexKey", "Name": "索引列", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [
+    { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
+
     ],
     [
       { "Field": "colInp", "Name": "列配置", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
@@ -121,6 +124,7 @@ Date : 2018/07/25
             var FormContainer = $(".my_dialog") || this.Container;
             FormContainer.find("textarea").width(FormContainer.find("textarea").parent().parent().width() - 5);
             FormContainer.find("[field=colInp]").height(350);
+            FormContainer.find("[field=quicks]").height(150);
 
           },
           BeforeGet: function(Record, u, Valids) {},

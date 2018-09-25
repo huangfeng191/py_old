@@ -1,0 +1,89 @@
+﻿.image_view
+{
+}
+.image_view > .view
+{
+    width: 770px;
+    height: 410px;
+    background-color: #ffffff;
+    overflow:auto;
+}
+.image_view > .list
+{
+    width: 764px;
+    height: 122px;
+    padding: 4px;
+    background-color: #DCE0E9;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+.image_view > .list > div
+{
+    display: inline-block;
+    width: 96px;
+    height: 96px;
+    margin: 4px;
+    border: solid 1px #AAAAAA;
+    background-color: #ffffff;
+    position: relative;
+}
+.image_view > .list > div.upload
+{
+    border: dashed 1px #ABABAB;
+    cursor: pointer;
+}
+.image_view > .list > div > div
+{
+    position: absolute;
+    background-image: url(Images/image_view_del.png);
+    background-repeat: no-repeat;
+    right: 0px;
+    top: 2px;
+    z-index: 99999;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    display: none;
+}
+.image_view > .list > div:hover
+{
+    border: solid 1px #0000ff;
+}
+.image_view > .list > div:hover > div
+{
+    display: block;
+}
+.image_view > .list > div > img
+{
+    display: none;
+}
+
+/*图标尺寸*/
+.image_view.big > .view
+{
+    height: 344px;
+}
+.image_view.big > .list
+{
+    height: 190px;
+}
+.image_view.big > .list > div
+{
+    width: 232px;
+    height: 166px;
+}
+
+/*编辑视图*/
+.image_view.edit > .view
+{
+    display: none;
+}
+.image_view.edit > .list
+{
+    width: 762px;
+    height: 530px;
+    white-space: normal;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

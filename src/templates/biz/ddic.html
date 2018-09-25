@@ -57,7 +57,7 @@
             jQuery("#ddef").css("margin-left", 0);
             jQuery("#drecords").css("margin-left",jQuery("#ddef").outerWidth(true));
             Cid = GCtx.customer._id;
-            Path = "ubiz/";
+            Path = "biz/";
             Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 1 });
             Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 2 });
         }
@@ -73,11 +73,7 @@
 				{
 					AfterGet:function(Record)
 					{
-						//if(Cid && Cid.length > 0 && !row.cid && "Records" in Record == false)
-						//{
-						//	Record.Records = [];
-						//}
-                        //Record.cid = Cid;
+						
 					}
 				},
 				Pagination:
@@ -200,7 +196,8 @@
 			[
 				[
 					{ "align": "center", "colspan": 1, "field": "Code", "hidden": false, "rowspan": 1, "title": "编码", "width": 160 },
-					{ "align": "center", "colspan": 1, "field": "Name", "hidden": false, "rowspan": 1, "title": "名称", "width": 300 }
+					{ "align": "center", "colspan": 1, "field": "Relation", "hidden": false, "rowspan": 1, "title": "关联字段", "width": 100 },
+					{ "align": "center", "colspan": 1, "field": "Name", "hidden": false, "rowspan": 1, "title": "名称", "width": 300 },
 				]
 			],
 			"Form":
@@ -211,6 +208,7 @@
 					[
 						[
 							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Code", Name: "编码", ShowType: "text", "Required": true},
+							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Relation", Name: "关联字段", ShowType: "text", "Required": true},
 							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Name", Name: "名称", ShowType: "text", "Required": true}
 						]
 					]

@@ -1,0 +1,206 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="Skins/Default/skin.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="image_view"></div>
+    <iframe id="ifm_upload" src="hUpload.htm" style="display: none;"></iframe>
+</body>
+<script src="../jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="../template.min.js" type="text/javascript"></script>
+<script src="../Lib.js" type="text/javascript"></script>
+<script src="../Loading/Loading.js" type="text/javascript"></script>
+<script>
+    var ImgW = 96;
+    var ImgH = 96;
+    var Opts;
+
+    var Loading = jQuery.Loading({ Message: "上传中……", Timeout: 30 });
+
+    function Image_Delete(Evt) {
+        jQuery(this).parent().remove();
+    };
+
+    function Load(Args) {
+        Opts = Args;
+        if (Opts.IconSize == "big") {
+            ImgW = 238;
+            ImgH = 166;
+        }
+
+        jQuery(".image_view").addClass(Opts.IconSize).addClass(Opts.Editable ? "edit" : "").html(Temp_layout(Opts));
+
+        jQuery(".list>div:not(.upload)>img").unbind("load").load(function (Evt) {
+            if (jQuery(this).prop("naturalHeight") / jQuery(this).prop("naturalWidth") > ImgH / ImgW) {
+                jQuery(this).css("margin", "0px " + Math.floor((ImgW - jQuery(this).height("100%").width()) / 2) + "px");
+            }
+            else {
+                jQuery(this).css("margin", Math.floor((ImgH - jQuery(this).width("100%").height()) / 2) + "px 0px");
+            }
+            jQuery(this).css("display", "block");
+        });
+
+        jQuery(".list>div.upload>img").css("display", "block").css("margin", Math.floor((ImgH - 50) / 2) + "px " + Math.floor((ImgW - 50) / 2) + "px");
+
+        if (Opts.Editable == true) {
+            //添加
+            var Exts = Opts.Exts;
+            var Regx;
+            if (Exts.length > 0) {
+                Regx = new RegExp("\.(" + Exts + ")$");
+            }
+            else {
+                Regx = null;
+            }
+            jQuery(".list>div.upload").unbind("click").click(function (Evt) {
+                jQuery(jQuery("#ifm_upload")[0].contentWindow.document.getElementById("file")).change(function () {
+                    var File = jQuery("#ifm_upload")[0].contentWindow.document.getElementById("file").value;
+                    if (Regx.test(File)) {
+                        var Ext = File.match(/\.[a-zA-Z]+$/g);
+                        jQuery("#ifm_upload")[0].contentWindow.document.getElementById("extend").value = (Ext && jQuery.isArray(Ext) && Ext.length > 0) ? Ext[0] : "";
+                    }
+                    if (File.length > 0) {
+                        if (Regx && Regx.test(File.toLowerCase()) == false) {
+                            ShowDialog({ Title: "提示", Message: "请选择扩展名为（" + Exts + "）的文件", Type: MyDialog.Types.Message, Icon: MyDialog.Icons.Info });
+                        }
+                        else {
+                            Loading.Show();
+                            jQuery("#ifm_upload")[0].contentWindow.document.forms[0].submit();
+                        }
+                    }
+                });
+                jQuery("#ifm_upload").unbind("load").load(function () {
+                    if (this.contentWindow.location.pathname == "/upload") {
+                        if(Opts.HasContent) {
+                            var Result = Proxy.Json.ToObject(this.contentWindow.document.body.innerHTML);
+                            this.src = this.src;
+                            var Img = jQuery("<div><p data-url=\"" + Result.name + "\"style=\"position:absolute; width: 100%;height: 100%;background: none;display: block;text-align: center;line-height: 166px;margin:0px;\">新附件</p><div></div></div>").insertBefore(".list>div.upload");
+//                            Img.find("img").load(function (Evt) {
+//                                if (jQuery(this).prop("naturalHeight") / jQuery(this).prop("naturalWidth") > ImgH / ImgW) {
+//                                    jQuery(this).css("margin", "0px " + Math.floor((ImgW - jQuery(this).height("100%").width()) / 2) + "px");
+//                                }
+//                                else {
+//                                    jQuery(this).css("margin", Math.floor((ImgH - jQuery(this).width("100%").height()) / 2) + "px 0px");
+//                                }
+//                                jQuery(this).css("display", "block");
+//                            });
+                            Img.find("div").click(Image_Delete);
+                            Loading.Hide();
+                        }
+                        else{
+                            var Result = Proxy.Json.ToObject(this.contentWindow.document.body.innerHTML);
+                            this.src = this.src;
+                            var Img = jQuery("<div><img src=\"" + Result.name + "\" /><div></div></div>").insertBefore(".list>div.upload");
+                            Img.find("img").load(function (Evt) {
+                                if (jQuery(this).prop("naturalHeight") / jQuery(this).prop("naturalWidth") > ImgH / ImgW) {
+                                    jQuery(this).css("margin", "0px " + Math.floor((ImgW - jQuery(this).height("100%").width()) / 2) + "px");
+                                }
+                                else {
+                                    jQuery(this).css("margin", Math.floor((ImgH - jQuery(this).width("100%").height()) / 2) + "px 0px");
+                                }
+                                jQuery(this).css("display", "block");
+                            });
+                            Img.find("div").click(Image_Delete);
+                            Loading.Hide();
+                        }
+                    }
+                });
+                jQuery("#ifm_upload")[0].contentWindow.document.getElementById("file").click();
+            });
+
+            //删除
+            jQuery(".list>div>div").click(Image_Delete);
+        }
+        else {
+            jQuery(".list>div").click(function (Evt) {
+                jQuery(".view>img").attr("src", jQuery(this).find("img").attr("src")).load(function (Evt) {
+                    var W = jQuery(".view").width();
+                    var H = jQuery(".view").height();
+                    if (jQuery(this).prop("naturalHeight") / jQuery(this).prop("naturalWidth") > H / W) {
+                        jQuery(this).css("margin", "0px " + Math.floor((W - jQuery(this).height("100%").width()) / 2) + "px");
+                    }
+                    else {
+                        jQuery(this).css("margin", Math.floor((H - jQuery(this).width("100%").height()) / 2) + "px 0px");
+                    }
+                });
+            });
+            if (Opts.File) {
+                jQuery(".list>div>img[src='" + Opts.File + "']").parent().trigger("click");
+            }
+            else {
+                jQuery(".list>div:first").trigger("click");
+            }
+        }
+    };
+
+    function Dispose() {
+        if (Opts.Editable == true) {
+            var Files = [];
+            if(Opts.HasContent) {
+                jQuery(".list>div").each(function (i, ele) {
+                    if (jQuery(ele).hasClass("upload") == false) {
+                        Files.push(jQuery(ele).find("p").data("url"));
+                    }
+                });
+            }
+            else{
+                jQuery(".list>div").each(function (i, ele) {
+                    if (jQuery(ele).hasClass("upload") == false) {
+                        Files.push(jQuery(ele).find("img").attr("src"));
+                    }
+                });
+            }
+            MyDialog.ReturnValue = Files;
+        }
+    };
+
+    var Temp_layout = template.compile(jQuery.GetTemplate(function () {
+        /*
+        <div class="view">
+        <img />
+        </div>
+        <div class="list">
+
+        {{if HasContent}}
+        {{each Files as file i}}
+            <div>
+                <p data-url={{file}}
+                style="
+                position:absolute;
+                width: 100%;
+                height: 100%;
+                background: none;
+                display: block;
+                text-align: center;
+                line-height: 166px;
+                margin:0px;
+                ">
+                附件{{i+1}}
+                </p>
+                {{if Editable == true}}
+                <div></div>
+                {{/if}}
+            </div>
+            {{/each}}
+        {{else}}
+            {{each Files as file i}}
+            <div>
+                <img src="{{file}}" />
+                {{if Editable == true}}
+                <div></div>
+                {{/if}}
+            </div>
+            {{/each}}
+        {{/if}}
+
+        {{if Editable == true}}
+        <div class="upload"><img style="width: 49px;height: 49px;display: block;" src="/static/Scripts/ImageView/Skins/{{Skin}}/Images/image_view_add.png" /></div>
+        {{/if}}
+        </div>
+        */
+    }));
+
+</script>
+</html>

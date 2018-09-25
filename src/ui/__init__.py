@@ -11,6 +11,7 @@ import misc
 from webservice import POST, GET
 
 from service.comm.mongo import MongoCRUD
+from bson.objectid import ObjectId
 # CRUD 使用
 def wildcard(base, suffix='\.json'):
     return path(base + '([^/]+)' + suffix)
@@ -101,6 +102,123 @@ class CRUD(POST, GET):
     def exporting(self, model=None, *args, **kwArgs):
         raise Exception("功能未支持!")
 
+class ArrayCRUD(CRUD):
+    
+  def insert(self, record=None, **kwArgs):
+
+        if record:
+
+          pid = record.pop("__pid")
+
+          if pid is None:
+            raise Exception("非唯一条件指定！")
+
+          rs = self.module.items(size=2, conditions=[{'Field':"_id",'Operate':"=",'Value':pid,'Relation':"and"}],fields=[self.array])
+          rs = list(rs)
+
+          if len(rs) != 1:
+            raise Exception("非法插入！")
+
+          record["_id"] = str(ObjectId())
+          self.module.upsert(pid, **{"$push":{self.array:record}})
+
+          return record
+
+        raise Exception("非法插入!")
+
+  def update(self, record=None, **kwArgs):
+
+        if record:
+
+          pid = record.pop("__pid")
+
+          if pid is None:
+            raise Exception("非唯一条件指定！")
+
+          _id = record.get('_id')
+
+          if _id is None:
+            raise Exception("非法更新！")
+
+          rs = self.module.items(size=2, conditions=[{'Field':"_id",'Operate':"=",'Value':pid,'Relation':"and"},{'Field':("%s._id"%self.array),'Operate':"=",'Value':_id,'Relation':"and"}],fields=['%s.$'%self.array])
+          rs = list(rs)
+
+          if len(rs) != 1:
+            raise Exception("非法更新！")
+
+          if rs and len(rs) > 0 and self.array in rs[0]:
+
+            for item in (rs[0][self.array] or []):
+
+              if item and '_id' in item and item['_id'] == _id:
+
+                for k,v in item.items():
+                  if record and k not in record:
+                    record[k] = v
+
+          self.module.upsert(pid, _query={("%s._id"%self.array):_id}, **{"$set":{("%s.$"%self.array):record}})
+          return record
+
+        return record
+
+  def delete(self, record=None, **kwArgs):
+
+        if record:
+
+          pid = record.pop("__pid")
+
+          if pid is None:
+            raise Exception("非唯一条件指定！")
+
+          _id = record.pop('_id')
+
+          if not self.module.exists(pid):
+            raise Exception('非法删除!')
+          else:
+            self.module.upsert(pid, ** {"$pull":{self.array:{"_id":_id}}})
+
+  def query(self, conditions=None, size=None, index=None, *args, **kwArgs):
+
+        if conditions is None:
+          raise Exception("非唯一条件指定！")
+
+        mq = {}
+
+        if conditions:
+
+          cs = [c for c in conditions if c.get('Field') == '__pid']
+          conditions = [c for c in conditions if c.get('Field') != '__pid']
+
+          if cs and len(cs) == 1 :
+            mq = {'_id': cs[0].get("Value")}
+          else:
+            raise Exception("__pid 未指定！")
+
+
+        if len(conditions) > 0:
+          fields = {self.array: {'$elemMatch':self.module.query(conditions)}}
+        else:
+          fields = [self.array]
+
+        rs = self.module.items(size=2, query=mq,fields=fields)
+        rs = list(rs)
+
+        if len(rs) > 1:
+          raise Exception("返回值不唯一")
+
+        if len(rs) == 1:
+          rs = rs[0].get(self.array, []) or []
+
+        rs.sort(key=lambda x:(x.get('w'), x.get('_id')))
+
+        total = len(rs)
+        offset  = 0 if index == 0 else (index-1)*size
+        rs = rs[offset : offset + size]
+
+        return {
+          'total': total,
+          'rows': rs
+        }
 
 urls = ()
 

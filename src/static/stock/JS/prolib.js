@@ -71,9 +71,10 @@ function getInterfaceConfig({table_nm}){
                     var sn=element[0]||""
                     // var tp=element[1]||""; 数据类型，暂时不用
                     var nm=element[2]||""
+                    var width=element[3]||"100"
                     retO["oOne"][sn]={sn,nm}
                     var templateCols=`
-                        { "field": "${sn}","title":"${nm}","width": 100, "halign": "center"}
+                        { "field": "${sn}","title":"${nm}","width": `+width+`, "halign": "center"}
                     `
                     var templateInputs=`
                     { "Field": "${sn}", "Name": "${nm}" }
@@ -96,9 +97,10 @@ function getInterfaceConfig({table_nm}){
             };
             if(json.rows[0].quicks){
                 let quicksStr=json.rows[0].quicks;
-                aQuicksStr=quicksStr.split(",")
+                aQuicksStr=quicksStr.split("\n")
                 aQuicksStr.forEach(element => {
-                    let sn=element||""
+                    debugger
+                    let sn=element.split(",")[0]||"";
                     
                  
                    if(retO["oOne"][sn]){

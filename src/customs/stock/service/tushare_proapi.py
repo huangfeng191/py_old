@@ -23,13 +23,25 @@ import time
 
 import tushare as ts
 
+
+def getInterfaceData(tp="stock_basic",fields=None,**kwargs):
+    pro = ts.pro_api(token="ec3db7ff2556c111a95e7b89af5ba650a3064eb6f71c3b48eebc151c")
+    data=pro.query('stock_basic',fields,**kwargs )
+    return data
+
 def getProInfo(table_nm,method=None,icount=1):
+    fields=[]
     if table_nm:
         configRow=pro_interface_config.get({"table_nm":table_nm})
+        for r in configRow.get("colInp").split("\n"):
+            ar = r.split(",")
+            if ar[0]:
+                fields.append(ar[0])
     if method:
-        df=eval("ts.%s"%method)()
+        df=getInterfaceData(tp=method,fields=fields)
     else:
-        df=eval("ts.get_%s"%table_nm)()
+        df= getInterfaceData(tp=table_nm,fields=fields)
+
     if configRow:
         indexKey=  configRow.get("indexKey")
     df_index=df.index
