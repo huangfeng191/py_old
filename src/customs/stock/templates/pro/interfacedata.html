@@ -81,7 +81,6 @@ Date : 2018/07/29
       View: {
         GridOptions: { pageSize: 30 },
         AfterRender: function() {
-          this.Button.Hide(["filter", "order"]);
           $("span[qfield]").keydown(function (event) {
             if (event.which == 13)
             $("[command=query]").click();
@@ -206,6 +205,7 @@ Date : 2018/07/29
     expnm = interfaceConfigO.nm;
     orders = interfaceConfigO.orders;
     quicks = interfaceConfigO.quicks;
+    props = interfaceConfigO.props;
 
     init();
 
