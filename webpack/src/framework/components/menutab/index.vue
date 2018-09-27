@@ -20,11 +20,21 @@
         </template>
       </template>
 
+      <div class="other-wrap">
+               
+                <div  class="command" title="刷新" @click="onRefresh">
+                    <span>
+                        <i class="el-icon-refresh"></i>刷新
+                    </span>
+                </div>
+            </div>
+
+
     </div>
     <div class="content">
 
       <div v-for="item in Pages" :key="item.Id" :style="[item.Id==Current.Id?{'height':'auto','overflow':'visible'}:{'height':'0','overflow':'hidden'}]">
-        <iframe :src="item.val" width=100% :style="stl" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+        <iframe :src="item.val" :id="item.Id"  width=100% :style="stl" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
       </div>
 
     </div>
@@ -45,7 +55,7 @@ export default {
   },
   created() {},
   mounted() {
-    ;
+    
     var h = $(".menutab-index").height() - 40;
     this.stl = "width: 100%;height:" + h + "px";
   },
@@ -60,7 +70,9 @@ export default {
   },
   methods: {
 
-
+        onRefresh() {
+            document.getElementById(this.$store.state.History.Current.Id).contentWindow.location.reload(true);
+        },
 
     closeMenu(val, Id) {
       let self = this;
@@ -93,6 +105,14 @@ export default {
     height: @Pages-height;
     background-color: yellow;
     background-color: #0481C4;
+
+
+    .other-wrap {
+        float: right; 
+        right: 20px;
+        top:0
+    
+    }
 
     .menu-name {
       padding: 0 16px;

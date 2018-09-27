@@ -14,6 +14,8 @@ pro_interface_config = comm.CRUD(ctx.tuprodb, "interface_config" )
 
 # 获取股票基本信息
 stock_basic = comm.CRUD(ctx.tuprodb, "stock_basic", [("code", 1)])
+# 沪深股通成份股
+hs_const = comm.CRUD(ctx.tuprodb, "hs_const", [("code", 1)])
 
 # 考虑用on_upsert
 #stock_basics.inject(industry_classified,"i_c","code",False,"code")
@@ -23,41 +25,40 @@ import time
 
 import tushare as ts
 
-
-def getInterfaceData(tp="stock_basic",fields=None,**kwargs):
+# table_nm 就是接口名
+def getInterfaceData(table_nm="stock_basic",fields=None,**kwargs):
     pro = ts.pro_api(token="ec3db7ff2556c111a95e7b89af5ba650a3064eb6f71c3b48eebc151c")
-    data=pro.query('stock_basic',fields,**kwargs )
+    data=pro.query(table_nm,fields,**kwargs )
     return data
 
-def getProInfo(table_nm,method=None,icount=1):
-    fields=[]
+def handleDate(table_nm,fields,config,**kws):
+
+    df = getInterfaceData(table_nm=table_nm, fields=fields, **kws)
+    # df_index = df.index
+    # 暂时不用
+    if not isinstance(df, list):
+        print "OK"
+        l = json.loads(df.to_json(orient='records'))
+        for i, r in enumerate(l):
+            eval(table_nm).upsert(**r)
+
+
+def getProInfo(table_nm,icount=1,**kwargs):
+
     if table_nm:
         configRow=pro_interface_config.get({"table_nm":table_nm})
+        fields = []
         for r in configRow.get("colInp").split("\n"):
             ar = r.split(",")
             if ar[0]:
                 fields.append(ar[0])
-    if method:
-        df=getInterfaceData(tp=method,fields=fields)
-    else:
-        df= getInterfaceData(tp=table_nm,fields=fields)
 
-    if configRow:
-        indexKey=  configRow.get("indexKey")
-    df_index=df.index
-    if not isinstance(df,list):
-        print "OK"
-        l=json.loads(df.to_json(orient='records'))
-        for i,r in enumerate(l):
-            if indexKey:
-               r[indexKey]=df_index[i]
-            eval(table_nm).upsert(**r)
-    else:
-    #     考虑写入错误日志 ，重新发起请求
-        time.sleep(10)
-        print "err"
-        if icount<5:
-            getProInfo(table_nm,method,icount=icount+1)
-        else:
-            print "total_err"
+        if configRow.get("param"):
+            params=json.loads(configRow.get("param"))
+            for r in params:
+                handleDate(table_nm,fields,configRow,**r)
+        else:    
+            handleDate(table_nm,fields,configRow)
+
+
     return "OK"

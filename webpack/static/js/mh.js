@@ -17,13 +17,13 @@ window.mh = {
                         Id: "1",
                         val: "/prostock/interfaceconfig.html",
                         nm: "页面配置",
-                        open:0
+                        open:1
                     },
                     {
                         Id: "3",
                         val: "/prostock/admin.html",
                         nm: "接口数据获取",
-                        open:0
+                        open:1
                     }
                 ]
             }]
@@ -39,6 +39,12 @@ window.mh = {
                         Id: "11",
                         val: "/prostock/interfacedata.html?table_nm=stock_basic",
                         nm: "获取股票基本信息",
+                        open:1
+                    },
+                    {
+                        Id: "12",
+                        val: "/prostock/interfacedata.html?table_nm=hs_const",
+                        nm: "沪深股通成份股",
                         open:1
                     }
                 ]

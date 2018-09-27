@@ -42,7 +42,7 @@ Date : 2018/07/25
       { "field": "nm", "title": "记录名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "table_nm", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "param", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
+      { "field": "param", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 240, },
       { "field": "orders", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "w", "title": "配置排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "quicks", "title": "查询条件", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
@@ -63,13 +63,14 @@ Date : 2018/07/25
     [],
     [
       { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+     
       { "Field": "w", "Name": "配置排序", ShowType: "text", Ext: "1", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
+      { "Field": "indexKey", "Name": "索引列", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
     ],
     [
       { "Field": "orders", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "indexKey", "Name": "索引列", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
     ],
     [
     { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
@@ -119,6 +120,7 @@ Date : 2018/07/25
             FormContainer.find("textarea").width(FormContainer.find("textarea").parent().parent().width() - 5);
             FormContainer.find("[field=colInp]").height(350);
             FormContainer.find("[field=quicks]").height(150);
+            FormContainer.find("[field=param]").width(354);
 
           },
           BeforeGet: function(Record, u, Valids) {},

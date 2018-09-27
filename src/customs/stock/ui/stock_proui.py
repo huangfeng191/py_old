@@ -112,6 +112,16 @@ class StockAdminCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
         if act == 'getInfo':
             return self.getProInfo(*args, **kwArgs)
+        if act == 'getInfos':
+            return self.getProInfos(*args, **kwArgs)
+
+        return CRUD.action(self, act, *args, **kwArgs)
+
+    def getInfos(self, table_nm=None, *args, **kwArgs):
+        tushare_proapi.getProInfo(table_nm)
+        print 1
+        return "OK"
+
         return CRUD.action(self, act, *args, **kwArgs)
     def getProInfo(self, table_nm=None, *args, **kwArgs):
         tushare_proapi.getProInfo(table_nm)
