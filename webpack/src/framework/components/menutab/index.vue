@@ -21,20 +21,19 @@
       </template>
 
       <div class="other-wrap">
-               
-                <div  class="command" title="刷新" @click="onRefresh">
-                    <span>
-                        <i class="el-icon-refresh"></i>刷新
-                    </span>
-                </div>
-            </div>
 
+        <div class="command" title="刷新" @click="onRefresh">
+          <span class="refresh">
+            <i class="el-icon-refresh "></i>
+          </span>
+        </div>
+      </div>
 
     </div>
     <div class="content">
 
       <div v-for="item in Pages" :key="item.Id" :style="[item.Id==Current.Id?{'height':'auto','overflow':'visible'}:{'height':'0','overflow':'hidden'}]">
-        <iframe :src="item.val" :id="item.Id"  width=100% :style="stl" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+        <iframe :src="item.val" :id="item.Id" width=100% :style="stl" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
       </div>
 
     </div>
@@ -49,44 +48,37 @@ export default {
   },
   data() {
     return {
-      stl: "",
-    
+      stl: ""
     };
   },
   created() {},
   mounted() {
-    
     var h = $(".menutab-index").height() - 40;
     this.stl = "width: 100%;height:" + h + "px";
   },
   computed: {
-        Pages: function () {
-          
-            return this.$store.state.History.Pages;
-        },
-         Current: function () {
-            return this.$store.state.History.Current.Item;
-        },
+    Pages: function() {
+      return this.$store.state.History.Pages;
+    },
+    Current: function() {
+      return this.$store.state.History.Current.Item;
+    }
   },
   methods: {
-
-        onRefresh() {
-            document.getElementById(this.$store.state.History.Current.Id).contentWindow.location.reload(true);
-        },
+    onRefresh() {
+      document.getElementById(this.$store.state.History.Current.Id).contentWindow.location.reload(true);
+    },
 
     closeMenu(val, Id) {
       let self = this;
-       self.$store.commit("removeMenu", Id);
+      self.$store.commit("removeMenu", Id);
     },
     selectMenu(val, Id) {
-
-
       let self = this;
-      let menu=self.Pages.find(page=>{
-        return page.Id==Id
-      })
-      if(menu){
-        
+      let menu = self.Pages.find(page => {
+        return page.Id == Id;
+      });
+      if (menu) {
         self.$store.commit("selectMenu", menu);
       }
     }
@@ -104,14 +96,20 @@ export default {
   .Pages {
     height: @Pages-height;
     background-color: yellow;
-    background-color: #0481C4;
-
+    background-color: #0481c4;
 
     .other-wrap {
-        float: right; 
-        right: 20px;
-        top:0
-    
+      float: right;
+      right: 20px;
+      top: 0;
+      .refresh {
+        color: #fff;
+        font-size: 18px;
+        line-height: 32px;
+        display: inline-block;
+        margin-right: 10px;
+        cursor: pointer;
+      }
     }
 
     .menu-name {
