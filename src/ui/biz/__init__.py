@@ -85,6 +85,8 @@ class BizMenuTree(POST):
       # 把子菜单的子菜单再循环一遍
       for sub in Children:
           menus2 =list(service.biz.menus.items(query={"pid":sub.get("_id")},fields=["_id","pid","nm","keep","sn","val","open","icon","target","display"]))
+          for menusr in menus2:
+              menusr["Id"]=menusr.get("_id")
           # 还有子菜单
           if len(menus):
               sub["Children"] = self.set_subMenus(sub.get("_id"), menus2)
@@ -100,6 +102,8 @@ class BizMenuTree(POST):
       cid = kwArgs.get('cid')
       o ={"_id":cid,"pid":"0","sn":"0","nm": u"所有菜单","open":True, 'isParent': True,"Children":[]}
       l =list(service.biz.menus.items(query={"pid":cid},fields=["_id","pid","nm","keep","sn","val","open","icon","target","display"]))
+      for r in l:
+          r["Id"]=r.get("_id")
       subMenus=self.set_subMenus(cid,l)
       o["Children"]=subMenus
       return o

@@ -10,7 +10,7 @@ window.mh = {
         sn: 0,
         pid: "cid",
         nm: "配置页面",
-        "Children":[{
+        Children:[{
         sn: 1,
         style: null,
         nm: "页面设置",
@@ -22,19 +22,19 @@ window.mh = {
                     Id: "111",
                     val: "/biz/menu.html",
                     nm: "菜单配置",
-                    keep:1
+                    keep:"1"
                 },
                 {
                     Id: "1",
                     val: "/prostock/interfaceconfig.html",
                     nm: "页面配置",
-                    keep:1
+                    keep:"1"
                 },
                 {
                     Id: "3",
                     val: "/prostock/admin.html",
                     nm: "接口数据获取",
-                    keep:1
+                    keep:"1"
                 }
             ]
         }]
@@ -50,13 +50,13 @@ window.mh = {
                     Id: "11",
                     val: "/prostock/interfacedata.html?table_nm=stock_basic",
                     nm: "获取股票基本信息",
-                    keep:1
+                    keep:"1"
                 },
                 {
                     Id: "12",
                     val: "/prostock/interfacedata.html?table_nm=hs_const",
                     nm: "沪深股通成份股",
-                    keep:1
+                    keep:"1"
                 }
             ]
         }]
@@ -79,8 +79,29 @@ window.mh = {
                 }
             })
         }
-        getChildren(mh.MenuTree.Children);
-        mh.All=all;
+
+        // API.getMenuTree({query:{"cid":GCtx.customer._id}}).success(function(r){
+//     debugger
+//     MenuTree=r.Response;
+// });
+// debugger
+// mh.MenuTree=MenuTree
+      
+        $.ajax({
+            type:'POST',
+            data:JSON.stringify({"cid":GCtx.customer._id}),
+            url:"/biz/menu/tree.json",
+            contentType:'application/json; charset=utf-8',
+            dataType:'json',
+            async:false
+        }).success(function(r){
+            debugger
+            mh.MenuTree=r.Response;
+            getChildren(mh.MenuTree.Children);
+            mh.All=all;
+        })
+
+        
     },
     History: {
         Pages: [
@@ -170,7 +191,7 @@ window.mh = {
     },
 
 };
-
+mh.initMenu();
 window.onhashchange = function() {
     mh.Open(window.location.hash);
 };

@@ -2,21 +2,13 @@
 import Vue from "vue"
 import Vuex from "vuex"
 Vue.use(Vuex)
-require('../../../static/js/mh');
-
-
 $.ajax({ cache: false, async: false, url: "/ctx.js", dataType: "script" });
+require('../../../static/js/mh');
   
 import {API} from "../modules/service";
 
-let MenuTree={}
-API.getMenuTree({query:{"cid":GCtx.customer._id}}).success(function(r){
-    debugger
-    MenuTree=r.Response;
-});
+ 
 debugger
-mh.MenuTree=MenuTree
-mh.initMenu();
 const state = {
     History:mh.History
 }
