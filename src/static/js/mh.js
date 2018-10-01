@@ -6,68 +6,70 @@
 
 window.mh = {
     All: [],
-    Menus: [{
-            sn: 1,
-            style: null,
-            nm: "页面设置",
+    MenuTree: {
+        sn: 0,
+        pid: "cid",
+        nm: "配置页面",
+        Children:[{
+        sn: 1,
+        style: null,
+        nm: "页面设置",
+        Children: [{
+            sn: 11,
+            nm: "配置页面",
+            Children: [
+                {
+                    Id: "111",
+                    val: "/biz/menu.html",
+                    nm: "菜单配置",
+                    keep:"1"
+                },
+                {
+                    Id: "1",
+                    val: "/prostock/interfaceconfig.html",
+                    nm: "页面配置",
+                    keep:"1"
+                },
+                {
+                    Id: "3",
+                    val: "/prostock/admin.html",
+                    nm: "接口数据获取",
+                    keep:"1"
+                }
+            ]
+        }]
+    },
+    {
+        sn: 2,
+        style: null,
+        nm: "基本数据",
+        Children: [{
+            sn: 12,
+            nm: "接口原始数据",
             Children: [{
-                sn: 11,
-                nm: "配置页面",
-                Children: [{
-                        Id: "1",
-                        val: "/prostock/interfaceconfig.html",
-                        nm: "页面配置",
-                        open:1
-                    },
-                    {
-                        Id: "3",
-                        val: "/prostock/admin.html",
-                        nm: "接口数据获取",
-                        open:1
-                    }
-                ]
-            }]
-        },
-        {
-            sn: 2,
-            style: null,
-            nm: "基本数据",
-            Children: [{
-                sn: 12,
-                nm: "接口原始数据",
-                Children: [{
-                        Id: "11",
-                        val: "/prostock/interfacedata.html?table_nm=stock_basics",
-                        nm: "获取股票基本信息",
-                        open:1
-                    },
-                    {
-                        Id: "12",
-                        val: "/prostock/interfacedata.html?table_nm=industry_classified",
-                        nm: "行业分类"
-                    },
-                    {
-                        Id: "13",
-                        val: "/prostock/interfacedata.html?table_nm=concept_classified",
-                        nm: "概念分类"
-                    },
-                    {
-                        Id: "14",
-                        val: "/prostock/interfacedata.html?table_nm=area_classified",
-                        nm: "地域分类"
-                    },
-                ]
-            }]
-        }
+                    Id: "11",
+                    val: "/prostock/interfacedata.html?table_nm=stock_basic",
+                    nm: "获取股票基本信息",
+                    keep:"1"
+                },
+                {
+                    Id: "12",
+                    val: "/prostock/interfacedata.html?table_nm=hs_const",
+                    nm: "沪深股通成份股",
+                    keep:"1"
+                }
+            ]
+        }]
+    }
 
-    ],
+]},
     initMenu:function(){
         let all={}
         function getChildren(menus){
             $.each(menus,function(mi,mv){
                 if(mv.val){
                     all[mv.Id]=mv  
-                    if(mv.open){
+                    if(mv.keep=="1"){
                         mh.History.Pages.push(mv);
                         mh.History.Current={"Id":mv.Id,"Item":mv}
                     }
@@ -77,8 +79,20 @@ window.mh = {
                 }
             })
         }
-        getChildren(mh.Menus);
-        mh.All=all;
+        $.ajax({
+            type:'POST',
+            data:JSON.stringify({"cid":GCtx.customer._id}),
+            url:"/biz/menu/tree.json",
+            contentType:'application/json; charset=utf-8',
+            dataType:'json',
+            async:false
+        }).success(function(r){
+            mh.MenuTree=r.Response;
+            getChildren(mh.MenuTree.Children);
+            mh.All=all;
+        })
+
+        
     },
     History: {
         Pages: [
