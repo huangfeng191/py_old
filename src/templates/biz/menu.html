@@ -84,27 +84,30 @@ Date : 2018/09/30
 
     columns: [
       [
-      { "field": "w","title": "排序", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-{ "field": "sn","title": "编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-{ "field": "nm","title": "名称", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-{ "field": "val","title": "链接", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 200, },
-{ "field": "keep","title": "是否打开", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"DISPLAY" },
-{ "field": "icon","title": "样式", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-{ "field": "target","title": "打开方式", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"TARGET" },
-{ "field": "display","title": "是否常见", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"DISPLAY" },
+        { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "nm", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "val", "title": "链接", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200, },
+        { "field": "keep", "title": "是否打开", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "DISPLAY" },
+        { "field": "icon", "title": "样式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "target", "title": "打开方式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "TARGET" },
+        { "field": "display", "title": "是否常见", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "DISPLAY" },
       ]
     ],
     form: [{
       "Title": "",
       "Inputs": [
-      [{ "Field": "w", "Name": "排序", ShowType: "text", Ext: "",DataType: "Number", "Required": false, RowSpan: 1, ColSpan: 1 },
-{ "Field": "sn", "Name": "编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-{ "Field": "nm", "Name": "名称", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
-[{ "Field": "val", "Name": "链接", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-{ "Field": "keep", "Name": "是否打开", ShowType: "combo", Ext: "DISPLAY",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-{ "Field": "icon", "Name": "样式", ShowType: "upload", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
-[{ "Field": "target", "Name": "打开方式", ShowType: "combo", Ext: "TARGET",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-{ "Field": "display", "Name": "是否常见", ShowType: "combo", Ext: "DISPLAY",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
+        [{ "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "Number", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "val", "Name": "链接", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "keep", "Name": "是否打开", ShowType: "combo", Ext: "DISPLAY", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "icon", "Name": "样式", ShowType: "upload", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "target", "Name": "打开方式", ShowType: "combo", Ext: "TARGET", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "display", "Name": "是否常见", ShowType: "combo", Ext: "DISPLAY", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
       ]
 
     }],
@@ -136,7 +139,7 @@ Date : 2018/09/30
             },
             BeforeGet: function(Record, u, Valids) {},
             AfterGet: function(Record, u, Valids) {
-                Record["cid"]=GCtx.customer._id;
+              Record["cid"] = GCtx.customer._id;
             },
             BeforeSet: function(Record, IsNew) {
 
@@ -177,9 +180,34 @@ Date : 2018/09/30
 
             return true;
           },
+          AfterDelete: function(Result) {
+            
+            if (Result.Code == 0 && Tree) {
+              var node = Tree.getNodeByParam('Id', PCRUD.View.Grid.CurrentRow._id);
+              Tree.removeNode(node);
+            }
+            return Result.Code == 0;
+          },
           AfterSave: function(Result) {
-            //  PCRUD.View.Grid.Query();
-            oConfig.ztree.init();
+            var rcd = Result.Response;
+            var node = Tree.getNodeByParam('Id', rcd._id);
+            if (!node) {
+              var node = Tree.getNodeByParam('Id', rcd.pid);
+              Tree.addNodes(node, {
+                isParent: false,
+                Id: rcd._id,
+                sn: rcd.sn,
+                pid: rcd.pid,
+                icon: rcd.icon,
+                nm: rcd.nm
+
+              });
+            } else {
+              node.name = Record.nm;
+              Tree.updateNode(node);
+            }
+
+
             return true;
           },
           Grid: {
@@ -195,10 +223,10 @@ Date : 2018/09/30
         }
       }, {
         "Bindings": GBindings.concat([
-                        {Code: "DISPLAY", Records: [{name: "是", value: 1}, {name: "否", value: 2}]},
-                        {Code: "TARGET", Records: [{name: "标签页", value: '_self'}, {name: "弹出页", value: '_blank'}]}
-                    ]),
-     
+          { Code: "DISPLAY", Records: [{ name: "是", value: 1 }, { name: "否", value: 2 }] },
+          { Code: "TARGET", Records: [{ name: "标签页", value: '_self' }, { name: "弹出页", value: '_blank' }] }
+        ]),
+
         "FrozenColumns": [
           []
         ],
