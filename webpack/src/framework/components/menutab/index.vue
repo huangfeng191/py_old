@@ -1,7 +1,7 @@
 <template>
   <div class="menutab-index">
     <div class="Pages">
-      <template v-for="(item, index) in Pages">
+      <span v-for="(item, index) in Pages" :key="item.Id">
 
         <template v-if="item.Id==Current.Id">
           <div :data-index='index' :class="['menu-name','is-active',item.Id]" :key="item.Id">
@@ -18,7 +18,7 @@
             <span class="el-icon-close" @click="closeMenu(item.val,item.Id)"></span>
           </div>
         </template>
-      </template>
+      </span>
 
       <div class="other-wrap">
 
