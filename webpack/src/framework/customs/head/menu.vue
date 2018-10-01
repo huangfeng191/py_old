@@ -53,7 +53,7 @@ export default {
       function getChildren(menus) {
         $.each(menus, function(mi, mv) {
           if (mv.val) {
-            if (mv.open) {
+            if (mv.keep=="1") {
               mh.History.Pages.push(mv);
               mh.History.Current = { Id: mv.Id, Item: mv };
             }

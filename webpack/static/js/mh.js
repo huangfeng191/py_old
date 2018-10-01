@@ -79,14 +79,6 @@ window.mh = {
                 }
             })
         }
-
-        // API.getMenuTree({query:{"cid":GCtx.customer._id}}).success(function(r){
-//     debugger
-//     MenuTree=r.Response;
-// });
-// debugger
-// mh.MenuTree=MenuTree
-      
         $.ajax({
             type:'POST',
             data:JSON.stringify({"cid":GCtx.customer._id}),
@@ -95,7 +87,6 @@ window.mh = {
             dataType:'json',
             async:false
         }).success(function(r){
-            debugger
             mh.MenuTree=r.Response;
             getChildren(mh.MenuTree.Children);
             mh.All=all;
