@@ -6,21 +6,6 @@ import App from './App.vue'
 import router from './router'
 import $ from 'jquery';
 
- 
-var s=$.post({
-  url:"/stock/interfaceconfig/query.json",
-  async:false,
-  type:'POST',
-  // data:JSON.stringify(data),
-  contentType:'application/json; charset=utf-8',
-  dataType:'json',
-  success:function(ret){
-    "ok"
-  }
-})
-
-
-
 Vue.use(ElementUI)  
 
 new Vue({

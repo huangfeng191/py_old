@@ -12,3 +12,4 @@ src/static/webpack/
 *.ntvs*
 *.njsproj
 *.sln
+*.pyc

@@ -18,7 +18,9 @@ var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/static/Scripts/CRUD/**",
 "/stock/bindings.js",
 "/prostock/bindings.js",
+"/biz/*",
 "/v.png","/upload","/export","/logout.html"];
+
 var server="http://localhost:8087";
 for (let i = 0; i < mods.length; i++) {
   const mod = mods[i];

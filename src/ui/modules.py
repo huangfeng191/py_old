@@ -31,6 +31,7 @@ class StockIndex:
 
 
 import ui.biz
+import ui.ubiz
 
 # 动态导入模块
 import importlib

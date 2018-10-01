@@ -38,9 +38,9 @@ export default {
   mounted() {},
   computed: {
     SingleMenu: function() {
-      //   return this.$store.state.Menus.Children;
+      //   return this.$store.state.MenuTree.Children;
       // {sn  style nm}
-      return window.mh.Menus;
+      return window.mh.MenuTree.Children;
     }
   },
   methods: {

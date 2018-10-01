@@ -25,7 +25,7 @@ class Ctx:
         web.header("Content-Type", "text/javascript", True)
         # user=utils.get_session_value('user')
         u=user.get({"acc":"sandy"})
-        c = customer.get({"code": "uniscada"})
+        c = customer.get({"code": "stock"})
         GCtx={}
 
         GCtx["user"]=u

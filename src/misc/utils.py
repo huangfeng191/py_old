@@ -11,3 +11,5 @@ def set_session_value(key, value, prefix=''):
     sess = web.ctx.session
     key = key + prefix
     sess[key] = value
+
+
