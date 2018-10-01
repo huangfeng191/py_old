@@ -1,0 +1,244 @@
+<!--<%inherit file="layout.html" /> -->
+<!-- 菜单管理
+Author Wujj
+Date : 2018/09/30
+-->
+<style>
+	#tree {
+		/* width: 180px; */
+		width: 246px;
+		height: 100%;
+		float: left;
+		margin-left: 6px !important;
+		overflow-x: auto;
+	}
+
+	#menu {
+		height: 100%;
+		/* margin-left:190px; */
+		margin-left: 256px;
+	}
+</style>
+<div style="width:100%;height: 100%;">
+	<div id='tree' class="ztree">
+		&nbsp;
+	</div>
+	<div id='menu'>
+		&nbsp;
+	</div>
+</div>
+<script type="text/javascript">
+    var PCRUD;
+
+    var Cnm;
+    var Customer = jQuery.extend({}, GCtx.customer);
+    var Cid = Customer._id;
+    var Uid = GCtx.user._id;
+    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
+    var btnNm = "";
+
+
+    var oConfig = {
+        path: "biz/",
+        ztree: {
+            Pid: Cid,
+            plv: null,
+            node: {},
+            selectTree: function (node) {
+                oConfig.ztree.Pid = node._id;
+                oConfig.ztree.plv = (node.lv || 0);
+                oConfig.ztree.node = node
+
+                if (oConfig.ztree.node._id == Cid) {
+                    PCRUD.View.Button.Hide(["insert"])
+                } else {
+                    PCRUD.View.Button.Show(["insert"])
+                }
+                PCRUD.View.Grid.Query();
+            },
+            setting: {
+                data: {key: {name: "nm"}, simpleData: {enable: true, idKey: "_id", pIdKey: "pid"}},
+                callback: {
+                    onClick: function (event, id, node) {
+                        oConfig.ztree.selectTree(node)
+
+                    }
+                }
+            },
+            init: function () {
+                {
+
+                    $.JWS("../" + oConfig.path + "division/query.json", {query: {'cid': Cid, "lv": {'LR': 4}}, order: [{Field: "pid", Type: false}, {Field: "w", Type: false}]}).success(function (Result) {
+                        if (Result.Code == 0) {
+                            var Nodes = Result.Response.rows;
+                            for (var i = 0, len = Nodes.length; i < len; i++) {
+                                Nodes[i].iconSkin = "std";
+                                // if (Nodes[i].lv == 1) {
+                                //   Nodes[i].iconSkin = "std";
+
+                                // } else {
+
+                                //   Nodes[i].iconSkin = "stl";
+                                // }
+                            }
+                            Nodes.unshift(jQuery.extend({open: true, iconSkin: "str"}, Customer));
+                            Tree = $.fn.zTree.init($("#tree"), oConfig.ztree.setting, Nodes);
+                            Tree.selectNode(Tree.getNodes()[0]);
+
+                            oConfig.init();
+                            if (Tree.getNodes().length > 0) {
+                                oConfig.ztree.selectTree(Tree.getNodes()[0])
+                            }
+
+
+                        }
+                    });
+                }
+            }
+        },
+
+        columns: [
+            []
+        ],
+        form: [{
+            "Title": "",
+            "Inputs": []
+
+        }],
+        props: [],
+        quics: [],
+        init: function () {
+
+            PCRUD = jQuery.CRUD('#menu', {
+                View: {
+                    AfterRender: function () {
+                        this.Button.Hide(["filter", "order"]);
+
+
+                        jQuery('<button command="importdata" id="menu_import" title="监督人员" class="" type="button">监督人员导入</button>').prependTo($(".crud_framework .top_container .right_container"));
+                        $("button[command=importdata]").unbind("click").on("click", function (event) {
+                            var c = {"tp": null}
+                            c["url"] = "/baoxing/menu/" + "importData.json"
+                            if ($(event.target).attr("title")) {
+                                c["name"] = $(event.target).attr("title")
+                            }
+                            importInfo(c, function () {
+                                oConfig.ztree.init();
+                            })
+                        })
+
+
+                    },
+                    Form: {
+                        AfterEnable: function () {
+
+                        },
+                        AfterDisable: function () {
+
+                        },
+                        AfterSet: function (Record, IsNew) { // 点击新建后
+                            // PCRUD.View.Form.Disable(["regionCode"]);
+                            // PCRUD.View.Form.Enable([]);
+                            // var FormContainer = $(".my_dialog") || this.Container;
+                            // if (!IsNew) {
+                            // } else {
+                            //   FormContainer.find("[field='regionCode']").val(oConfig.ztree.node.sn);
+                            // }
+                        },
+                        BeforeGet: function (Record, u, Valids) {
+                        },
+                        AfterGet: function (Record, u, Valids) {
+
+                        },
+                        BeforeSet: function (Record, IsNew) {
+
+                        }
+                    }
+                },
+                Behavior: {
+                    BeforeQuery: function (Filters, Orders) {
+                        if (Cid) {
+
+                            Filters.Merge([{Field: "pid", Operate: "=", Value: oConfig.ztree.Pid, Relation: "and"}]);
+
+                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
+
+
+                            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+                            Loading.Show();
+                            return true;
+                        } else {
+                            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+                            return false;
+                        }
+                        Loading.Show();
+                    },
+                    AfterQuery: function (Result) {
+                        Loading.Hide();
+                        return true;
+                    },
+                    BeforeSave: function (Record, Callback) {
+                        if (Cid) {
+                            Record.cid = Cid;
+                            Record.cnm = Cnm;
+
+                            if (!Record._id) {
+                                Record.pid = oConfig.ztree.Pid;
+                            }
+                        }
+
+                        return true;
+                    },
+                    AfterSave: function (Result) {
+                        //  PCRUD.View.Grid.Query();
+                        return true;
+                    },
+                    Grid: {
+                        //   RowDblClick: function (Row) {
+
+                        // }
+                    }
+                },
+                Service: {
+                    Path: this.path,
+                    Target: "menu",
+                    Base: "../"
+                }
+            }, {
+
+                "Bindings": GBindings,
+                "FrozenColumns": [
+                    []
+                ],
+                "Columns": this.columns,
+                "Form": this.form,
+                "Properties": this.props,
+                "Quicks": this.quics,
+                "Rights": "CUD",
+                "Target": "menu",
+                "Title": "",
+                "ExportFmt": true,
+                Layout: "POP" ? "POP" : "POP",
+                ExportName: ""
+            });
+
+
+        }
+
+    }
+
+
+    jQuery(document).ready(function () {
+        if (window["GCtx"] && GCtx.customer) {
+            Cid = GCtx.customer._id;
+            Cnm = GCtx.customer.nm;
+        } else {
+            alert("请刷新");
+        }
+
+        $("#tree").height($("body").height() - 16);
+        oConfig.ztree.init();
+
+
+    });
+</script>
