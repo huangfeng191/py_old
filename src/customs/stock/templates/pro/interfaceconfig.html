@@ -47,6 +47,7 @@ Date : 2018/07/25
       { "field": "nm", "title": "记录名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "table_nm", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "storage_way", "title": "存储方式", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "StorageWay" },
+      { "field": "storage_config", "title": "存储方式配置", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200 },
       // { "field": "storage_table_nm", "title": "父对象编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       // { "field": "storage_psn", "title": "父对象列", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       // { "field": "storage_sn", "title": "本对象列", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
@@ -172,6 +173,8 @@ Date : 2018/07/25
 
               if (av.Value && av.Value.length == 0) {
                 Filters.Clear(["storage_way"]);
+              }else{
+                av.Operate="in"
               }
             })
             // Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);

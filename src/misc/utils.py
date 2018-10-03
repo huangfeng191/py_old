@@ -247,3 +247,18 @@ def STR2TS(strdate):
     elif len(strdate) == 19:
         return YMDHMS2TS(strdate)
     return 0
+
+
+
+
+
+# basObj 是否包含 innerObj
+# 包含返回True 不包含返回False
+def dict_compare(baseObj,innerObj):
+    for r in innerObj.keys():
+        if r not in baseObj:
+            return False
+        elif baseObj.get(r)!=innerObj.get(r):
+            return False     
+    return True        
+

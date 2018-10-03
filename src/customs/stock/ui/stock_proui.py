@@ -127,3 +127,15 @@ class StockAdminCRUD(CRUD):
         tushare_proapi.getProInfo(table_nm)
         print 1
         return "OK"
+
+
+@path("/prostock/multidata.html")
+class ProstockMultidata:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_pro_stock["multidata"]()
+
+@wildcard("/prostock/multidata/")
+class ProstockMultidataCRUD(CRUD):
+
+    def __init__(self):
+        self.module = pro_multi_data

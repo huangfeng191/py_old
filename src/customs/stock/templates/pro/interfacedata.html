@@ -36,37 +36,10 @@ Date : 2018/07/29
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
   var expnm = "";
-  var cols = [
-    [
-      { "field": "nm", "title": "记录名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
-      { "field": "table_nm", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
-      { "field": "method", "title": "方法名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
-      { "field": "param", "title": "方法参数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 120, },
-      { "field": "colInp", "title": "列配置", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 460, },
-      { "field": "desc", "title": "备注", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 160, },
-
-    ]
-  ];
+  var cols = [];
 
 
-  var inp1 = [
-    [
-      { "Field": "nm", "Name": "记录名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "table_nm", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-    ],
-    [
-      { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-    ],
-
-    [
-      { "Field": "colInp", "Name": "列配置", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
-    ],
-    [
-      { "Field": "desc", "Name": "备注", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
-    ]
-
-  ];
+  var inp1 = [];
   var props = [];
 
   var quicks = [
@@ -206,8 +179,6 @@ Date : 2018/07/29
     orders = interfaceConfigO.orders;
     quicks = interfaceConfigO.quicks;
     props = interfaceConfigO.props;
-
     init();
-
   });
 </script>
