@@ -133,13 +133,13 @@ class StockAdminCRUD(CRUD):
         return "OK"
 
 
-@path("/prostock/multidata.html")
-class ProstockMultidata:
+@path("/prostock/multiconfig.html")
+class Prostockmulticonfig:
     def GET(self, _cid = None, *args, **kwargs):
-        return render_pro_stock["multidata"]()
+        return render_pro_stock["multiconfig"]()
 
-@wildcard("/prostock/multidata/")
-class ProstockMultidataCRUD(CRUD):
+@wildcard("/prostock/multiconfig/")
+class ProstockmulticonfigCRUD(CRUD):
 
     def __init__(self):
         self.module = pro_multi_data
@@ -212,3 +212,8 @@ class ProstockMultidataCRUD(CRUD):
         ret.sort(key=lambda x: x.get("w") if x.get("w") else 999)
 
         return ret
+
+@path("/prostock/dlginterfacedata.html")
+class ProstockDlginterfacedata:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_pro_stock["dlginterfacedata"]()

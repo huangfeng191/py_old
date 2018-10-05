@@ -1,3 +1,21 @@
+function showDialogList(idx,table_nm,s_query,url="/prostock/dlginterfacedata.html"){
+    
+    var row=PCRUD.View.Grid.Element.datagrid("getRows")[idx];
+    
+    var query={}
+    query[s_query]=row[s_query];
+    var config = {
+        Title: "详细", Url: url,
+         Width: "1200", Height: "700",
+         CloseButton: true
+                };
+        Dialog(config,{row,table_nm,query},function(res){
+                
+            });   
+}
+
+
+
 
 GBindings.push({
     Code: 'StorageWay',
@@ -54,7 +72,7 @@ function getBindConfig(){
 }
 function getMultDataTree(sid,callback){
     let nodes=[];
-    let p=co($.po("/prostock/multidata/basetree.json",{sid},{"async":false})).done(function(arr){
+    let p=co($.po("/prostock/multiconfig/basetree.json",{sid},{"async":false})).done(function(arr){
         if(arr&&arr.length>0){
             nodes= arr||[];
             callback(nodes)
@@ -69,15 +87,17 @@ function getInterfaceConfig({table_nm,multi_sn}){
             nm:"", // 记录名
             oOne:{},
             columns:[],
+            foreignCols:[],
             inputs:[],
             inputsRet:[[]],
             orders:[],
             quicks:[],
             props:[],
+
           
         };
         if(multi_sn){
-            url=   "/prostock/multidata/getConfigs.json";
+            url=   "/prostock/multiconfig/getConfigs.json";
             query={'multi_sn':multi_sn}
         }else{
             url=   "/prostock/interfaceconfig/query.json";
@@ -91,6 +111,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
             if(json.rows[0].colInp){
                 retO.nm=json.rows[0].nm;
                 retO.basic=json.rows[0].basic||table_nm;
+                retO.foreignCols=json.rows[0].foreignCols;
                 // 以下为处理列
                 let tempStr=json.rows[0].colInp;
                 let temp2a=tempStr.split("\n");// 字段数组
@@ -133,7 +154,34 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         retO.inputs.push(JSON.parse(templateInputs))
                         retO.props.push(JSON.parse(templateProps))
                     })
+                    if(retO.foreignCols){
+                        $.each(retO.foreignCols.split("\n"),function(ai,av){
+                            
+                            var a_foreignCol=av.split(",");
+                            if(a_foreignCol.length>0&& a_foreignCol[0] ){
+                                // 重新查询
+                                if(a_foreignCol[0]=="Out"){
+                                    sn=a_foreignCol[1];
+                                    nm=a_foreignCol[2];
+                                    s_key=a_foreignCol[3];
+                                    width="100"
+                                    templateCols=`{ "field": "${sn}","title":"${nm}","width":"${width}", "halign": "center", "align": "center"}`;
+                                    o_foreignCol=JSON.parse(templateCols)
+                                    o_foreignCol["formatter"]= function (V, R, I) {
+                                        sn=a_foreignCol[1];
+                                        nm=a_foreignCol[2];
+                                        s_key=a_foreignCol[3];
+                                        if(!V){
+                                            return ""
+                                        }
+                                        return "<a onclick=showDialogList("+I+",'"+sn+"','"+s_key+"')>"+nm+"</a>" }
+                                    retO.columns.push(o_foreignCol)
+                                }
 
+                            }
+                         
+                        })
+                    }
 
                     if(json.rows[0].orders){
                         let ordersStr=json.rows[0].orders;
@@ -152,6 +200,8 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         aQuicksStr=quicksStr.split("\n")
                         aQuicksStr.forEach(element => {
                             let sn=element.split(",")[0]||"";
+                            let default_value=element.split(",")[1]||"";
+                            
                            if(retO["oOne"][sn]){
                                let nm=retO["oOne"][sn].nm;
                                let width=retO["oOne"][sn].width;
@@ -161,7 +211,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
                               
                                let other=retO["oOne"][sn].other;
                            
-                            var templateQuicks=` { "Field": "${sn}", "Label": "${nm}",  "Type": "${type}", "Width": ${width} ${other["quicks"].join(",")} } `;
+                            var templateQuicks=` { "Field": "${sn}", "Label": "${nm}",  "Type": "${type}", "Width": ${width}, "Value": "${default_value}" ${other["quicks"].join(",")} } `;
                            
                             
                             retO.quicks.push(JSON.parse(templateQuicks))

@@ -8,7 +8,7 @@ require('../../../static/js/mh');
 import {API} from "../modules/service";
 
  
-debugger
+
 const state = {
     History:mh.History
 }

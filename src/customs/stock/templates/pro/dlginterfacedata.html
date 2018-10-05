@@ -1,32 +1,31 @@
 <!--<%inherit file="layout.html" /> -->
 <!-- 
 Author Wujj
-Date : 2018/10/05
+Date : 2018/07/29
 -->
 <style>
-	#customer {
-		/*    width: 180px;
-        height: 100%;
-        float: left;
-        margin-left: 6px !important;
-        overflow-x: auto; */
-	}
-
-	#dlginterfacedata {
-		height: 100%;
-		/*margin-left:190px;*/
-
-	}
-</style>
-<div style="width:100%;height: 100%;">
-	<div id='customer' class='customer'>
-		&nbsp;
-	</div>
-	<div id='dlginterfacedata'>
-		&nbsp;
-	</div>
-</div>
-<script type="text/javascript">
+    #customer {
+      /*    width: 180px;
+          height: 100%;
+          float: left;
+          margin-left: 6px !important;
+          overflow-x: auto; */
+    }
+  
+    #dlginterfacedata {
+      height: 100%;
+      /*margin-left:190px;*/
+    }
+  </style>
+  <div style="width:100%;height: 100%;">
+    <div id='customer' class='customer'>
+      &nbsp;
+    </div>
+    <div id='dlginterfacedata'>
+      &nbsp;
+    </div>
+  </div>
+  <script type="text/javascript">
     var PCRUD;
     var Divisions = [];
     var Cid;
@@ -34,152 +33,168 @@ Date : 2018/10/05
     var Uid = GCtx.user._id;
     var Pf = null;
     var btnNn = "";
-    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
+    var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
     var Title1 = "";
-
-    var cols = [
-        []
-    ];
-
-
-    var inp1 = [
-        []
-
-    ];
+    var expnm = "";
+    var cols = [];
+    var p_query={};
+  
+    var inp1 = [];
     var props = [];
-
-    var quics = [];
+  
+    var quicks = [
+    ];
+    var orders = [
+    ];
     var btnNm = "";
-
+    var paramStr="";
     function init() {
-
-        PCRUD = jQuery.CRUD('#dlginterfacedata',
-            {
-                View: {
-                    AfterRender: function () {
-                        this.Button.Hide(["filter", "order"]);
-                        //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-                        //        jQuery("button[command=audit]").click(
-                        //           function () {
-
-
-                        //           }
-                        //        );
-
-
-                    },
-                    Form: {
-                        AfterEnable: function () {
-
-                        },
-                        AfterDisable: function () {
-
-                        },
-                        AfterSet: function (Record, IsNew) {  // 点击新建后
-                            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
-                            //PCRUD.View.Form.Enable([]);
-                            if (!IsNew) {
-                                //FormContainer.find(".button_container").css("display", "none");
-                            } else {
-
-                            }
-                        },
-                        BeforeGet: function (Record, u, Valids) {
-                        },
-                        AfterGet: function (Record, u, Valids) {
-
-                        },
-                        BeforeSet: function (Record, IsNew) {
-
-                        }
-                    }
-                },
-                Behavior: {
-                    BeforeQuery: function (Filters, Orders) {
-                        if (Cid) {
-                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
-
-
-                            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
-                            Loading.Show();
-                            return true;
-                        }
-                        else {
-                            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
-                            return false;
-                        }
-                        Loading.Show();
-                    },
-                    AfterQuery: function (Result) {
-                        Loading.Hide();
-                        return true;
-                    },
-                    BeforeSave: function (Record, Callback) {
-                        if (Cid) {
-                            Record.cid = Cid;
-                            Record.cnm = Cnm;
-                        }
-
-                        return true;
-                    },
-                    AfterSave: function (Result) {
-                        //  PCRUD.View.Grid.Query();
-                        return true;
-                    },
-                    Grid: {
-                        //   RowDblClick: function (Row) {
-
-                        // }
-                    }
-                },
-                Service: {
-                    Path: "/",
-                    Target: "dlginterfacedata",
-                    Base: "../"
-                }
+  
+      PCRUD = jQuery.CRUD('#dlginterfacedata', {
+        View: {
+          GridOptions: { pageSize: 30 },
+          AfterRender: function() {
+            $("span[qfield]").keydown(function (event) {
+              if (event.which == 13)
+              $("[command=query]").click();
+              });
+  
+  
+          },
+          Form: {
+            AfterEnable: function() {
+  
             },
-            {
-
-                "Bindings": GBindings,
-                "FrozenColumns": [[]],
-                "Columns": cols,
-                "Form": [
-                    {
-                        "Title": Title1,
-                        "Inputs": inp1
-                    }
-
-
-                ],
-                "Properties": props,
-                "Quicks": quics,
-                "Rights": "CUD",
-                "Target": "dlginterfacedata",
-                "Title": "",
-                "ExportFmt": true,
-                Layout: "" ? "" : "POP",
-                ExportName: ""
-
-            });
-
-
-    }
-
-    jQuery(document).ready(function () {
-        if (window["GCtx"] && GCtx.customer) {
-            //特定客户
-            jQuery("#customer").hide();
-            Cid = GCtx.customer._id;
-            Cnm = GCtx.customer.nm;
-            Pf = GCtx.customer.pf || "";
-            //  $("#dlginterfacedata").width($(window).width());
-        } else {
-            alert("请刷新");
+            AfterDisable: function() {
+  
+            },
+            AfterSet: function(Record, IsNew) { // 点击新建后
+              //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+              //PCRUD.View.Form.Enable([]);
+              if (!IsNew) {
+                //FormContainer.find(".button_container").css("display", "none");
+              } else {
+  
+              }
+              var FormContainer = $(".my_dialog") || this.Container;
+              FormContainer.find(".group_container .group").css("overflow-x", "hidden");
+            },
+            BeforeGet: function(Record, u, Valids) {},
+            AfterGet: function(Record, u, Valids) {
+  
+            },
+            BeforeSet: function(Record, IsNew) {
+  
+            }
+          }
+        },
+        Behavior: {
+          BeforeQuery: function(Filters, Orders) {
+            if(orders){
+              orders.forEach(element => {
+                Orders.Merge([element]);
+              });
+            }
+            if(p_query){
+                debugger
+                $.each(p_query,function(ai,av){
+                    Filters.Merge([{ Field: ai, Operate: "=", Value: av, Relation: "and" }]);
+                })
+            }
+            if (Cid) {
+              PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+              Loading.Show();
+              return true;
+            } else {
+              PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+              return false;
+            }
+            Loading.Show();
+          },
+          AfterQuery: function(Result) {
+            Loading.Hide();
+            return true;
+          },
+          BeforeSave: function(Record, Callback) {
+            if (Cid) {
+              Record.cid = Cid;
+              Record.cnm = Cnm;
+            }
+  
+            return true;
+          },
+          AfterSave: function(Result) {
+            //  PCRUD.View.Grid.Query();
+            return true;
+          },
+          Grid: {
+            //   RowDblClick: function (Row) {
+  
+            // }
+          }
+        },
+        Service: {
+          Path: "prostock/",
+          Target: "interfacedata",
+          Base: "../",
+          paramStr: paramStr
         }
-
-        init();
-
+      }, {
+  
+        "Bindings": GBindings,
+        "FrozenColumns": [
+          []
+        ],
+        "Columns": cols,
+        "Form": [{
+            "Title": Title1,
+            "Inputs": inp1
+          }
+  
+  
+        ],
+        "Properties": props,
+        "Quicks": quicks,
+        "Rights": "CUD",
+        "Target": "dlginterfacedata",
+        "Title": "",
+        "ExportFmt": true,
+        Layout: "POP" ? "POP" : "POP",
+        ExportName: expnm
+      });
+  
+  
+    }
+  
+    jQuery(document).ready(function() {
+      if (window["GCtx"] && GCtx.customer) {
+        //特定客户
+        jQuery("#customer").hide();
+        Cid = GCtx.customer._id;
+        Cnm = GCtx.customer.nm;
+        Pf = GCtx.customer.pf || "";
+        //  $("#dlginterfacedata").width($(window).width());
+      } else {
+        alert("请刷新");
+      }
+      
+    
     });
+    function Load(Args){
 
+      interfaceConfigO = getInterfaceConfig({"table_nm":Args.table_nm })
+      cols[0] = interfaceConfigO.columns;
+      inp1 = interfaceConfigO.inputsRet;
+      expnm = interfaceConfigO.nm;
+      orders = interfaceConfigO.orders;
+      quicks = interfaceConfigO.quicks;
+      props = interfaceConfigO.props;
+      p_query=Args.query;
+      if(Args.table_nm){
+        paramStr= "table_nm=" + Args.table_nm
+      }
+      init();
 
-</script>
+      
+    }
+  </script>

@@ -10,7 +10,7 @@ Date : 2018/10/03
 		height: 100%;
 	}
 
-	#multidata {
+	#multiconfig {
 		float: left;
 		height: 100%;
 	}
@@ -18,7 +18,7 @@ Date : 2018/10/03
 <div id='customer' class='customer'>
   &nbsp;
 </div>
-<div id='multidata'>
+<div id='multiconfig'>
   &nbsp;
 </div>
 <script type="text/javascript">
@@ -88,7 +88,8 @@ Date : 2018/10/03
     [
       { "field": "nm", "title": "模块名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200, },
       { "field": "sn", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 150, },
-      { "field": "quicks", "title": "查询条件", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "quicks", "title": "查询条件", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200, },
+      { "field": "foreignCols","title": "配置列", "align": "center", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 200, },
       { "field": "basic", "title": "基础表", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "StockConfig" },
       { "field": "types", "title": "涉及分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, binding: "StockConfig" },
     ]
@@ -112,6 +113,9 @@ Date : 2018/10/03
       { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
     ],
     [
+    { "Field": "foreignCols", "Name": "配置列", ShowType: "textarea", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [
       { "Field": "basic", "Name": "基础表", ShowType: "combo", Ext: "StockConfig", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
     ],
     [{ "Field": "types", "Name": "涉及分组", ShowType: "combocheck", Ext: "StockConfig", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1, Multi: true }, ],
@@ -130,12 +134,12 @@ Date : 2018/10/03
       Cid = GCtx.customer._id;
       Cnm = GCtx.customer.nm;
       Pf = GCtx.customer.pf || "";
-      $("#multidata").width($(window).width());
+      $("#multiconfig").width($(window).width());
     } else {
       alert("请刷新");
     }
 
-    PCRUD = jQuery.CRUD('#multidata', {
+    PCRUD = jQuery.CRUD('#multiconfig', {
       View: {
         AfterRender: function() {
           this.Button.Hide(["filter", "order"]);
@@ -159,8 +163,10 @@ Date : 2018/10/03
 
             }
             FormContainer = $(".my_dialog") || this.Container;
-            FormContainer.find("textarea[field=quicks]").width(FormContainer.find("textarea[field=quicks]").parent().parent().width());
-            FormContainer.find("[field=quicks]").height(250);
+            FormContainer.find("textarea[field=quicks]").width(154);
+            FormContainer.find("textarea[field=foreignCols]").width(154);
+            FormContainer.find("[field=quicks]").height(180);
+            FormContainer.find("[field=foreignCols]").height(100);
 
             FormContainer.find("tr:first td").eq(-2).html("")
             FormContainer.find("tr:first td:last").html("<div id='fortree'   class='ztree' style='width:360px;height: 400px;overflow-y: scroll; overflow-x: auto;'></div>")
@@ -185,7 +191,7 @@ Date : 2018/10/03
           BeforeGet: function(Record, u, Valids) {},
           AfterGet: function(Record, u, Valids) {
 
-            debugger
+            
             Record["select_config"] = [];
             // checked  w id
             var ns = oZtree.ztree.getNodes();
@@ -238,7 +244,7 @@ Date : 2018/10/03
       },
       Service: {
         Path: "prostock/",
-        Target: "multidata",
+        Target: "multiconfig",
         Base: "../"
       }
     }, {
@@ -258,7 +264,7 @@ Date : 2018/10/03
       "Properties": props,
       "Quicks": quics,
       "Rights": "CUD",
-      "Target": "multidata",
+      "Target": "multiconfig",
       "Title": "",
       "ExportFmt": true,
       Layout: "POP" ? "POP" : "LR",
