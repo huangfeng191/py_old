@@ -52,10 +52,19 @@ function getBindConfig(){
     });
   
 }
+function getMultDataTree(sid,callback){
+    let nodes=[];
+    let p=co($.po("/prostock/multidata/basetree.json",{sid},{"async":false})).done(function(arr){
+        if(arr&&arr.length>0){
+            nodes= arr||[];
+            callback(nodes)
+        }
+    });
+   
+}
 
 
-
-function getInterfaceConfig({table_nm}){
+function getInterfaceConfig({table_nm,multi_sn}){
         var retO={
             nm:"", // 记录名
             oOne:{},
@@ -67,13 +76,21 @@ function getInterfaceConfig({table_nm}){
             props:[],
           
         };
-
-      var p= co($.po("/prostock/interfaceconfig/query.json",{ query: {'table_nm':table_nm} },{"async":false})).done(function(json)
+        if(multi_sn){
+            url=   "/prostock/multidata/getConfigs.json";
+            query={'multi_sn':multi_sn}
+        }else{
+            url=   "/prostock/interfaceconfig/query.json";
+            query={'table_nm':table_nm}
+        }
+    
+      var p= co($.po(url,{ query},{"async":false})).done(function(json)
       {
         if(json.rows&&json.rows.length>0){
             // colInp 列定义
             if(json.rows[0].colInp){
                 retO.nm=json.rows[0].nm;
+                retO.basic=json.rows[0].basic||table_nm;
                 // 以下为处理列
                 let tempStr=json.rows[0].colInp;
                 let temp2a=tempStr.split("\n");// 字段数组
@@ -96,7 +113,7 @@ function getInterfaceConfig({table_nm}){
                         }
                         var showType="text";
                         var other={"columns":[],"inputs":[],"props":[],"quicks":[]};
-                        let oDdic=GetBindRow(sn,"Relation");
+                        let oDdic=GetBindRow(sn.split(".").pop(),"Relation");
                         if(oDdic){
                             showType="combo"
                             other["binding"]=oDdic.value;

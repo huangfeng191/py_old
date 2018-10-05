@@ -47,7 +47,7 @@ Date : 2018/07/29
   var orders = [
   ];
   var btnNm = "";
-
+  var paramStr="";
   function init() {
 
     PCRUD = jQuery.CRUD('#interfacedata', {
@@ -131,7 +131,8 @@ Date : 2018/07/29
         Path: "prostock/",
         Target: "interfacedata",
         Base: "../",
-        "paramStr": getUrlParam("table_nm") ? "table_nm=" + getUrlParam("table_nm") : ''
+        // "paramStr": getUrlParam("table_nm") ? "table_nm=" + getUrlParam("table_nm") : ''
+        paramStr: paramStr
       }
     }, {
 
@@ -172,13 +173,19 @@ Date : 2018/07/29
       alert("请刷新");
     }
     
-    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"prostock_basics"})
+    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"prostock_basics","multi_sn": getUrlParam("multi_sn")||null})
     cols[0] = interfaceConfigO.columns;
     inp1 = interfaceConfigO.inputsRet;
     expnm = interfaceConfigO.nm;
     orders = interfaceConfigO.orders;
     quicks = interfaceConfigO.quicks;
     props = interfaceConfigO.props;
+    debugger
+    if(getUrlParam("table_nm")){
+      paramStr= "table_nm=" + getUrlParam("table_nm")
+    }else{
+      paramStr=interfaceConfigO.basic? "table_nm=" + interfaceConfigO.basic:""
+    }
     init();
   });
 </script>

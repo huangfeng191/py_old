@@ -1,7 +1,4 @@
 <%inherit file="layout.html" />
-
-
-
 <!-- 复合模块
 Author Wujj
 Date : 2018/10/03
@@ -25,56 +22,59 @@ Date : 2018/10/03
   &nbsp;
 </div>
 <script type="text/javascript">
-var oZtree={
-    ztree:{},
-    setting:{
-            edit: {
-				enable: true,
-				showRemoveBtn: false,
-                showRenameBtn: false,
-                drag:{
-                    inner :false
-                }
-            },
-            callback:{
-                beforeDrop: function(treeId, treeNodes, targetNode, moveType){
-                    if (treeNodes[0].pId!=targetNode.pId){
-                        return false;
-                    }
-                debugger
-            }
-            },
-          
-			check: {
-				enable: true
-			},
-			data: {
-				simpleData: {
-					enable: true
-				}
-			}
+  var FormContainer;
+  var oZtree = {
+    ztree: {},
+    setting: {
+
+      edit: {
+        enable: true,
+        showRemoveBtn: false,
+        showRenameBtn: false,
+        drag: {
+          inner: false
+        }
+      },
+      callback: {
+        beforeDrop: function(treeId, treeNodes, targetNode, moveType) {
+          if (treeNodes[0].pId != targetNode.pId) {
+            return false;
+          }
+
+        }
+      },
+      view:{
+        txtSelectedEnable: true,
+      },
+
+      check: {
+        enable: true
+      },
+      data: {
+        key: { name: "nm" },
+        simpleData: {
+          enable: true
+        }
+      }
     },
-    nodes :[
-			{ id:1, pId:0, name:"随意勾选 1", open:true},
-			{ id:11, pId:1, name:"随意勾选 1-1", open:true},
-			{ id:111, pId:11, name:"随意勾选 1-1-1"},
-			{ id:112, pId:11, name:"随意勾选 1-1-2"},
-			{ id:12, pId:1, name:"随意勾选 1-2", open:true},
-			{ id:121, pId:12, name:"随意勾选 1-2-1"},
-			{ id:122, pId:12, name:"随意勾选 1-2-2"},
-			{ id:2, pId:0, name:"随意勾选 2", checked:true, open:true},
-			{ id:21, pId:2, name:"随意勾选 2-1"},
-			{ id:22, pId:2, name:"随意勾选 2-2", open:true},
-			{ id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
-			{ id:222, pId:22, name:"随意勾选 2-2-2"},
-			{ id:23, pId:2, name:"随意勾选 2-3"}
-		],
-    init(dom){
-        debugger
-        oZtree.ztree=$.fn.zTree.init(dom, oZtree.setting, oZtree.nodes);
+    setNodes: function(types, sid) {
+      getMultDataTree(sid, function(nodes) {
+        oZtree.nodes = nodes;
+        oZtree.nodes = oZtree.nodes.filter(function(v) {
+
+          return $.inArray(v.id, types) >= 0 || $.inArray(v.pId, types) >= 0;
+        })
+        oZtree.init(FormContainer.find("#fortree"));
+      });
+
+    },
+    nodes: [],
+    init(dom) {
+
+      oZtree.ztree = $.fn.zTree.init(dom, oZtree.setting, oZtree.nodes);
     }
 
-}
+  }
   var PCRUD;
   var Divisions = [];
   var Cid;
@@ -86,33 +86,35 @@ var oZtree={
   var Title1 = "";
   var cols = [
     [
-      { "field": "nm", "title": "模块名", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-      { "field": "sn", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-      { "field": "quicks", "title": "查询条件", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-      { "field": "types", "title": "涉及分组", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "StockConfig" },
+      { "field": "nm", "title": "模块名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200, },
+      { "field": "sn", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 150, },
+      { "field": "quicks", "title": "查询条件", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "basic", "title": "基础表", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "StockConfig" },
+      { "field": "types", "title": "涉及分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, binding: "StockConfig" },
     ]
   ];
   var inp1 = [
     [{ "Field": "nm", "Name": "模块名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-     {
-                            RowSpan: 5,
-                            ColSpan: 1,
-                            DataType: "String",
-                            Ext: "width: 300px;",
-                            Field: "cols",
-                            Name: "配置树",
-                            ShowType: "textarea",
-                            "Required": false
-                        },
-
-    ], 
-    [{ "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
-     
-    [
-    { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
+      {
+        RowSpan: 5,
+        ColSpan: 1,
+        DataType: "String",
+        Ext: "width: 500px;",
+        Field: "cols",
+        Name: "配置树",
+        ShowType: "textarea",
+        "Required": false
+      },
     ],
-    [{ "Field": "types", "Name": "涉及分组", ShowType: "combocheck", Ext: "StockConfig", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1,Multi:true }, ],
+    [{ "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 }, ],
+
+    [
+      { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [
+      { "Field": "basic", "Name": "基础表", ShowType: "combo", Ext: "StockConfig", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [{ "Field": "types", "Name": "涉及分组", ShowType: "combocheck", Ext: "StockConfig", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1, Multi: true }, ],
   ];
   var props = [];
 
@@ -121,6 +123,7 @@ var oZtree={
 
   jQuery(document).ready(function() {
     getBindConfig();
+
     if (window["GCtx"] && GCtx.customer) {
       //特定客户
       jQuery("#customer").hide();
@@ -155,26 +158,44 @@ var oZtree={
             } else {
 
             }
-            var FormContainer = $(".my_dialog") || this.Container;
+            FormContainer = $(".my_dialog") || this.Container;
             FormContainer.find("textarea[field=quicks]").width(FormContainer.find("textarea[field=quicks]").parent().parent().width());
-            FormContainer.find("[field=quicks]").height(150);
-            debugger
+            FormContainer.find("[field=quicks]").height(250);
+
             FormContainer.find("tr:first td").eq(-2).html("")
-            FormContainer.find("tr:first td:last").html("<div id='fortree'   class='ztree' style='width:200px'></div>")
+            FormContainer.find("tr:first td:last").html("<div id='fortree'   class='ztree' style='width:360px;height: 400px;overflow-y: scroll; overflow-x: auto;'></div>")
             FormContainer.find("textarea[field=cols]").height(FormContainer.find("textarea[field=cols]").parent().parent().height());
-            
-            debugger
+
+
             oZtree.init(FormContainer.find("#fortree"));
             FormContainer.find("[field=types]").combobox({
-            "onChange": function(nv,ov) {
-            //nv 新值，值combo 的key 
-               debugger
-            }
-        })
+              value: Record.types,
+              "onChange": function(nv, ov) {
+                //nv 新值，值combo 的key 
+                oZtree.setNodes(nv, Record._id);
+
+              }
+            })
+         
+
+              oZtree.setNodes(Record.types||[], Record._id);
+          
 
           },
           BeforeGet: function(Record, u, Valids) {},
           AfterGet: function(Record, u, Valids) {
+
+            debugger
+            Record["select_config"] = [];
+            // checked  w id
+            var ns = oZtree.ztree.getNodes();
+            $.each(ns, function(nsi, nsv) {
+              var o = { "id": nsv.id, "w": nsv.w, "checked": nsv.checked || false, cols: [] }
+              Record["select_config"].push(o)
+              $.each(nsv.children || [], function(nsvi, nsvv) {
+                o["cols"].push({ "id": nsvv.id, "w": o["cols"].length + 1, "checked": nsvv.checked || false })
+              })
+            })
 
           },
           BeforeSet: function(Record, IsNew) {

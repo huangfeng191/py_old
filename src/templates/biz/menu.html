@@ -87,7 +87,7 @@ Date : 2018/09/30
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "nm", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        { "field": "val", "title": "链接", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 280, },
+        { "field": "val", "title": "链接", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 520, },  
         { "field": "keep", "title": "是否打开", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "DISPLAY" },
         { "field": "icon", "title": "样式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "target", "title": "打开方式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "TARGET" },
@@ -101,7 +101,7 @@ Date : 2018/09/30
           { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
-        [{ "Field": "val", "Name": "链接", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        [{ "Field": "val", "Name": "链接", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },],[
           { "Field": "keep", "Name": "是否打开", ShowType: "combo", Ext: "DISPLAY", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "icon", "Name": "样式", ShowType: "upload", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
@@ -131,7 +131,8 @@ Date : 2018/09/30
             AfterSet: function(Record, IsNew) { // 点击新建后
               // PCRUD.View.Form.Disable(["regionCode"]);
               // PCRUD.View.Form.Enable([]);
-              // var FormContainer = $(".my_dialog") || this.Container;
+              var FormContainer = $(".my_dialog") || this.Container;
+                FormContainer.find("[field='val']").width(564)
               // if (!IsNew) {
               // } else {
               //   FormContainer.find("[field='regionCode']").val(oConfig.ztree.node.sn);
