@@ -19,11 +19,19 @@
       
     </div> -->
     <div style="padding-left:40px;">
-      <label>tushare：</label>
+      <label>tushare：first</label>
       <input id="getInfoOn" name="接口名称">
       <input type="button" cmd="getInfo" value="获取信息" />
       
     </div>
+
+    <div style="padding-left:40px;padding-top:300px;">
+      <label>tushare：normal</label>
+      <input id="getInfoOn_normal" name="接口名称">
+      <input type="button" cmd="getInfoNormal" value="获取信息" />
+      
+    </div>
+
     <div id="result"></div>
 </body>
 <script type="text/javascript">
@@ -45,6 +53,18 @@
     value:"stock_basic",
     editable:false
     });
+    
+
+    $('#getInfoOn_normal').combobox({
+    data:GetBindRecords("StockConfig").filter(function(v){
+      return v.other=="increase"
+    }),
+    valueField:'value',
+    textField:'name',
+    // value:"stock_basic",
+    editable:false
+    });
+
 
     var dt=new Date()
     $("#year").val(dt.FormatString("yyyy"));
@@ -54,11 +74,14 @@
       var cmd = $(this).attr("cmd");
       $("#result").html("start:");
       switch (cmd) {
-        case 'basics':
-          act(cmd, {});
+        case 'getInfoNormal':
+          act(cmd, {
+            "table_nm": $("#getInfoOn_normal").combobox("getValue"),
+            "send_param":{"sendWay":"increase"}
+          });
           break;
         case 'getInfo':
-          act(cmd, {
+        act(cmd, {
             "table_nm": $("#getInfoOn").combobox("getValue")
           });
           break;

@@ -14,6 +14,8 @@ Date : 2018/10/03
 		float: left;
 		height: 100%;
 	}
+
+
 </style>
 <div id='customer' class='customer'>
   &nbsp;
@@ -97,7 +99,7 @@ Date : 2018/10/03
   var inp1 = [
     [{ "Field": "nm", "Name": "模块名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
       {
-        RowSpan: 5,
+        RowSpan: 6,
         ColSpan: 1,
         DataType: "String",
         Ext: "width: 500px;",
@@ -163,18 +165,24 @@ Date : 2018/10/03
 
             }
             FormContainer = $(".my_dialog") || this.Container;
-            FormContainer.find("textarea[field=quicks]").width(154);
-            FormContainer.find("textarea[field=foreignCols]").width(154);
-            FormContainer.find("[field=quicks]").height(180);
-            FormContainer.find("[field=foreignCols]").height(100);
+            FormContainer.find("table .content input[type=text].default").width(300);
+            FormContainer.find("textarea[field=quicks]").width(300);
+            FormContainer.find("textarea[field=foreignCols]").width(300);
+            FormContainer.find("[field=quicks]").height(120);
+            FormContainer.find("[field=foreignCols]").height(160);
 
             FormContainer.find("tr:first td").eq(-2).html("")
-            FormContainer.find("tr:first td:last").html("<div id='fortree'   class='ztree' style='width:360px;height: 400px;overflow-y: scroll; overflow-x: auto;'></div>")
+            FormContainer.find("tr:first td:last").html("<div id='fortree'   class='ztree' style='width:400px;height: 430px;overflow-y: scroll; overflow-x: auto;'></div>")
             FormContainer.find("textarea[field=cols]").height(FormContainer.find("textarea[field=cols]").parent().parent().height());
 
 
             oZtree.init(FormContainer.find("#fortree"));
+            FormContainer.find("[field=basic]").combobox({
+              width:300,
+              value: Record.basic
+            })
             FormContainer.find("[field=types]").combobox({
+              width:300,
               value: Record.types,
               "onChange": function(nv, ov) {
                 //nv 新值，值combo 的key 

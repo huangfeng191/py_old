@@ -10,8 +10,15 @@
 import ctx
 from copy import deepcopy
 from service import comm
+# 暂时无用
 pro_admin_save = comm.CRUD(ctx.tuprodb, "admin_save", [("cid", 1)])
+
+# 接口数据参数配置
 pro_interface_config = comm.CRUD(ctx.tuprodb, "interface_config" )
+
+pro_interface_log = comm.CRUD(ctx.tuprodb, "interface_log" )
+
+# 多接口配置
 pro_multi_data = comm.CRUD(ctx.tuprodb, "multi_data" )
 
 # 获取股票基本信息
@@ -20,6 +27,30 @@ stock_basic = comm.CRUD(ctx.tuprodb, "stock_basic", [("ts_code", 1)])
 hs_const = comm.CRUD(ctx.tuprodb, "hs_const", [("ts_code", 1)])
 # 股票曾用名
 namechange = comm.CRUD(ctx.tuprodb, "namechange", [("ts_code", 1)])
+
+# 行情数据
+# 日线行情
+daily = comm.CRUD(ctx.tuprodb, "daily", [("ts_code", 1),("trade_date",1)])
+# 复权因子
+adj_factor = comm.CRUD(ctx.tuprodb, "adj_factor", [("ts_code", 1),("trade_date",1)])
+# 停复牌信息
+suspend = comm.CRUD(ctx.tuprodb, "suspend", [("ts_code", 1)])
+# 每日指标
+daily_basic = comm.CRUD(ctx.tuprodb, "daily_basic", [("ts_code", 1)])
+
+# 财务数据
+# 利润表
+income = comm.CRUD(ctx.tuprodb, "income", [("ts_code", 1)])
+# 业绩快报
+express = comm.CRUD(ctx.tuprodb, "express", [("ts_code", 1)])
+# 财务指标数据
+fina_indicator = comm.CRUD(ctx.tuprodb, "fina_indicator", [("ts_code", 1)])
+# 主营业务构成
+fina_mainbz = comm.CRUD(ctx.tuprodb, "fina_mainbz", [("ts_code", 1)])
+# 主营业务构成
+fina_mainbz = comm.CRUD(ctx.tuprodb, "fina_mainbz", [("ts_code", 1)])
+
+
 
 # 考虑用on_upsert
 #stock_basics.inject(industry_classified,"i_c","code",False,"code")
@@ -48,7 +79,6 @@ def handleDate(table_nm,fields,config,**kws):
             key_last=r
 
     if not isinstance(df, list):
-        print "OK"
         l = json.loads(df.to_json(orient='records'))
         for i, r in enumerate(l):
             # 从对象中获取primary
@@ -88,10 +118,46 @@ def InjectArray(r,storage_table_nm=None,storage_table_psn={},query={},sort="",co
         pass
 
 
+# 配置参数 ,只解析一次参数
+def rulePart(params,send_params={}):
+    one = {}
+    comps = []
+    for k, r2 in params.items():
+        pass
+        if (isinstance(r2, dict)):
+            if r2.get("type") == "loop":
+                comps.append({"basic": k, "type": r2.get("type"), "from": r2.get("from"), "k": r2.get("k")})
+            elif r2.get("type") == "date":
+                comps.append({"basic": k, "type": r2.get("type"), "start": r2.get("start"), "k": r2.get("k")})
+        else:
+            one[k] = r2
+    return comps,one
+# one 就是固定参数  comps 是可变参数，ret 是请求次数数组
 
-def getProInfo(table_nm,icount=1,**kwargs):
+def ruleCombine(comps=[],one={},send_params={},ret=[]):
+    if not comps:
+        ret.append(one)
+    for r_c in comps:
+        if r_c.get("type") == "loop":
+            l = eval(r_c.get("from")).items(fields=[r_c.get("k")], _sort=[(r_c.get("k"), 1)])
+            for r_l in l:
+                one[r_c.get("k")] = r_l.get(r_c.get("k"))
+                ret.append(deepcopy(one))
+# send_params 暂未实现
+# 返回的数组是需要调用多少次接口
+def analysisParams(s_params,tp,send_params=None,**kwargs) :
+    a_params = json.loads(s_params)
+    ret = []
+    for r in a_params:
+        comps,one= rulePart(r,send_params)
+        ruleCombine(comps,one,send_params,ret=ret)
+    return ret
+
+
+def getProInfo(table_nm,logId,**kwargs):
 
     if table_nm:
+        log=pro_interface_log.get(logId)
         configRow=pro_interface_config.get({"table_nm":table_nm})
         fields = []
         for r in configRow.get("colInp").split("\n"):
@@ -100,11 +166,22 @@ def getProInfo(table_nm,icount=1,**kwargs):
                 fields.append(ar[0])
         # 方法参数  目的是接口可能有参数要求，写成了一个数组，可循环调用接口
         if configRow.get("param"):
-            params=json.loads(configRow.get("param"))
+            params=analysisParams(configRow.get("param"),configRow.get("param2"),"first")
+            i_count=len(params)
+            i_step=0
+            log["i_count"]=i_count
+            log["i_step"]=0
+            log["state"]=1
+            pro_interface_log.upsert(**log)
             for r in params:
                 handleDate(table_nm,fields,configRow,**r)
+                i_step+=1
+                if i_step % (int(i_count/100) or 1)==0 :
+                  print "总共%d,完成%d"%(i_count,i_step)
+                  pro_interface_log.upsert(**{"_id": logId, "i_step": i_step,"last_param":r})
+            pro_interface_log.upsert(**{"_id":logId,"state":2,"i_step":i_step,"last_param":"","continued": round((int(time.time())-log.get("created"))/60)})
         else:    
             handleDate(table_nm,fields,configRow)
-
+            pro_interface_log.upsert(**{"_id": logId, "state": 2, "i_step": 1,"continued": round((int(time.time())-log.get("created"))/60)})
 
     return "OK"

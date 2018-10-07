@@ -5,7 +5,7 @@ function showDialogList(idx,table_nm,s_query,url="/prostock/dlginterfacedata.htm
     var query={}
     query[s_query]=row[s_query];
     var config = {
-        Title: "详细", Url: url,
+        Title: "详细 "+table_nm, Url: url,
          Width: "1200", Height: "700",
          CloseButton: true
                 };
@@ -24,6 +24,26 @@ GBindings.push({
        { name: '新建表', value: '1' },
        { name: '数组对象', value: '2' },
        { name: 'Object对象', value: '3' }
+    ]
+   });
+
+GBindings.push({
+    Code: 'SendWay',
+    Desc:"发送方式，",
+    Records: [
+       { name: '全部下载', value: 'all' },
+       { name: '增量下载', value: 'increase' } 
+    //    { name: 'Object对象', value: '3' }
+    ]
+   });
+GBindings.push({
+    Code: 'SendState',
+    Desc:"发送方式，",
+    Records: [
+       { name: '启动', value: '0' },
+       { name: '处理中', value: '1' },
+       { name: '处理完成', value: '2' } 
+    //    { name: 'Object对象', value: '3' }
     ]
    });
 
@@ -60,7 +80,7 @@ function getBindConfig(){
         if(json.rows&&json.rows.length>0){
             let records=[];  
             json.rows.forEach(element => {
-                records.push({"name":element.nm,"value":element.table_nm})
+                records.push({"name":element.nm,"value":element.table_nm,"other":element.sendway})
             });
             GBindings.push({
                 Code: 'StockConfig',
@@ -123,15 +143,29 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         }
                     })
                 //  开始解析字段处理逻辑
-                //  数据格式：  sn ,dataType,nm,width
+                //  数据格式：  sn ,dataType,nm,width   last:d  日期类型
                     temp2a.forEach(element => {
                         var sn=element[0]||""
                         var nm=element[2]||""
                         var width=element[3]||"100";
+                        var last_type= element.pop()
+                        // 
+
+
                         var dataType="String";
                         if(element[1].includes["str","String","string"]){
                             dataType="String";
                         }
+                        if (last_type=="d"){
+                            if(width=="d"){
+                                width="100"
+                            }
+                            dataType="DateTime"
+                        }else{
+                            last_type=""
+                            
+                        }
+
                         var showType="text";
                         var other={"columns":[],"inputs":[],"props":[],"quicks":[]};
                         let oDdic=GetBindRow(sn.split(".").pop(),"Relation");
@@ -142,6 +176,14 @@ function getInterfaceConfig({table_nm,multi_sn}){
                             other["inputs"]=[`,"Ext": "${other["binding"]}"`]
                             other["props"]=[`,"Ext": "${other["binding"]}"`]
                             other["quicks"]=[`,"Ext": "${other["binding"]}"`,` "Source": "${other["binding"]}","TextField": "name", "ValueField": "value"`]
+                        }else if(last_type=="d"){
+                            showType="datetime";
+                            other["fmt"]="yyyyMMdd"
+                            other["inputs"]=[`,"Ext": "${other["fmt"]}"`]
+                            other["props"]=[`,"Ext": "${other["fmt"]}"`]
+                            other["quicks"]=[`,"Ext": "{Format:'${other["fmt"]}'}"`]
+
+                            // 
                         }
                       
                         // 保存字段配置
@@ -154,6 +196,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         retO.inputs.push(JSON.parse(templateInputs))
                         retO.props.push(JSON.parse(templateProps))
                     })
+                    // 添加算法列
                     if(retO.foreignCols){
                         $.each(retO.foreignCols.split("\n"),function(ai,av){
                             
@@ -171,7 +214,8 @@ function getInterfaceConfig({table_nm,multi_sn}){
                                         sn=a_foreignCol[1];
                                         nm=a_foreignCol[2];
                                         s_key=a_foreignCol[3];
-                                        if(!V){
+                                        is_all=a_foreignCol[4];
+                                        if(!V&&!is_all){
                                             return ""
                                         }
                                         return "<a onclick=showDialogList("+I+",'"+sn+"','"+s_key+"')>"+nm+"</a>" }
@@ -182,19 +226,22 @@ function getInterfaceConfig({table_nm,multi_sn}){
                          
                         })
                     }
-
+// 排序
                     if(json.rows[0].orders){
                         let ordersStr=json.rows[0].orders;
                         aOrdersStr=ordersStr.split(",")
                         aOrdersStr.forEach(element => {
-                            let sn=element||""
+                            // true 逆序
+                            let sn=element.split(":")[0]||""
+                            let sort_by=element.split(":").length>1?(element.split(":")[1]==1?false:true):false
                             var templateOrder=`
-                            { "Field": "${sn}", "Type": false }
+                            { "Field": "${sn}", "Type": ${sort_by} }
                            `
                            retO.orders.push(JSON.parse(templateOrder))
                         });
                        
                     };
+                    // 查询条件
                     if(json.rows[0].quicks){
                         let quicksStr=json.rows[0].quicks;
                         aQuicksStr=quicksStr.split("\n")
@@ -207,8 +254,8 @@ function getInterfaceConfig({table_nm,multi_sn}){
                                let width=retO["oOne"][sn].width;
                                let dataType=retO["oOne"][sn].dataType;
                                let showType=retO["oOne"][sn].showType;
-                               let type=(showType=="combo"?"QCombox":"QText");
-                              
+                               let type=(showType=="combo"?"QCombox":(showType=="datetime"?"QDatetime":"QText"));
+                               
                                let other=retO["oOne"][sn].other;
                            
                             var templateQuicks=` { "Field": "${sn}", "Label": "${nm}",  "Type": "${type}", "Width": ${width}, "Value": "${default_value}" ${other["quicks"].join(",")} } `;

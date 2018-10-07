@@ -31,8 +31,11 @@ def indexing(db=None, *indexes):
         idx = [ k for k in idx if k[0] != '__options__']
         options['background'] = True
 
-        name = pymongo.helpers._gen_index_name(idx)
-
+        # name = pymongo.helpers._gen_index_name(idx)
+        now = time.time()
+        db.ensure_index(idx, **options)
+        if time.time() - now > 1.0:
+            logging.info("Ensured index %s->%s" % (repr(idx), repr(db)))
     return lambda func: func
 
 

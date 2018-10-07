@@ -43,22 +43,25 @@ Date : 2018/07/25
 
   var cols = [
     [
-      { "field": "group", "title": "分组名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
+      { "field": "desc", "title": "备注", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "w", "title": "配置排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 70, },
+      
+      { "field": "group", "title": "分组名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       { "field": "nm", "title": "记录名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "table_nm", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "storage_way", "title": "存储方式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "StorageWay" },
+      { "field": "storage_way", "title": "存储方式", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 80, binding: "StorageWay" },
       { "field": "storage_config", "title": "存储方式配置", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200 },
       // { "field": "storage_table_nm", "title": "父对象编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       // { "field": "storage_psn", "title": "父对象列", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       // { "field": "storage_sn", "title": "本对象列", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-      { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "param", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 240, },
+      { "field": "indexKey", "title": "索引列", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 180, },
+      { "field": "param", "title": "方法参数1", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 380, },
+      { "field": "param2", "title": "方法参数2", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, },
       { "field": "orders", "title": "排序(CRUD)", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "w", "title": "配置排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
       { "field": "quicks", "title": "查询条件", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "indexKey", "title": "索引列", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
-      { "field": "colInp", "title": "列配置", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 460, },
-      { "field": "desc", "title": "备注", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 160, },
+      { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 140, },
+      { "field": "sendway","title": "发送方式", "align": "center", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"SendWay" },
+      { "field": "colInp", "title": "列配置", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 260, },
     ]
   ];
 
@@ -72,6 +75,8 @@ Date : 2018/07/25
     ],
     [
       { "Field": "storage_way", "Name": "存储方式", ShowType: "combo", Ext: "StorageWay", DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
+      
+      { "Field": "sendway", "Name": "发送方式", ShowType: "combo", Ext: "SendWay",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
       // { "Field": "storage_table_nm", "Name": "父对象编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
       // { "Field": "storage_psn", "Name": "父对象列", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
@@ -92,7 +97,11 @@ Date : 2018/07/25
     [
       { "Field": "orders", "Name": "排序(CRUD)", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
-      { "Field": "param", "Name": "方法参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
+      { "Field": "param", "Name": "方法参数1", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 2 },
+    ],
+    [
+      { "Field": "param2", "Name": "方法参数2", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
+
     ],
     [
       { "Field": "quicks", "Name": "查询条件", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
@@ -119,6 +128,7 @@ Date : 2018/07/25
   };
 
   var quics = [
+    { "Field": "group", "Label": "分组名", "Type": "QText", "Width": 90 },
     { "Field": "nm", "Label": "记录名", "Type": "QText", "Width": 90 },
     qSway
   ];
@@ -154,6 +164,7 @@ Date : 2018/07/25
             FormContainer.find("[field=colInp]").height(300);
             FormContainer.find("[field=quicks]").height(150);
             FormContainer.find("[field=param]").width(354);
+            FormContainer.find("[field=param2]").width(572);
 
           },
           BeforeGet: function(Record, u, Valids) {},
@@ -170,12 +181,14 @@ Date : 2018/07/25
           if (Cid) {
 
             $.each(Filters, function(ai, av) {
-
-              if (av.Value && av.Value.length == 0) {
-                Filters.Clear(["storage_way"]);
-              }else{
-                av.Operate="in"
+              if (av.Field == "storage_way") {
+                if (av.Value && av.Value.length == 0) {
+                  Filters.Clear(["storage_way"]);
+                } else {
+                  av.Operate = "in"
+                }
               }
+
             })
             // Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
 

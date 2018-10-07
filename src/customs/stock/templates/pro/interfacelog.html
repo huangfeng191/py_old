@@ -4,7 +4,7 @@ Author Wujj
 Date : 2018/10/07
 -->
 <style>
-	#customer {
+  #customer {
 		/*    width: 180px;
         height: 100%;
         float: left;
@@ -19,167 +19,187 @@ Date : 2018/10/07
 	}
 </style>
 <div style="width:100%;height: 100%;">
-	<div id='customer' class='customer'>
-		&nbsp;
-	</div>
-	<div id='interfacelog'>
-		&nbsp;
-	</div>
+  <div id='customer' class='customer'>
+    &nbsp;
+  </div>
+  <div id='interfacelog'>
+    &nbsp;
+  </div>
 </div>
 <script type="text/javascript">
-    var PCRUD;
-    var Divisions = [];
-    var Cid;
-    var Cnm;
-    var Uid = GCtx.user._id;
-    var Pf = null;
-    var btnNn = "";
-    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
-    var Title1 = "";
+  var PCRUD;
+  var Divisions = [];
+  var Cid;
+  var Cnm;
+  var Uid = GCtx.user._id;
+  var Pf = null;
+  var btnNn = "";
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var Title1 = "";
 
-    var cols = [
+  var cols = [
+    [
+      { "field": "table_nm", "title": "编码", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "continued","title": "持续时间(分)", "align": "center", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+      { "field": "created","title": "创建时间", "align": "center", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 200,formatter: TimeFormatter, },
+{ "field": "changed","title": "修改时间", "align": "center", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 200,formatter: TimeFormatter, },
+      { "field": "state", "title": "发送状态", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "SendState" },
+      { "field": "i_count", "title": "请求总次数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "i_step", "title": "完成次数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      { "field": "last_param", "title": "描述", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 200, },
+      { "field": "send_param", "title": "发送参数", "align": "center", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300,formatter:function(v, r, i){
+        if(!v){
+            return ""
+        }  
+        return JSON.stringify(v) ;
+      } },
+    ]
+  ];
+
+
+  var inp1 = [
+    [{ "Field": "table_nm", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    //   { "Field": "send_param", "Name": "发送参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "state", "Name": "发送状态", ShowType: "combo", Ext: "SendState", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "i_count", "Name": "请求总次数", ShowType: "text", Ext: "", DataType: "Number", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+    [
+      { "Field": "i_step", "Name": "完成次数", ShowType: "text", Ext: "", DataType: "Number", "Required": false, RowSpan: 1, ColSpan: 1 },
+      { "Field": "last_param", "Name": "描述", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    ],
+
+  ];
+  var props = [];
+
+  var quics = [
+         { "Field": "table_nm", "Label": "编码", "Type": "QText", "Width": 90 },
+  ];
+  var btnNm = "";
+
+  function init() {
+
+    PCRUD = jQuery.CRUD('#interfacelog', {
+      View: {
+        AfterRender: function() {
+          this.Button.Hide(["filter", "order"]);
+          //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
+          //        jQuery("button[command=audit]").click(
+          //           function () {
+
+
+          //           }
+          //        );
+
+
+        },
+        Form: {
+          AfterEnable: function() {
+
+          },
+          AfterDisable: function() {
+
+          },
+          AfterSet: function(Record, IsNew) { // 点击新建后
+            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+            //PCRUD.View.Form.Enable([]);
+            if (!IsNew) {
+              //FormContainer.find(".button_container").css("display", "none");
+            } else {
+
+            }
+          },
+          BeforeGet: function(Record, u, Valids) {},
+          AfterGet: function(Record, u, Valids) {
+
+          },
+          BeforeSet: function(Record, IsNew) {
+
+          }
+        }
+      },
+      Behavior: {
+        BeforeQuery: function(Filters, Orders) {
+          if (Cid) {
+            // Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+
+
+            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+            Loading.Show();
+            return true;
+          } else {
+            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+            return false;
+          }
+          Loading.Show();
+        },
+        AfterQuery: function(Result) {
+          Loading.Hide();
+          return true;
+        },
+        BeforeSave: function(Record, Callback) {
+          if (Cid) {
+            Record.cid = Cid;
+            Record.cnm = Cnm;
+          }
+
+          return true;
+        },
+        AfterSave: function(Result) {
+          //  PCRUD.View.Grid.Query();
+          return true;
+        },
+        Grid: {
+          //   RowDblClick: function (Row) {
+
+          // }
+        }
+      },
+      Service: {
+        Path: "prostock/",
+        Target: "interfacelog",
+        Base: "../"
+      }
+    }, {
+
+      "Bindings": GBindings,
+      "FrozenColumns": [
         []
-    ];
-
-
-    var inp1 = [
-        []
-
-    ];
-    var props = [];
-
-    var quics = [];
-    var btnNm = "";
-
-    function init() {
-
-        PCRUD = jQuery.CRUD('#interfacelog',
-            {
-                View: {
-                    AfterRender: function () {
-                        this.Button.Hide(["filter", "order"]);
-                        //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-                        //        jQuery("button[command=audit]").click(
-                        //           function () {
-
-
-                        //           }
-                        //        );
-
-
-                    },
-                    Form: {
-                        AfterEnable: function () {
-
-                        },
-                        AfterDisable: function () {
-
-                        },
-                        AfterSet: function (Record, IsNew) {  // 点击新建后
-                            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
-                            //PCRUD.View.Form.Enable([]);
-                            if (!IsNew) {
-                                //FormContainer.find(".button_container").css("display", "none");
-                            } else {
-
-                            }
-                        },
-                        BeforeGet: function (Record, u, Valids) {
-                        },
-                        AfterGet: function (Record, u, Valids) {
-
-                        },
-                        BeforeSet: function (Record, IsNew) {
-
-                        }
-                    }
-                },
-                Behavior: {
-                    BeforeQuery: function (Filters, Orders) {
-                        if (Cid) {
-                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
-
-
-                            PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
-                            Loading.Show();
-                            return true;
-                        }
-                        else {
-                            PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
-                            return false;
-                        }
-                        Loading.Show();
-                    },
-                    AfterQuery: function (Result) {
-                        Loading.Hide();
-                        return true;
-                    },
-                    BeforeSave: function (Record, Callback) {
-                        if (Cid) {
-                            Record.cid = Cid;
-                            Record.cnm = Cnm;
-                        }
-
-                        return true;
-                    },
-                    AfterSave: function (Result) {
-                        //  PCRUD.View.Grid.Query();
-                        return true;
-                    },
-                    Grid: {
-                        //   RowDblClick: function (Row) {
-
-                        // }
-                    }
-                },
-                Service: {
-                    Path: "prostock/",
-                    Target: "interfacelog",
-                    Base: "../"
-                }
-            },
-            {
-
-                "Bindings": GBindings,
-                "FrozenColumns": [[]],
-                "Columns": cols,
-                "Form": [
-                    {
-                        "Title": Title1,
-                        "Inputs": inp1
-                    }
-
-
-                ],
-                "Properties": props,
-                "Quicks": quics,
-                "Rights": "CUD",
-                "Target": "interfacelog",
-                "Title": "",
-                "ExportFmt": true,
-                Layout: "POP" ? "POP" : "POP",
-                ExportName: ""
-
-            });
-
-
-    }
-
-    jQuery(document).ready(function () {
-        if (window["GCtx"] && GCtx.customer) {
-            //特定客户
-            jQuery("#customer").hide();
-            Cid = GCtx.customer._id;
-            Cnm = GCtx.customer.nm;
-            Pf = GCtx.customer.pf || "";
-            //  $("#interfacelog").width($(window).width());
-        } else {
-            alert("请刷新");
+      ],
+      "Columns": cols,
+      "Form": [{
+          "Title": Title1,
+          "Inputs": inp1
         }
 
-        init();
+
+      ],
+      "Properties": props,
+      "Quicks": quics,
+      "Rights": "CUD",
+      "Target": "interfacelog",
+      "Title": "",
+      "ExportFmt": true,
+      Layout: "POP" ? "POP" : "POP",
+      ExportName: ""
 
     });
 
 
+  }
+
+  jQuery(document).ready(function() {
+    if (window["GCtx"] && GCtx.customer) {
+      //特定客户
+      jQuery("#customer").hide();
+      Cid = GCtx.customer._id;
+      Cnm = GCtx.customer.nm;
+      Pf = GCtx.customer.pf || "";
+      //  $("#interfacelog").width($(window).width());
+    } else {
+      alert("请刷新");
+    }
+
+    init();
+
+  });
 </script>

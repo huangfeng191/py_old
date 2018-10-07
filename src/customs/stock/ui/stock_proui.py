@@ -30,6 +30,17 @@ class ProStockInterfaceconfigCRUD(CRUD):
        return res
 
 
+@path("/prostock/interfacelog.html")
+class ProstockInterfacelog:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_pro_stock["interfacelog"]()
+        
+@wildcard("/prostock/interfacelog/")
+class ProstockInterfacelogCRUD(CRUD):
+
+    def __init__(self):
+        self.module = pro_interface_log
+
 
 @path("/prostock/interfacedata.html")
 class ProStockInterfaceData:
@@ -116,20 +127,14 @@ class StockAdminCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
         if act == 'getInfo':
             return self.getProInfo(*args, **kwArgs)
-        if act == 'getInfos':
-            return self.getProInfos(*args, **kwArgs)
+        # if act == 'getInfos':
+        #     return self.getProInfos(*args, **kwArgs)
 
         return CRUD.action(self, act, *args, **kwArgs)
-
-    def getInfos(self, table_nm=None, *args, **kwArgs):
-        tushare_proapi.getProInfo(table_nm)
-        print 1
-        return "OK"
-
-        return CRUD.action(self, act, *args, **kwArgs)
-    def getProInfo(self, table_nm=None, *args, **kwArgs):
-        tushare_proapi.getProInfo(table_nm)
-        print 1
+    def getProInfo(self, table_nm=None,send_param={}, *args, **kwArgs):
+        log=pro_interface_log.upsert(**{"table_nm":table_nm,"send_param":send_param,"i_count":1,"state":0,"tp":"get_data"})
+        tushare_proapi.getProInfo(table_nm,logId=log.get("_id"))
+        print table_nm+"end"
         return "OK"
 
 
