@@ -47,7 +47,18 @@ GBindings.push({
     ]
    });
 
+   GBindings.push({
+    Code: 'GetCycle',
+    Desc:"获取周期,",
+    Records: [
+       { name: '小时', value: 'hour',desc:"" },
+       { name: '天', value: 'day',desc:"" },
+       { name: '月', value: 'month' ,desc:""}, 
+       { name: '年', value: 'year' ,desc:""} 
 
+    //    { name: 'Object对象', value: '3' }
+    ]
+   }); 
 
 $.po = function (url,data, opts) {
     
