@@ -120,45 +120,78 @@ def InjectArray(r,storage_table_nm=None,storage_table_psn={},query={},sort="",co
 
 # 配置参数 ,只解析一次参数
 def rulePart(params,send_params={}):
-    one = {}
-    comps = []
+    # variable 可变参数，会影响请求次数
+    # normal 替换常量参数
+    # must 一般常量参数
+    analysis_o={"variable":[],"normal":[],"must":{}}
+    must=analysis_o["must"]
+    variable=analysis_o["variable"]
+    normal=analysis_o["normal"]
     for k, r2 in params.items():
         pass
         if (isinstance(r2, dict)):
             if r2.get("type") == "loop":
-                comps.append({"basic": k, "type": r2.get("type"), "from": r2.get("from"), "k": r2.get("k")})
+                # basic 接口表字段
+                # type:loop basic 接口表字段   from 其他表字段  from_k 其他表字段主键
+                # 此处可以添加参数，
+                one_com={"basic": k, "type": r2.get("type"), "from": r2.get("from"), "from_k": r2.get("from_k"), "from_q": r2.get("from_q")}
+                variable.append(one_com)
             elif r2.get("type") == "date":
-                comps.append({"basic": k, "type": r2.get("type"), "start": r2.get("start"), "k": r2.get("k")})
+                # type：date  basic 接口表字段   from_k  从哪个字段获取，
+                # last 暂时不支持，
+                one_com = {"basic": k, "type": r2.get("type"),"operate":r2.get("operate","="),"from_k":r2.get("from_k"),"param2o":{}  }
+                if  send_params.get(one_com.get("from_k")):
+                    if one_com.get("operate","=")=="=":
+                        one_com["param2o"]={k:send_params.get(one_com.get("from_k"))}
+                    else:
+                        one_com["param2o"]={k:{"$"+one_com.get("operate") :send_params.get(one_com.get("from_k")) }}
+                    normal.append(one_com)
         else:
-            one[k] = r2
-    return comps,one
-# one 就是固定参数  comps 是可变参数，ret 是请求次数数组
-
-def ruleCombine(comps=[],one={},send_params={},ret=[]):
-    if not comps:
-        ret.append(one)
-    for r_c in comps:
+            must[k] = r2
+    for r in normal:
+        for k2,r2 in r.get("param2o").items():
+            must[k2]=r2
+            pass
+        pass        
+    return analysis_o
+def ruleCombine(variable=[],normal=[],must={},ret=[]):
+    if not variable:
+       ret.append(must)
+    for r_c in variable:    
         if r_c.get("type") == "loop":
-            l = eval(r_c.get("from")).items(fields=[r_c.get("k")], _sort=[(r_c.get("k"), 1)])
-            for r_l in l:
-                one[r_c.get("k")] = r_l.get(r_c.get("k"))
-                ret.append(deepcopy(one))
+            l = eval(r_c.get("from")).items(fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
+        for r_l in l:
+            must[r_c.get("basic")] = r_l.get(r_c.get("from_k"))
+            ret.append(deepcopy(must))
+
+
 # send_params 暂未实现
 # 返回的数组是需要调用多少次接口
-def analysisParams(s_params,tp,send_params=None,**kwargs) :
-    a_params = json.loads(s_params)
+def analysisParams(configRow,config_params,send_params=None,**kwargs) :
+    params=None
+    # 此处可以扩展
+    if config_params:
+        if config_params.get("sendWay")=="increase":
+            params=configRow.get("param2")
+        else:
+            params = configRow.get("param")
+
+
+    a_params = json.loads(params)
     ret = []
     for r in a_params:
-        comps,one= rulePart(r,send_params)
-        ruleCombine(comps,one,send_params,ret=ret)
+        analysis_o= rulePart(r,send_params)
+        ruleCombine(ret=ret,**analysis_o)
     return ret
 
 
-def getProInfo(table_nm,logId,**kwargs):
+def getProInfo(table_nm,logId,config_param={},send_param={},**kwargs):
 
     if table_nm:
         log=pro_interface_log.get(logId)
         configRow=pro_interface_config.get({"table_nm":table_nm})
+        if configRow:
+            pro_interface_log.upsert(**{"_id":log.get("_id"),"config":configRow})
         fields = []
         for r in configRow.get("colInp").split("\n"):
             ar = r.split(",")
@@ -166,7 +199,7 @@ def getProInfo(table_nm,logId,**kwargs):
                 fields.append(ar[0])
         # 方法参数  目的是接口可能有参数要求，写成了一个数组，可循环调用接口
         if configRow.get("param"):
-            params=analysisParams(configRow.get("param"),configRow.get("param2"),"first")
+            params=analysisParams(configRow,config_param,send_param)
             i_count=len(params)
             i_step=0
             log["i_count"]=i_count

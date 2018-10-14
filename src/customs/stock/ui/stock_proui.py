@@ -127,13 +127,19 @@ class StockAdminCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
         if act == 'getInfo':
             return self.getProInfo(*args, **kwArgs)
-        # if act == 'getInfos':
-        #     return self.getProInfos(*args, **kwArgs)
+        if act == 'getInfoNormal':
+            return self.getInfoNormal(*args, **kwArgs)
 
         return CRUD.action(self, act, *args, **kwArgs)
-    def getProInfo(self, table_nm=None,send_param={}, *args, **kwArgs):
-        log=pro_interface_log.upsert(**{"table_nm":table_nm,"send_param":send_param,"i_count":1,"state":0,"tp":"get_data"})
+    #
+    def getProInfo(self, table_nm=None,config_param={},send_param={}, *args, **kwArgs):
+        log=pro_interface_log.upsert(**{"table_nm":table_nm,"send_param":send_param,"config_param":config_param,"i_count":1,"state":0,"tp":"get_data"})
         tushare_proapi.getProInfo(table_nm,logId=log.get("_id"))
+        print table_nm+"end"
+        return "OK"
+    def getInfoNormal(self, table_nm=None,config_param={},send_param={}, *args, **kwArgs):
+        log=pro_interface_log.upsert(**{"table_nm":table_nm,"send_param":send_param,"config_param":config_param,"i_count":1,"state":0,"tp":"get_data"})
+        tushare_proapi.getProInfo(table_nm,logId=log.get("_id"),config_param=config_param,send_param=send_param)
         print table_nm+"end"
         return "OK"
 

@@ -9,8 +9,8 @@
 <body>
   <div id="divcmd" style=" margin:50px;">
     <label>年度:</label> <input type="text" id="year" class="data value yyyy" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy'})">
-    <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM'})">
-    <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy-MM-dd'})">
+    <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMM'})">
+    <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMMdd'})">
    
     <br>
     <!-- <div style="padding-left:40px;">
@@ -28,7 +28,7 @@
     <div style="padding-left:40px;padding-top:300px;">
       <label>tushare：normal</label>
       <input id="getInfoOn_normal" name="接口名称">
-      <input type="button" cmd="getInfoNormal" value="获取信息" />
+      <input type="button" cmd="getInfoNormal" value="获取信息(增量)" />
       
     </div>
 
@@ -59,17 +59,18 @@
     data:GetBindRecords("StockConfig").filter(function(v){
       return v.other=="increase"
     }),
+    value:"daily",
     valueField:'value',
     textField:'name',
-    // value:"stock_basic",
     editable:false
     });
 
 
     var dt=new Date()
     $("#year").val(dt.FormatString("yyyy"));
-    $("#month").val(dt.FormatString("yyyy-MM"));
-    $("#day").val(dt.FormatString("yyyy-MM-dd"));
+    $("#month").val(dt.FormatString("yyyyMM"));
+    // $("#day").val(dt.FormatString("yyyy-MM-dd"));
+    $("#day").val(dt.FormatString("yyyyMM01"));
     $("#divcmd input[cmd]").on("click", function(e) {
       var cmd = $(this).attr("cmd");
       $("#result").html("start:");
@@ -77,7 +78,12 @@
         case 'getInfoNormal':
           act(cmd, {
             "table_nm": $("#getInfoOn_normal").combobox("getValue"),
-            "send_param":{"sendWay":"increase"}
+            "config_param":{"sendWay":"increase"},
+            "send_param":{
+              "day":$("#day").val(),
+              "month":$("#month").val(),
+              "year":$("#year").val()
+          }
           });
           break;
         case 'getInfo':
