@@ -13,13 +13,7 @@ from service import comm
 # 暂时无用
 pro_admin_save = comm.CRUD(ctx.tuprodb, "admin_save", [("cid", 1)])
 
-# 接口数据参数配置
-pro_interface_config = comm.CRUD(ctx.tuprodb, "interface_config" )
-
-pro_interface_log = comm.CRUD(ctx.tuprodb, "interface_log" )
-
-# 多接口配置
-pro_multi_data = comm.CRUD(ctx.tuprodb, "multi_data" )
+from customs.stock.service.basic import *
 
 # 获取股票基本信息
 stock_basic = comm.CRUD(ctx.tuprodb, "stock_basic", [("ts_code", 1)])
