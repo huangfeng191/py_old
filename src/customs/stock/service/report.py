@@ -21,7 +21,7 @@ def rowToO(table_name,x_axis=[],y_axis=[],query=None):
 # 一般来说 x 指标是统一的
 # y_axis 定义为数组对象
 def rowToSimpleCharts(o_data,explain,in_xAxis={"k":"字段","from":"哪个表里的字段"},in_yAxis={},
-                in_series=[{"k":"","from":""}],**kwArgs):
+                in_series=[{"k":"","from":"","yAxisIndex":""}],**kwArgs):
 
     # x轴
     xAxis={"type":"category","data":[],"name":"默认名字"}
@@ -35,11 +35,26 @@ def rowToSimpleCharts(o_data,explain,in_xAxis={"k":"字段","from":"哪个表里
             o_froms[in_xAxis.get("from")] = [in_xAxis.get("k")]
     xAxis.update(in_xAxis)
     # y轴
-    yAxis={"type":"value"}
+    yAxis=[{"type":"value"}]
+
+    if in_yAxis:
+        for n in in_yAxis.keys():
+            if len(yAxis)<int(n)+1:
+                yAxis=yAxis+[{"type":"value"}]*(int(n)+1-len(yAxis))
+            yAxis[int(n)].update(in_yAxis.get(n))
+            pass
+
+
 
     series=[]
 
     for r in in_series:
+
+        # 多条y轴
+        if r.get("yAxisIndex"):
+            if len(yAxis) < r.get("yAxisIndex") + 1:
+                yAxis = yAxis + [{"type": "value"}] * (r.get("yAxisIndex") + 1 - len(yAxis))
+
         serie={"name":None,"type":"line","data":[]}
         if "from" in r and "k" in r :
             r["name"]= explain[r.get("from")]["o"].get(r.get("k")).get("nm")
@@ -47,11 +62,11 @@ def rowToSimpleCharts(o_data,explain,in_xAxis={"k":"字段","from":"哪个表里
                 o_froms[r.get("from")]=[r.get("k")]
             else:
                 o_froms[r.get("from")].append(r.get("k"))
-        serie.update(r)    
-        series.append(serie)    
+        serie.update(r)
+        series.append(serie)
         pass
-    a_datas={}
 
+    a_datas={}
     # 将字段汇总
     for table,keys in o_froms.items():
         a_data = o_data.get(table) or []
@@ -79,6 +94,29 @@ def rowToSimpleCharts(o_data,explain,in_xAxis={"k":"字段","from":"哪个表里
     
     return ret
     
+
+def chartSeriesbind(o_chart,**kwargs):
+    pass
+# open	float	开盘价
+# high	float	最高价
+# low	float	最低价
+# close	float	收盘价
+# pre_close	float	昨收价
+# change	float	涨跌额
+# pct_change	float	涨跌幅
+
+    o_color={
+        "high":"#37c5ff",
+        "close":"#f45200",
+        "low":"#19cd85",
+        "pct_change":"#b34775",
+        "open":"#959595"
+    }
+    for r in o_chart.get("series",[]):
+        if r.get("k") in o_color:
+            if "itemStyle" not in r:
+                r["itemStyle"]={}
+            r["itemStyle"]["color"]=o_color.get(r.get("k"))
 
 
 # 横纵转换
@@ -176,6 +214,8 @@ def getStockHistory_tochart(query_data,query_chart,**kwArgs):
         for r in (oData.get("a",[]) or []):
             pass
             chart=rowToSimpleCharts(r,oData.get("explain"),**query_chart)
+    # 显示格式处理
+    chartSeriesbind(chart)        
     pass
     return chart
 

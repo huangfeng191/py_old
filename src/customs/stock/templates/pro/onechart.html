@@ -1,0 +1,48 @@
+<!--<%inherit file="layout.html"/>-->
+<script src="/static/echarts/echarts.min.js"></script>
+<body style="height:100%;"  >
+    <!-- 此处可以写参数，可以写一个配置模块 -->
+    <div id="myChart" style="height:100%;" ></div>
+    </div>
+
+</body>
+
+<script>
+   var myChart = echarts.init(document.getElementById('myChart'));
+
+    var oo = 
+        {"method_tp":"getStockHistory_tochart","query_data":{"s":"20180901","codes":["300097.SZ"],"items":{"daily":1}},
+        "query_chart":{
+        "in_xAxis":{"k":"trade_date","from":"daily"} , 
+        "in_yAxis":{"1":{"name":"涨跌幅","max":10,"min":-10}   },
+        "in_series":[
+            {"from":"daily","k":"open"} ,
+            {"from":"daily","k":"close"} ,
+            {"from":"daily","k":"high"} ,
+            {"from":"daily","k":"low"}, 
+            {"from":"daily","k":"pct_change","yAxisIndex":1}
+            
+            ]  }
+        };
+    if(getUrlParam("code")){
+        oo["query_data"]["codes"]=[getUrlParam("code")]
+    }    
+    var url = "/stock/report/test.json";
+    jQuery.ajax({
+        type: "POST",
+        data: JSON.stringify(oo),
+        url: url,
+        dataType: "json",
+    }).success(function (json) {
+        if (json.Code == 0) {
+            var option=json.Response;
+            myChart.setOption(option);
+            
+        }else{
+        Msg(json.Message);
+        }
+    })     
+
+
+   
+</script>

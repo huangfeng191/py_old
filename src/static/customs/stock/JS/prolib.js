@@ -14,6 +14,21 @@ function showDialogList(idx,table_nm,s_query,url="/prostock/dlginterfacedata.htm
             });   
 }
 
+function showDialogChart(idx,table_nm=null,s_query,url="/stock/onechart.html"){
+    debugger
+    var row=PCRUD.View.Grid.Element.datagrid("getRows")[idx];
+    
+    var query={}
+    query[s_query]=row[s_query];
+    var config = {
+        Title: "详细 "+table_nm, Url: url+"?code="+row[s_query],
+         Width: "1200", Height: "700",
+         CloseButton: true
+                };
+        Dialog(config,{query},function(res){
+                
+            });   
+}
 
 
 
@@ -232,6 +247,26 @@ function getInterfaceConfig({table_nm,multi_sn}){
                                         return "<a onclick=showDialogList("+I+",'"+sn+"','"+s_key+"')>"+nm+"</a>" }
                                     retO.columns.push(o_foreignCol)
                                 }
+
+                                if(a_foreignCol[0]=="Chart"){
+                                    sn=a_foreignCol[1]||"onechart";
+                                    nm=a_foreignCol[2];
+                                    s_key=a_foreignCol[3];
+                                    width="100"
+                                    templateCols=`{ "field": "${sn}","title":"${nm}","width":"${width}", "halign": "center", "align": "center"}`;
+                                    o_foreignCol=JSON.parse(templateCols)
+                                    o_foreignCol["formatter"]= function (V, R, I) {
+                                        sn=a_foreignCol[1];
+                                        nm=a_foreignCol[2];
+                                        s_key=a_foreignCol[3];
+                                        is_all=a_foreignCol[4];
+                                        if(!V&&!is_all){
+                                            return ""
+                                        }
+                                        return "<a onclick=showDialogChart("+I+",'"+sn+"','"+s_key+"')>"+nm+"</a>" }
+                                    retO.columns.push(o_foreignCol)
+                                }
+
 
                             }
                          
