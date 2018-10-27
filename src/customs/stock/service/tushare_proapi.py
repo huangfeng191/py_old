@@ -125,7 +125,7 @@ def rulePart(params,send_params={}):
         pass
         if (isinstance(r2, dict)):
             if r2.get("type") == "loop":
-                # basic 接口表字段
+                # basic 接口表里的字段
                 # type:loop basic 接口表字段   from 其他表字段  from_k 其他表字段主键
                 # 此处可以添加参数，
                 one_com={"basic": k, "type": r2.get("type"), "from": r2.get("from"), "from_k": r2.get("from_k"), "from_q": r2.get("from_q")}

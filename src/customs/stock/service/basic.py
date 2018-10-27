@@ -46,7 +46,7 @@ def config_col_obj(config_row,field="colInp"):
 
         o = {"code": None,"dataType": None, "nm": None,  "showType": None, "binding": None, "format": None}
         fill=[None]*2
-        ra=str.split(r,",")+fill
+        ra=str.split(str(r),",")+fill
 
         code,dataType,nm,showType,other=ra[0:5]
         binding,format=None,None
