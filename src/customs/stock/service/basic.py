@@ -18,6 +18,7 @@ pro_interface_config = comm.CRUD(ctx.tuprodb, "interface_config" )
 
 pro_interface_log = comm.CRUD(ctx.tuprodb, "interface_log" )
 
+pro_admin_save = comm.CRUD(ctx.tuprodb, "admin_save", [("cid", 1)])
 
 
 

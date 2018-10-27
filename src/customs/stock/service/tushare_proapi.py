@@ -10,8 +10,7 @@
 import ctx
 from copy import deepcopy
 from service import comm
-# 暂时无用
-pro_admin_save = comm.CRUD(ctx.tuprodb, "admin_save", [("cid", 1)])
+
 
 from customs.stock.service.basic import *
 
