@@ -78,6 +78,8 @@ Date : 2018/07/29
             }
             var FormContainer = $(".my_dialog") || this.Container;
             FormContainer.find(".group_container .group").css("overflow-x", "hidden");
+            FormContainer.find("textarea").width(FormContainer.find("textarea").parent().parent().width()-10);
+            FormContainer.find("textarea").height(130);
           },
           BeforeGet: function(Record, u, Valids) {},
           AfterGet: function(Record, u, Valids) {

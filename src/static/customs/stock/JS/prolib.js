@@ -135,7 +135,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
             columns:[],
             foreignCols:[],
             inputs:[],
-            inputsRet:[[]],
+            inputsRet:[],
             orders:[],
             quicks:[],
             props:[],
@@ -169,11 +169,23 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         }
                     })
                 //  开始解析字段处理逻辑
-                //  数据格式：  sn ,dataType,nm,width   last:d  日期类型
+                //  数据格式：  sn ,dataType,nm,width,RowSpan=2,last:d  日期类型
+                // 此参数暂时没用到
+                var ddic_param={}
                     temp2a.forEach(element => {
                         var sn=element[0]||""
                         var nm=element[2]||""
                         var width=element[3]||"100";
+                        var ddic_param_in=element[4]||""
+                            ddic_param[sn]={}
+                       
+                        if(ddic_param_in && ddic_param_in.split("&").length>0){
+                            $.each(ddic_param_in.split("&"),function(dpi,dpv){
+                                if(dpv.split("=").length>1){
+                                    ddic_param[sn][dpv.split("=")[0]]=dpv.split("=")[1]
+                                }
+                            })
+                        }
                         var last_type= element.pop()
                         // 
 
@@ -182,17 +194,19 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         if(element[1].includes["str","String","string"]){
                             dataType="String";
                         }
+                        var showType="text";
                         if (last_type=="d"){
                             if(width=="d"){
                                 width="100"
                             }
                             dataType="DateTime"
+                        }else if(last_type=="a"){
+                            showType="textarea";
+                            // 
                         }else{
                             last_type=""
                             
                         }
-
-                        var showType="text";
                         var other={"columns":[],"inputs":[],"props":[],"quicks":[]};
                         let oDdic=GetBindRow(sn.split(".").pop(),"Relation");
                         if(oDdic){
@@ -219,7 +233,12 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         var templateInputs=` { "Field": "${sn}", "Name": "${nm}", "ShowType":"${showType}" ${other["inputs"].join(",")} } `
                         var templateProps=`{ "Field":"${sn}", "Name" : "${nm}", "ShowType":"${showType}","DataType": "${dataType}" ,"FilterEnabled": true,"OrderEnabled": true ${other["props"].join(",")}  }`;
                         retO.columns.push(JSON.parse(templateCols))
-                        retO.inputs.push(JSON.parse(templateInputs))
+
+                        // 
+                        one_templateInputs=JSON.parse(templateInputs)
+                      
+                     
+                        retO.inputs.push(one_templateInputs)
                         retO.props.push(JSON.parse(templateProps))
                     })
                     // 添加算法列
@@ -323,18 +342,44 @@ function getInterfaceConfig({table_nm,multi_sn}){
         }
 
     })
-    //  input 处理分行
+
+
+      //  input 处理分行new
+
+      let default_rowspan=3;
+      inputs=Array.from(retO.inputs);
       let oneRow=[]
-      retO.inputs.forEach(function(v,i){
-        oneRow.push(v);
-        if( oneRow.length>0&&oneRow.length%3==0){
+      let oneRowTextarea=[];
+      $.each(inputs,function(inputsi,inputsv){
+
+        if(oneRow.length==0 &&oneRowTextarea.length>0){
+            $.each(oneRowTextarea,function(textareasi,textareasv){
+                retO.inputsRet.push(textareasv)
+            })
+            oneRowTextarea=[]
+        }
+
+        if(inputsv.ShowType=="textarea"){
+            inputsv["ColSpan"]=default_rowspan;
+            oneRowTextarea.push([inputsv]);
+            return true;
+        }
+        oneRow.push(inputsv);
+        if(( oneRow.length>0&&oneRow.length%default_rowspan==0)){
             retO.inputsRet.push(oneRow)
             oneRow=[]
-        }  
+        } 
       })
       if(oneRow.length>0){
         retO.inputsRet.push(oneRow)
       }
-      
+      if(oneRowTextarea.length>0){
+        $.each(oneRowTextarea,function(textareasi,textareasv){
+            retO.inputsRet.push(textareasv)
+        })
+       
+    }
+
+    debugger
       return retO
 }
