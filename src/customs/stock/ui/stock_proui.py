@@ -92,10 +92,11 @@ class StockAdminCRUD(CRUD):
             return self.getInfoNormal(*args, **kwArgs)
 
         return CRUD.action(self, act, *args, **kwArgs)
-    #
+    #config_param 接口参数
+    # send_param  自定义接口参数
     def getProInfo(self, table_nm=None,config_param={},send_param={}, *args, **kwArgs):
         log=pro_interface_log.upsert(**{"table_nm":table_nm,"send_param":send_param,"config_param":config_param,"i_count":1,"state":0,"tp":"get_data"})
-        getProInfo(table_nm,logId=log.get("_id"))
+        getProInfo(table_nm,logId=log.get("_id"),config_param=config_param,send_param=send_param)
         print table_nm+"end"
         return "OK"
     def getInfoNormal(self, table_nm=None,config_param={},send_param={}, *args, **kwArgs):

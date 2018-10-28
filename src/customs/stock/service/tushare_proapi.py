@@ -44,6 +44,12 @@ fina_mainbz = comm.CRUD(ctx.tuprodb, "fina_mainbz", [("ts_code", 1)])
 fina_mainbz = comm.CRUD(ctx.tuprodb, "fina_mainbz", [("ts_code", 1)])
 
 
+# 指数基本信息
+index_basic = comm.CRUD(ctx.tuprodb, "index_basic", [("ts_code", 1)])
+# 指数日线行情
+index_daily = comm.CRUD(ctx.tuprodb, "index_daily", [("ts_code", 1),("trade_date",1)])
+
+
 
 # 考虑用on_upsert
 #stock_basics.inject(industry_classified,"i_c","code",False,"code")

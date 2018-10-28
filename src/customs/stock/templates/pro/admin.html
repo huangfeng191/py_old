@@ -88,7 +88,8 @@
           break;
         case 'getInfo':
         act(cmd, {
-            "table_nm": $("#getInfoOn").combobox("getValue")
+            "table_nm": $("#getInfoOn").combobox("getValue"),
+            "config_param":{"sendWay":"all"},
           });
           break;
       }
