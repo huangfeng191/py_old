@@ -37,6 +37,24 @@
 		});
 	jQuery(document).ready(function()
 	{
+
+	function getBindConfig(){
+    let p=co($.po("/prostock/interfaceconfig/query.json",{ query: {},order:[{"Field":"w", "Type": false}] },{"async":false})).done(function(json){
+        if(json.rows&&json.rows.length>0){
+            let records=[];  
+            json.rows.forEach(element => {
+                records.push({"name":element.nm,"value":element.table_nm,"other":element.sendway})
+            });
+            GBindings.push({
+                Code: 'StockConfig',
+                Records: records
+               });
+        }
+    });
+  
+}
+getBindConfig()
+
         var Path;
 		var kkk="CUD";
 		if (getUrlParam('sjcd') == 'JSBQTREASON') {
@@ -107,11 +125,7 @@
                         Filters.Merge([{ Field: "App", Operate: "in", Value: [App], Relation: "and" }]);
                     }
 					
-					  if (getUrlParam('sjcd') == 'JSBQTREASON') {
-					  
-					   Filters.Merge([{ Field: "Code", Operate: "=", Value: 'JSBQTREASON', Relation: "and"}]);
-					  
-					  }
+				
 					
 					
 					Pid="0";
@@ -190,13 +204,14 @@
 		},
 		{
 			Layout: "POP",
-			"Bindings": [],
+			"Bindings": GBindings,
 			"FrozenColumns": [[]],
 			"Columns":
 			[
 				[
 					{ "align": "left", "colspan": 1, "field": "Code", "hidden": false, "rowspan": 1, "title": "编码", "width": 160 },
 					{ "align": "left", "colspan": 1, "field": "Relation", "hidden": false, "rowspan": 1, "title": "关联字段", "width": 100 },
+					{ "align": "left", "colspan": 1, "field": "Effect", "hidden": false, "rowspan": 1, "title": "关联对象", "width": 100,binding:"StockConfig" },
 					{ "align": "left", "colspan": 1, "field": "Name", "hidden": false, "rowspan": 1, "title": "名称", "width": 300 },
 				]
 			],
@@ -208,7 +223,8 @@
 					[
 						[
 							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Code", Name: "编码", ShowType: "text", "Required": true},
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Relation", Name: "关联字段", ShowType: "text", "Required": true},
+							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Relation", Name: "关联字段", ShowType: "text", "Required": false},
+							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "StockConfig", Field: "Effect", Name: "关联字段", ShowType: "combocheck", "Required": true},
 							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Name", Name: "名称", ShowType: "text", "Required": true}
 						]
 					]

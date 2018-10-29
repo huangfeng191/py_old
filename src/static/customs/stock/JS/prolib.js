@@ -156,6 +156,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
             // colInp 列定义
             if(json.rows[0].colInp){
                 retO.nm=json.rows[0].nm;
+                // 基础对象
                 retO.basic=json.rows[0].basic||table_nm;
                 retO.foreignCols=json.rows[0].foreignCols;
                 // 以下为处理列
@@ -208,10 +209,19 @@ function getInterfaceConfig({table_nm,multi_sn}){
                             
                         }
                         var other={"columns":[],"inputs":[],"props":[],"quicks":[]};
-                        let oDdic=GetBindRow(sn.split(".").pop(),"Relation");
-                        if(oDdic){
+                        var bindcode;
+                        if(table_nm){
+                             bindcode=GetBindCode({"Code":sn.split(".").pop(),"Basic":table_nm})
+                        }else{
+                            // 此处有问题
+                            var a_bar_middle=sn.split(".");
+                             bindcode=a_bar_middle.pop();
+                             bindcode=GetBindCode({"Code":bindcode,"Basic":a_bar_middle.pop()||retO.basic });
+                        }
+                      
+                        if(bindcode){
                             showType="combo"
-                            other["binding"]=oDdic.value;
+                            other["binding"]=bindcode;
                             other["columns"]=[`,"binding": "${other["binding"]}"`]
                             other["inputs"]=[`,"Ext": "${other["binding"]}"`]
                             other["props"]=[`,"Ext": "${other["binding"]}"`]

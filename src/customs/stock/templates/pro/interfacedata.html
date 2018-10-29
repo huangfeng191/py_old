@@ -175,7 +175,7 @@ Date : 2018/07/29
       alert("请刷新");
     }
     
-    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||"prostock_basics","multi_sn": getUrlParam("multi_sn")||null})
+    interfaceConfigO = getInterfaceConfig({"table_nm": getUrlParam("table_nm")||null,"multi_sn": getUrlParam("multi_sn")||null})
     cols[0] = interfaceConfigO.columns;
     inp1 = interfaceConfigO.inputsRet;
     expnm = interfaceConfigO.nm;
