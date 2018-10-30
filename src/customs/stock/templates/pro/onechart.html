@@ -11,16 +11,18 @@
    var myChart = echarts.init(document.getElementById('myChart'));
 
     var oo = 
-        {"method_tp":"getStockHistory_tochart","query_data":{"s":"20180901","codes":["300097.SZ"],"items":{"daily":1}},
+        {"method_tp":"getStockHistory_tochart","query_data":{"s":"20180901","codes":["300097.SZ"],"items":{"daily":1,"index_daily":{"ts_code":"000008.SH"}}},
         "query_chart":{
         "in_xAxis":{"k":"trade_date","from":"daily"} , 
-        "in_yAxis":{"1":{"name":"涨跌幅","max":10,"min":-10}   },
+        // "in_yAxis":{"1":{"name":"涨跌幅","max":10,"min":-10}   },
+        "in_yAxis":{"1":{"name":"上证指数","min":1700}   },
         "in_series":[
-            {"from":"daily","k":"open"} ,
+            {"from":"daily","k":"open"} , 
             {"from":"daily","k":"close"} ,
             {"from":"daily","k":"high"} ,
             {"from":"daily","k":"low"}, 
-            {"from":"daily","k":"pct_change","yAxisIndex":1}
+            // {"from":"daily","k":"pct_change","yAxisIndex":1}
+            {"from":"index_daily","k":"close","yAxisIndex":1}, 
             
             ]  }
         };

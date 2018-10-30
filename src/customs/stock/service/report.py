@@ -105,19 +105,27 @@ def chartSeriesbind(o_chart,**kwargs):
 # change	float	涨跌额
 # pct_change	float	涨跌幅
 
-    o_color={
+    daily_color={
         "high":"#37c5ff",
         "close":"#f45200",
         "low":"#19cd85",
         "pct_change":"#b34775",
         "open":"#959595"
     }
+
+    index_color = {
+
+        "close": "#59fbd3"
+
+    }
+
     for r in o_chart.get("series",[]):
+        o_color=daily_color if r.get("from")=="daily" else index_color
         if r.get("k") in o_color:
             if "itemStyle" not in r:
                 r["itemStyle"]={}
             r["itemStyle"]["color"]=o_color.get(r.get("k"))
-
+    pass
 
 # 横纵转换
 
@@ -154,7 +162,9 @@ def  StockRecordItems(items={},oBasic=None,time_q={},reverse=False,**kwArgs):
         if not items:
             items={
                 "daily":{},
-                "daily_basic":{}
+                "daily_basic":{},
+
+                "index_daily":{"ts_code":"000008.SH"}
             }
         #     获取字段注释
         for s in items.keys():
@@ -170,6 +180,10 @@ def  StockRecordItems(items={},oBasic=None,time_q={},reverse=False,**kwArgs):
         if  "daily_basic" in items:
             l=daily_basic.items(query=dict({"ts_code":oBasic.get("ts_code")},**time_q),_sort=[("ts_code",reverse)])
             record["daily_basic"]=list(l)
+
+        if  "index_daily" in items:
+            l=index_daily.items(query=dict({"ts_code":items.get("index_daily").get("ts_code")},**time_q),_sort=[("ts_code",reverse)])
+            record["index_daily"]=list(l)
         return record  ,explain  
 
 #  查询股票信息
@@ -199,7 +213,7 @@ def  StockHistorys(codes,s=None, e=None, interval="day",items=None,reverse=False
         if s in o:
             ret["a"].append(o.get(s))
     ret["explain"]=explain
-    return ret         
+    return ret
 
 
 ''' 

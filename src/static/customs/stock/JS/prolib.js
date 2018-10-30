@@ -21,7 +21,7 @@ function showDialogChart(idx,table_nm=null,s_query,url="/stock/onechart.html"){
     var query={}
     query[s_query]=row[s_query];
     var config = {
-        Title: "详细 "+table_nm, Url: url+"?code="+row[s_query],
+        Title: "详细 "+table_nm, Url: url+"?code="+row[s_query]+"&table_nm="+table_nm,
          Width: "1200", Height: "700",
          CloseButton: true
                 };
