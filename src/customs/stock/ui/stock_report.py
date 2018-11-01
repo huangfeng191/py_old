@@ -8,6 +8,7 @@
 
 from ui import path, CRUD, wildcard
 
+
 from customs.stock.service.report  import *
 
 from webservice import POST, GET

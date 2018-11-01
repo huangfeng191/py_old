@@ -7,6 +7,7 @@
 
 
 from customs.stock.service.tushare_proapi import *
+from customs.stock.service.fetch import *
 
 from customs.stock.service import basic
 
