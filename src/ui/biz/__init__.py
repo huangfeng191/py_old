@@ -7,7 +7,7 @@ import web
 from web.contrib.template import render_mako
 import service.biz
 render_biz = render_mako(directories=['templates/biz'],input_encoding='utf-8',output_encoding='utf-8',)
-
+import os
 
 @path("/biz/ddic.html")
 class BizData:
@@ -136,6 +136,6 @@ class BizMarkdownCRUD(CRUD):
               
     def get_static_md(self, record=None, *args, **kwArgs):
         pass
-
-        return {}
+        folders=[x for x in os.listdir('.') if os.path.isdir(x)]
+        return folders
 

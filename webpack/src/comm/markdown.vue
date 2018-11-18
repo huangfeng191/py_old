@@ -7,6 +7,7 @@
 
 <script>
 import marked from "marked"
+import {API} from "../modules/service.js"
 export default {
   props: {},
   data() {
@@ -15,6 +16,10 @@ export default {
   created() {},
   mounted() {
       debugger
+    API.getStaticMd().done(function(x){
+        debugger
+    })
+
     $.get("/static/md/stock/index.md", function(response, status, xhr) {
       $(".comm-markdown").html(marked(response));
     });
