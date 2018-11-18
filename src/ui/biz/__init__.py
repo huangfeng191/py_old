@@ -115,3 +115,27 @@ class BizMenuCRUD(CRUD):
   def __init__(self):
 
       self.module = service.biz.menus
+
+
+@path("/biz/markdown.html") 
+class BizMarkdown:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_biz["markdown"]()
+        
+@wildcard("/biz/markdown/")
+class BizMarkdownCRUD(CRUD):
+
+    def __init__(self):
+        self.module =  service.biz.markdown
+    
+    def action(self, act, *args, **kwArgs):   
+          if act == 'get_static_md':
+              return self.get_static_md(*args, **kwArgs)     
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)  
+              
+    def get_static_md(self, record=None, *args, **kwArgs):
+        pass
+
+        return {}
+

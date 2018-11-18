@@ -1,28 +1,31 @@
 <template>
-      <div class="comm-markdown">
+    <div class="comm-markdown">
         12
-      </div>
-       
+    </div>
+
 </template>
 
 <script>
+import marked from "marked"
 export default {
   props: {},
-  data(){
-    return {
-    }
+  data() {
+    return {};
   },
   created() {},
   mounted() {
-
+      debugger
+    $.get("/static/md/stock/index.md", function(response, status, xhr) {
+      $(".comm-markdown").html(marked(response));
+    });
   },
-  computed:{},
+  computed: {},
   methods: {},
   watch: {},
-  components:{}
+  components: {}
 };
 </script>
 <style lang="less" >
-.comm-markdown{
+.comm-markdown {
 }
 </style>

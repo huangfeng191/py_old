@@ -12,3 +12,5 @@ customer = comm.CRUD(ctx.cmdb, 'customer')
 
 
 ddics = comm.CRUD(ctx.cmdb, 'ddic', [('Code', 1)], [('Records._id', 1)])
+
+markdown=  comm.CRUD(ctx.cmdb, 'markdown')

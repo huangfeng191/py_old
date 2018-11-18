@@ -19,6 +19,7 @@ var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/stock/bindings.js",
 "/prostock/bindings.js",
 "/biz/*",
+"/static/md/***",
 "/v.png","/upload","/export","/logout.html"];
 
 var server="http://localhost:8087";
