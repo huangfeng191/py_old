@@ -6,6 +6,7 @@ npm-debug.log
 yarn-error.log
 src/templates/webpack/
 src/static/webpack/
+*.pyc
 # Editor directories and files
 .idea
 *.suo
