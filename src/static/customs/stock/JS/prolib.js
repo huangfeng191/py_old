@@ -390,6 +390,6 @@ function getInterfaceConfig({table_nm,multi_sn}){
        
     }
 
-    debugger
+    
       return retO
 }

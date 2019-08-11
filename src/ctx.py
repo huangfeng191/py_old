@@ -76,5 +76,7 @@ customs = get("sys", "customs", [])
 
 tltoken=get("tonglian", "token", [])
 
+baiduToken=get("baidu", "token", "")
+
 
 # 上面是mongodb

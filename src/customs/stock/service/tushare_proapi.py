@@ -51,6 +51,13 @@ index_daily = comm.CRUD(ctx.tuprodb, "index_daily", [("ts_code", 1),("trade_date
 
 
 
+
+
+# 获取上市公司基础信息
+stock_company = comm.CRUD(ctx.tuprodb, "stock_company", [("ts_code", 1)])
+
+
+
 # 考虑用on_upsert
 #stock_basics.inject(industry_classified,"i_c","code",False,"code")
 
