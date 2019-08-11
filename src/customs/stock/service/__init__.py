@@ -11,4 +11,5 @@ from service import comm
 
 
 import tushare_proapi
+import baidu
 

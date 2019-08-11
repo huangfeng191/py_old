@@ -8,6 +8,8 @@ from web.contrib.template import render_mako
 import service.biz
 render_biz = render_mako(directories=['templates/biz'],input_encoding='utf-8',output_encoding='utf-8',)
 import os
+import importlib
+import customs.stock.service.baidu as baidu
 
 @path("/biz/ddic.html")
 class BizData:
@@ -15,6 +17,39 @@ class BizData:
     def GET(self):
 
         return render_biz["ddic"]()
+
+
+@path("/biz/admin.html")
+class BizData:
+
+    def GET(self):
+
+        return render_biz["admin"]()
+
+@wildcard("/biz/admin/")
+class BizAdminCRUD(CRUD):
+    def __init__(self):
+        self.module =  service.biz.admin
+    def action(self, act, *args, **kwArgs):   
+          if act == 'getStock':
+              return self.getStock(*args, **kwArgs)     
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)  
+              
+    def getStock(self, record=None, *args, **kwArgs):
+
+        # p = "customs.%s.service.baidu" % "stock"
+        if(kwArgs.get("method"))==u'getBaiduCoordinates':
+            ret=baidu.getBaiduCoordinates()
+            return ret
+        # if os.path.exists(p.replace('.', '/')):
+        #     pass
+            # cust = importlib.import_module(p)
+            # if kwArgs.act:
+            #     pass
+
+        return "OK"
+      
 
 @wildcard("/biz/ddic/")
 class BizDataCRUD(CRUD):
