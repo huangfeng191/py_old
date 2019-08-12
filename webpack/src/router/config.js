@@ -7,7 +7,7 @@ export default{
 	routes:[
 		
 		{path:'/cs_js', component:Cs},
-		{path:'/hmenu', component:hmenu},
-		{path:'*', redirect:'/cs_js'}
+		{path:'/hmenu', component:hmenu}
+	
 	]
 }
