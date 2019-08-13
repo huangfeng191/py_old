@@ -82,3 +82,9 @@ class OutIndex:
     def GET(self, _cid = None, *args, **kwargs):
         return render_out["webpack/out"]()
 
+@path("/inner/index.html")
+class InnerIndex:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_out["webpack/index"]()
+
+
