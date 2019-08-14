@@ -4,12 +4,12 @@
       <el-col :gutter="20">
         <el-col :span="6">
           <span>选择可以生成的图表:</span>
-          <el-select v-model="modal.optional" id="option" placeholder="请选择" >
+          <el-select v-model="modal.optional" id="option" @change="render()" placeholder="请选择" >
             <el-option v-for="item in bindings.optional" :key="item.value" :label="item.name" :value="item.value" > </el-option>
           </el-select>
         </el-col>
         <el-col :span="12">
-          <el-input v-model="modal.desc" placeholder="请输入内容" ></el-input>
+          <el-input v-model="modal.remark.desc" placeholder="请输入内容" ></el-input>
         </el-col>
       </el-col>
     </div>
@@ -33,8 +33,9 @@ export default {
       target: null,
       remarks: null,
       modal: {
+        remark:{},
         optional: "",
-        desc: ""
+        
       },
       bindings: {
         optional: []
@@ -51,6 +52,8 @@ export default {
   computed: {},
   methods: {
     getData: function() {
+
+      let self=this;
       stockService.getPoint().done(function(ret) {
         var d = [];
         var m = {};
@@ -68,7 +71,10 @@ export default {
             d.push([position.lng, position.lat, m]);
           }
         });
-        return d;
+        var setting=self.modal.remark.setting;
+        setting.series[0].data = d;
+        self.target.clear();
+        self.target.setOption(setting);
       });
     },
 
@@ -98,13 +104,19 @@ export default {
 
       var remark = self.remarks[self.modal.optional];
 
-      self.modal.desc = remark.desc || "";
-      var option = remark.setting;
+      self.modal.remark = remark||{};
+      if(remark.local){
+           self.target.clear();
+           self.target.setOption(remark.setting);
 
-      // self.getData()
+      }else{
+          self.getData()
+      }
+      
+      
+      
 
-      self.target.clear();
-      self.target.setOption(option);
+     
     }
   },
   watch: {},

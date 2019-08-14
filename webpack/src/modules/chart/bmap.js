@@ -3,10 +3,12 @@
 
 var remarks = {
     "sample":{
+        local:true,
+        default:true,
         // default:true
       },
      "version1":{
-        default:true,
+       
         remarks:"获取股票坐标点"
       },
 

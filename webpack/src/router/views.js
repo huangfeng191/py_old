@@ -8,6 +8,6 @@ export default{
 	routes:[
 		{path:'/bMap', component:BMap},
         {path:'/chart', component:Chart},
-        {path:'*', redirect:'/chart'}
+        {path:'*', redirect:'/bMap'}
 	]
 }
