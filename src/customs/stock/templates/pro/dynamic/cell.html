@@ -29,23 +29,45 @@ Date : 2019/08/26
 <script type="text/javascript">
   var PCRUD;
   var Divisions = [];
-  var Cid;
+  var Cid=GCtx.customer._id;
   var Cnm;
   var Uid = GCtx.user._id;
-  var Pf = null;
   var btnNn = "";
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
   var btnNm = "";
-
+var pid;
 
   var oConfig = {
     columns: [
-      []
+      [
+        { "field": "table_nm", "title": "数据表名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "table_field", "title": "数据字段", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "out_generate", "title": "生成输出", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "out_field", "title": "输出字段", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "rule", "title": "规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "group", "title": "cell分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
+        { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      ]
     ],
     form: [{
       "Title": "",
-      "Inputs": []
+      "Inputs": [
+        [{ "Field": "table_nm", "Name": "数据表名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "table_field", "Name": "数据字段", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "out_generate", "Name": "生成输出", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "out_field", "Name": "输出字段", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "rule", "Name": "规则", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "group", "Name": "cell分组", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "type", "Name": "cell类型", ShowType: "combo", Ext: "CellType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+      ]
     }],
     props: [],
     quics: [],
@@ -80,13 +102,7 @@ Date : 2019/08/26
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-            //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-            //        jQuery("button[command=audit]").click(
-            //           function () {
 
-
-            //           }
-            //        );
 
 
           },
@@ -98,8 +114,7 @@ Date : 2019/08/26
 
             },
             AfterSet: function(Record, IsNew) { // 点击新建后
-              //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
-              //PCRUD.View.Form.Enable([]);
+
               if (!IsNew) {
                 //FormContainer.find(".button_container").css("display", "none");
               } else {
@@ -119,7 +134,7 @@ Date : 2019/08/26
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
               Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
-
+ 
 
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
@@ -151,14 +166,15 @@ Date : 2019/08/26
 
             // },
             AfterRowClick: function(row) {
+              pid=row._id;
               PCRUD.View.Grid.Query();
             }
           }
         },
         Service: {
-          Path: "link/cell/",
-          Target: "cell",
-          Base: "../"
+          Path: "",
+          Target: "link",
+          Base: "/dynamic/"
         }
       }, {
 
@@ -186,7 +202,7 @@ Date : 2019/08/26
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-         
+
 
 
           },
@@ -198,9 +214,9 @@ Date : 2019/08/26
 
             },
             AfterSet: function(Record, IsNew) { // 点击新建后
-            
+
               if (!IsNew) {
-             
+
               } else {
 
               }
@@ -218,10 +234,13 @@ Date : 2019/08/26
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
               Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
-
-
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
+              if(!pid){
+                  return false;
+              }else{
+                Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
+              }
               return true;
             } else {
               PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
@@ -234,9 +253,13 @@ Date : 2019/08/26
             return true;
           },
           BeforeSave: function(Record, Callback) {
+              if(!pid){
+                  return false;
+              }
             if (Cid) {
               Record.cid = Cid;
               Record.cnm = Cnm;
+              Record.__pid = pid;
             }
 
             return true;
