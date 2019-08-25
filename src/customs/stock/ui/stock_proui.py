@@ -11,7 +11,7 @@ import json
 import customs.stock.service.basic as basic
 from customs.stock.service.tushare_proapi  import *
 import service.biz
-
+from dynamic import *
 
 @path("/prostock/interfaceconfig.html")
 class ProStockInterfaceconfig:

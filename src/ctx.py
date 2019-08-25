@@ -67,6 +67,7 @@ cmdb = get_db("config")
 stockdb = get_db("mystock")
 tusharedb = get_db("tushare")
 tuprodb = get_db("tupro")
+dynamicdb = get_db("dynamic")
 rabbitdb = get_db("rabbit")
 # 结点前缀
 ND_PREFIX = get("sys","node_prefix","")
