@@ -14,5 +14,10 @@
 	},
 	"baidu":{
 		"token":"BvuuwDDNnTkpZkVYHjCI1GtsSzQo1GuD"
-	}
+	},
+"tushreToken":{
+		"token":"40590c76b5ee0c1bc18f15478a44082bfa713f444c57e0c218392433",
+		"minuteLimit":150
+}
+
 }

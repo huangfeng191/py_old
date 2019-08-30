@@ -10,7 +10,7 @@
 import ctx
 from copy import deepcopy
 from service import comm
-
+import math
 
 from customs.stock.service.basic import *
 
@@ -65,10 +65,11 @@ import json
 import time
 from misc import utils
 import tushare as ts
+ts.set_token(ctx.tushreToken)
 
 # table_nm 就是接口名
 def getInterfaceData(table_nm="stock_basic",fields=None,**kwargs):
-    pro = ts.pro_api(token="ec3db7ff2556c111a95e7b89af5ba650a3064eb6f71c3b48eebc151c")
+    pro = ts.pro_api()
     data=pro.query(table_nm,fields,**kwargs )
     return data
 # 将数据保存到数据库
@@ -143,7 +144,7 @@ def rulePart(params,send_params={}):
                 one_com={"basic": k, "type": r2.get("type"), "from": r2.get("from"), "from_k": r2.get("from_k"), "from_q": r2.get("from_q")}
                 variable.append(one_com)
             elif r2.get("type") == "date":
-                # type：date  basic 接口表字段   from_k  从哪个字段获取，
+                # type：date  basic 接口表字段   from_k  从哪个字段获取， send_params 从那个字段获取的条件
                 # last 暂时不支持，
                 one_com = {"basic": k, "type": r2.get("type"),"operate":r2.get("operate","="),"from_k":r2.get("from_k"),"param2o":{}  }
                 if  send_params.get(one_com.get("from_k")):
@@ -190,7 +191,7 @@ def analysisParams(configRow,config_params,send_params=None,**kwargs) :
         ruleCombine(ret=ret,**analysis_o)
     return ret
 
-
+# send_param 是在 admin 页面上设置的，
 def getProInfo(table_nm,logId,config_param={},send_param={},**kwargs):
 
     if table_nm:
@@ -203,11 +204,20 @@ def getProInfo(table_nm,logId,config_param={},send_param={},**kwargs):
             ar = r.split(",")
             if ar[0]:
                 fields.append(ar[0])
+
+        limit = {
+            "type": "minute",
+            "times": 0,
+            "time": time.time()
+        }
+
         # 方法参数  目的是接口可能有参数要求，写成了一个数组，可循环调用接口
         if configRow.get("param"):
             params=analysisParams(configRow,config_param,send_param)
             i_count=len(params)
             i_step=0
+
+
             log["i_count"]=i_count
             log["i_step"]=0
             log["state"]=1
@@ -217,7 +227,22 @@ def getProInfo(table_nm,logId,config_param={},send_param={},**kwargs):
                 i_step+=1
                 if i_step % (int(i_count/100) or 1)==0 :
                   print "总共%d,完成%d"%(i_count,i_step)
+                  if r:
+                      r=json.dumps(r)
                   pro_interface_log.upsert(**{"_id": logId, "i_step": i_step,"last_param":r})
+
+                limit["times"] += 1;
+                if (ctx.tushreMinuteLimit and limit["times"] > ctx.tushreMinuteLimit):
+
+                    delay=None
+                    if(limit.get("type")=="minute"):
+                        delay = math.ceil(60-time.time() + limit["time"])
+                        if delay>0:
+                            print "sleep:%d"%delay
+                            time.sleep(delay)
+                    limit["time"]= time.time()
+                    limit["times"] = 0
+
             pro_interface_log.upsert(**{"_id":logId,"state":2,"i_step":i_step,"last_param":"","continued": round((int(time.time())-log.get("created"))/60)})
         else:    
             handleDate(table_nm,fields,configRow)

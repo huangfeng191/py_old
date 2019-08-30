@@ -1,0 +1,9 @@
+{ // non valid
+    "compilerOptions": {
+        "target": "es6"
+    },
+    "baseUrl": ".",
+    "paths": {
+      "static/*": ["./src/*"]
+    }
+}

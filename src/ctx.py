@@ -80,4 +80,8 @@ tltoken=get("tonglian", "token", [])
 baiduToken=get("baidu", "token", "")
 
 
+tushreToken=get("tushreToken", "token", "")
+tushreMinuteLimit=get("tushreToken", "minuteLimit", 200)
+
+
 # 上面是mongodb

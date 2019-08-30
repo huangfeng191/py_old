@@ -29,18 +29,19 @@ Date : 2019/08/26
 <script type="text/javascript">
   var PCRUD;
   var Divisions = [];
-  var Cid=GCtx.customer._id;
+  var Cid = GCtx.customer._id;
   var Cnm;
   var Uid = GCtx.user._id;
   var btnNn = "";
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
   var btnNm = "";
-var pid;
+  var pid;
 
   var oConfig = {
     columns: [
       [
+
         { "field": "table_nm", "title": "数据表名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "table_field", "title": "数据字段", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "out_generate", "title": "生成输出", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
@@ -50,12 +51,16 @@ var pid;
         { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "desc", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "exchange", "title": "交易所", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "exchange" },
+
       ]
     ],
     form: [{
       "Title": "",
       "Inputs": [
-        [{ "Field": "table_nm", "Name": "数据表名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+        [ { "Field": "table_nm", "Name": "数据表名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "table_field", "Name": "数据字段", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "out_generate", "Name": "生成输出", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
@@ -67,12 +72,17 @@ var pid;
           { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
+        [{ "Field": "desc", "Name": "描述", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "exchange", "Name": "交易所", ShowType: "combocheck", Ext: "exchange", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+
       ]
     }],
     props: [],
     quics: [],
     leftColumns: [
       [
+        { "field": "checkbox", "title": "checkbox", "checkbox": true, "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "nm", "title": "规则名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "require", "title": "是否必填", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "SF" },
@@ -100,6 +110,16 @@ var pid;
     leftInit: function() {
       LCRUD = jQuery.CRUD('#leftgrid', {
         View: {
+
+
+          // 可以根据参数进行设置 ;
+          GridOptions: {
+            singleSelect: false,
+            checkOnSelect: false,
+          },
+
+
+
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
 
@@ -134,7 +154,7 @@ var pid;
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
               Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
- 
+
 
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
@@ -161,12 +181,13 @@ var pid;
             //  PCRUD.View.Grid.Query();
             return true;
           },
+
           Grid: {
             //   RowDblClick: function (Row) {
 
             // },
             AfterRowClick: function(row) {
-              pid=row._id;
+              pid = row._id;
               PCRUD.View.Grid.Query();
             }
           }
@@ -236,9 +257,9 @@ var pid;
               Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
-              if(!pid){
-                  return false;
-              }else{
+              if (!pid) {
+                return false;
+              } else {
                 Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
               }
               return true;
@@ -253,9 +274,9 @@ var pid;
             return true;
           },
           BeforeSave: function(Record, Callback) {
-              if(!pid){
-                  return false;
-              }
+            if (!pid) {
+              return false;
+            }
             if (Cid) {
               Record.cid = Cid;
               Record.cnm = Cnm;
@@ -267,6 +288,14 @@ var pid;
           AfterSave: function(Result) {
             //  PCRUD.View.Grid.Query();
             return true;
+          },
+          BeforeDelete: function(row) {
+            if (!pid) {
+              return false;
+            } else {
+              row.__pid = pid;
+              return true;
+            }
           },
           Grid: {
             //   RowDblClick: function (Row) {

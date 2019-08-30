@@ -8,11 +8,7 @@
 
 <body>
   <div id="divcmd" style=" margin:50px;">
-    <label>年度:</label> <input type="text" id="year" class="data value yyyy" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy'})">
-    <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMM'})">
-    <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMMdd'})">
    
-    <br>
     <!-- <div style="padding-left:40px;">
       <label>tushare：</label>
       <input type="button" cmd="basics" value="获取基本信息" />
@@ -25,7 +21,19 @@
       
     </div>
 
+
+
+ 
+
+
     <div style="padding-left:40px;padding-top:300px;">
+      <label>年度:</label> <input type="text" id="year" class="data value yyyy" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyy'})">
+      <label>月份:</label> <input type="text" id="month" class="data value yyyyMM" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMM'})">
+      <label>日期:</label> <input type="text" id="day" class="data value dd" onclick="new WdatePicker({skin:'default',readOnly:true,isShowToday:true,isShowClear:true,dateFmt:'yyyyMMdd'})">
+     
+      <br>
+      
+ 
       <label>tushare：normal</label>
       <input id="getInfoOn_normal" name="接口名称">
       <input type="button" cmd="getInfoNormal" value="获取信息(增量)" />
