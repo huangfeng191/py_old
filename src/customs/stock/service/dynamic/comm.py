@@ -11,11 +11,9 @@
 # Date    : 2019/09/01
 # Version : 1.0
 import ctx
-import logging
-from misc import utils
-import time
-from datetime import datetime
 from service import comm
-from bson import ObjectId
 
-xining_barcode = comm.CRUD(ctx.customdb, "xining_barcode", [("cid", 1)])
+import rule
+
+dynamic_comm_test = comm.CRUD(ctx.dynamicdb, "test", [("method", 1)])
+dynamic_comm_test_log = comm.CRUD(ctx.dynamicdb, "test_log", [("method", 1)])

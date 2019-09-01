@@ -5,14 +5,15 @@
 # Date    : 2019/08/24
 # Version : 1.0
 
-
-from ui import path, CRUD, wildcard,ArrayCRUD
+from ui import ArrayCRUD,path,wildcard,CRUD
 import web
 from web.contrib.template import render_mako
 render_dynamic= render_mako(directories=["customs/stock/templates/pro/dynamic", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
 
 from customs.stock.service.dynamic import *
+
+from customs.stock.ui.dynamic.comm import *
 
 @path("/dynamic/step.html")
 class DynamicStep:
@@ -24,11 +25,10 @@ class DynamicStepCRUD(CRUD):
     def __init__(self):
         self.module = dynamic_step
         
-        
-@path("/dynamic/link.html") 
-class DynamicLink:
-    def GET(self, _cid = None, *args, **kwargs):
-        return render_dynamic["link"]()
+
+
+
+# 设置 cell
         
 @wildcard("/dynamic/link/")
 class DynamicLinkCRUD(CRUD):
@@ -48,3 +48,5 @@ class DynamicLink(ArrayCRUD):
   def __init__(self):
     self.module = dynamic_link
     self.array = 'cell'
+
+

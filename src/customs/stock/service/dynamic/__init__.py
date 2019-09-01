@@ -18,8 +18,12 @@ from datetime import datetime
 from service import comm
 from bson import ObjectId
 
+from service import comm
+
+
 dynamic_step = comm.CRUD(ctx.dynamicdb, "step", [("cid", 1)])
 
 dynamic_link = comm.CRUD(ctx.dynamicdb, "link", [("cid", 1)])
+
 
 

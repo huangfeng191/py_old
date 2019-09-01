@@ -61,13 +61,16 @@ Date : 2019/09/01
     leftForm: [{
       "Title": "",
       "Inputs": [
-        [{ "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        [ { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
         [{ "Field": "params", "Name": "参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
-          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
         ],
+        [
+          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
+
+        ]
       ]
     }],
     leftProps: [],
@@ -78,6 +81,19 @@ Date : 2019/09/01
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
+            var jDom=this.Container;
+
+         jDom.find(".right_container").prepend("<button command='test'>test</button>").
+         on("click",function(event){
+            $.JWS("/dynamic/comm/test/test.json", { query: {} }).success(function(json)
+            {
+                   if(json.Response.rows&&json.Response.rows.length>0){
+            
+                   }
+            });
+          
+         })
+            
 
 
 
@@ -149,9 +165,9 @@ Date : 2019/09/01
           }
         },
         Service: {
-          Path: "dynamic/",
-          Target: "test",
-          Base: "../"
+          Base: "/dynamic/", //first
+          Path: "./comm/",
+          Target: "test"
         }
       }, {
 
@@ -254,9 +270,9 @@ Date : 2019/09/01
           }
         },
         Service: {
-          Path: "test/",
+          Base: "./",
+          Path: "",
           Target: "test",
-          Base: "../"
         }
       }, {
 
