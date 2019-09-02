@@ -4,7 +4,9 @@
 # Author  : Wujj
 # Date    : 2019/09/01
 # Version : 1.0
+import json
 from webservice import POST
+
 from ui import  path,wildcard,CRUD
 from customs.stock.service.dynamic.comm import *
 
@@ -34,5 +36,10 @@ class DynamicCommTestCRUD(CRUD):
         one=self.module.get(_id)
         del one["_id"]
         dynamic_comm_test_log.upsert(**one)
-        return eval(one.get("method"))(**(one.get("params")or {}))
+
+        p=json.loads(one.get("args") )# 方法参数
+        if one.get("params"):
+            p["params"]=json.loads(one.get("params")) # 公用参数
+
+        return eval(one.get("method"))(**p)
 
