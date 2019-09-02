@@ -41,11 +41,34 @@ Date : 2019/09/01
 
   var oConfig = {
     columns: [
-      []
+      [
+        { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "version", "title": "版本", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "isValid", "title": "有效", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "is_not" },
+        { "field": "args", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "params", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+      ]
+
     ],
     form: [{
       "Title": "",
-      "Inputs": []
+      "Inputs": [
+        [
+          { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 }, ],
+        [
+          { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
+        ],
+        [
+          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
+        ]
+
+
+      ]
     }],
     props: [],
     quics: [],
@@ -67,8 +90,7 @@ Date : 2019/09/01
           { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
-        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
-        ],
+        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 }, ],
         [
           { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 3 },
         ],
@@ -91,9 +113,12 @@ Date : 2019/09/01
 
             jDom.find(".right_container").prepend("<button command='test'>test</button>").find("[command='test']").
             on("click", function(event) {
-              $.JWS("/dynamic/comm/test/test.json", { query: {} }).success(function(json) {
-                if (json.Response.rows && json.Response.rows.length > 0) {
-
+               var row=LCRUD.View.Grid.CurrentRow;
+               if(!row) return ;
+              $.JWS("/dynamic/comm/test/test.json", { "_id":row._id }).success(function(json) {
+                if (json ) {
+                  alert(json.Message);
+                  PCRUD.View.Grid.Query();
                 }
               });
 
@@ -220,6 +245,10 @@ Date : 2019/09/01
               } else {
 
               }
+              var FC = $(".my_dialog") || this.Container;
+              FC.find("textarea").width(FC.find("textarea").parent().parent().width() - 10);
+              FC.find("[field=args]").height("300px");
+
             },
             BeforeGet: function(Record, u, Valids) {},
             AfterGet: function(Record, u, Valids) {
@@ -238,7 +267,7 @@ Date : 2019/09/01
               if (!pid) {
                 return false;
               } else {
-                Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
+                Filters.Merge([{ Field: "tid", Operate: "=", Value: pid, Relation: "and" }]);
               }
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
@@ -261,7 +290,7 @@ Date : 2019/09/01
               }
               Record.cid = Cid;
               Record.cnm = Cnm;
-              Record.__pid = pid;
+              Record.tid = pid;
             }
 
             return true;
@@ -278,8 +307,8 @@ Date : 2019/09/01
         },
         Service: {
           Base: "./",
-          Path: "",
-          Target: "test",
+          Path: "test/",
+          Target: "log",
         }
       }, {
 

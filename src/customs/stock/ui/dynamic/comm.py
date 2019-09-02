@@ -34,6 +34,7 @@ class DynamicCommTestCRUD(CRUD):
 
     def test(self, _id=None, *args, **kwArgs):
         one=self.module.get(_id)
+        one["tid"]=one["_id"]
         del one["_id"]
         dynamic_comm_test_log.upsert(**one)
 
@@ -43,3 +44,8 @@ class DynamicCommTestCRUD(CRUD):
 
         return eval(one.get("method"))(**p)
 
+
+@wildcard("/dynamic/comm/test/log/")
+class DanamicCommCRUD(CRUD):
+    def __init__(self):
+        self.module = dynamic_comm_test_log
