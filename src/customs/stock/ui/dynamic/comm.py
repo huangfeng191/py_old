@@ -29,19 +29,25 @@ class DynamicCommTestCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
           if act == 'test':
               return self.test(*args, **kwArgs)
+          elif act == 'copy':
+              return self.copy(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
+    def copy(self,_id=None):
+        one = self.module.get(_id)
+        del one["_id"]
+        return self.module.upsert(**one)
     def test(self, _id=None, *args, **kwArgs):
         one=self.module.get(_id)
         one["tid"]=one["_id"]
         del one["_id"]
-        dynamic_comm_test_log.upsert(**one)
+        log=dynamic_comm_test_log.upsert(**one)
 
         p=json.loads(one.get("args") )# 方法参数
         if one.get("params"):
             p["params"]=json.loads(one.get("params")) # 公用参数
-
+        p["log"]=log
         return eval(one.get("method"))(**p)
 
 

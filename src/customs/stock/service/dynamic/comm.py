@@ -13,7 +13,7 @@
 import ctx
 from service import comm
 
-import rule
+
 
 dynamic_comm_test = comm.CRUD(ctx.dynamicdb, "test", [("method", 1)])
 dynamic_comm_test_log = comm.CRUD(ctx.dynamicdb, "test_log", [("method", 1)])
