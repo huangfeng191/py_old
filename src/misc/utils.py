@@ -211,6 +211,7 @@ def YMDHM2TS(strdate):
 def YMDH2TS(strdate):
     
     return time.mktime(time.strptime(strdate, '%Y-%m-%d %H'))
+    return time.mktime(time.strptime(strdate, '%Y-%m-%d %H'))
 
 
 '''
@@ -227,6 +228,42 @@ def YM2TS(strdate):
 
 def Y2TS(strdate):
     return time.mktime(time.strptime(strdate, '%Y'))
+
+
+
+
+
+
+# basObj 是否包含 innerObj
+# 包含返回True 不包含返回False
+def dict_compare(baseObj,innerObj):
+    for r in innerObj.keys():
+        if r not in baseObj:
+            return False
+        elif baseObj.get(r)!=innerObj.get(r):
+            return False     
+    return True
+
+
+def getFirstEndDayOfWeek(ts):
+    cur = datetime.datetime.fromtimestamp(ts)
+
+    start = int(time.mktime(datetime.datetime(cur.year, cur.month, cur.day, 0, 0, 0).timetuple()))
+    start = start - 86400 * cur.weekday()
+    end = start + 86400 * 6 - 1
+
+    return start, end
+
+
+def getStartEndOfOneMonth(ts):
+    t = time.localtime(float(ts))
+
+    start = int(time.mktime(datetime.datetime(t[0], t[1], 1, 0, 0, 0, 0).timetuple()))
+    end = int(time.mktime(datetime.datetime(t[0], t[1], monthrange(t[0], t[1])[1], 23, 59, 59, 0).timetuple()))
+
+    return start, end
+
+
 
 ''' 
     将字符串转换成时间戳
@@ -250,16 +287,24 @@ def STR2TS(strdate):
 
 
 
+#  获取 年月日 时间及时间戳
+def getCommDateStart(type="day",ts=time.time(),fmt=None,isTs=False):
+    s=None
+    if type=="week":
+        ts=getFirstEndDayOfWeek(ts)[0]
+
+    if type in ["day","week"]:
+        fmt='%Y-%m-%d'
+    elif type =="month":
+        fmt='%Y-%m'
+    elif type =="year":
+        fmt='%Y'
+    s=time.strftime(fmt.encode('utf-8'), time.localtime(float(ts))).decode('utf-8')
+    if isTs:
+        return STR2TS(s)
+    return s
 
 
-# basObj 是否包含 innerObj
-# 包含返回True 不包含返回False
-def dict_compare(baseObj,innerObj):
-    for r in innerObj.keys():
-        if r not in baseObj:
-            return False
-        elif baseObj.get(r)!=innerObj.get(r):
-            return False     
-    return True        
+
 
 

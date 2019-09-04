@@ -38,10 +38,17 @@ class DynamicCommTestCRUD(CRUD):
         one = self.module.get(_id)
         del one["_id"]
         return self.module.upsert(**one)
-    def test(self, _id=None, *args, **kwArgs):
+    def test(self, _id=None, frequency=None,*args, **kwArgs):
+
         one=self.module.get(_id)
-        one["tid"]=one["_id"]
+        one["tid"] = one["_id"]
         del one["_id"]
+        if(frequency):
+            outFrequency=reuse.getFrequencyStart(frequency)
+            one["outFrequency"]=outFrequency
+            old=dynamic_comm_test_log.get({"tid":one["tid"],"outFrequency":outFrequency,"sn":one.get("sn")})
+            if old:
+                one["_id"]=old.get("_id")
         log=dynamic_comm_test_log.upsert(**one)
 
         p=json.loads(one.get("args") )# 方法参数

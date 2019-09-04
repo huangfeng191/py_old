@@ -42,13 +42,16 @@ Date : 2019/09/01
   var oConfig = {
     columns: [
       [
-      { "field": "title","title": "标题", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+        { "field": "title","title": "标题", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 160, },
         { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn","title": "编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "version", "title": "版本", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "isValid", "title": "有效", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "is_not" },
         { "field": "args", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "params", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "frequency","title": "频率", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"frequency" },
+        { "field": "outFrequency","title": "频率时间", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "outData", "title": "输出数据", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, formatter:function(v,r,i){
           return  JSON.stringify(r.data)   ;
         }},
@@ -61,24 +64,30 @@ Date : 2019/09/01
         [
         { "Field": "title", "Name": "标题", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-         { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [
+        { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        { "Field": "outFrequency", "Name": "频率时间", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
       //  [
 
       //  ], 
-        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 }, ],
-        [
-          { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 }, 
         ],
         [
-          { "Field": "parseArgs", "Name": "最后参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+          { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
         ],
         [
-          { "Field": "outData", "Name": "输出数据", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+          { "Field": "parseArgs", "Name": "最后参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
         ],
         [
-          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+          { "Field": "outData", "Name": "输出数据", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
+        ],
+        [
+          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
         ]
 
 
@@ -88,12 +97,15 @@ Date : 2019/09/01
     quics: [],
     leftColumns: [
       [
-      { "field": "title","title": "标题", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+      { "field": "title","title": "标题", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 160, },
         { "field": "method", "title": "方法名", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn","title": "编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "version", "title": "版本", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "isValid", "title": "有效", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "is_not" },
         { "field": "args", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "params", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "frequency","title": "频率", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"frequency" },
+
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       ]
     ],
@@ -104,15 +116,19 @@ Date : 2019/09/01
         { "Field": "title", "Name": "标题", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
           { "Field": "method", "Name": "方法名", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-        ],
-        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 }, ],
-        [
-          { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+          { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
         [
-          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+        { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+        [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 }, ],
+        [
+          { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
+        ],
+        [
+          { "Field": "description", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },
         ]
 
 
@@ -132,7 +148,7 @@ Date : 2019/09/01
             on("click", function(event) {
                var row=LCRUD.View.Grid.CurrentRow;
                if(!row) return ;
-              $.JWS("/dynamic/comm/test/test.json", { "_id":row._id }).success(function(json) {
+              $.JWS("/dynamic/comm/test/test.json", { "_id":row._id,"frequency":row.frequency,"sn":row.sn }).success(function(json) {
                 if (json ) {
                   alert(json.Message);
                   PCRUD.View.Grid.Query();

@@ -24,4 +24,7 @@ def getParamsDateType():
     ret["year"] = utils.YMD(n,"%Y")
     return ret
 
+# 根据类型 返回字符串类型的时间
+def getFrequencyStart(frequency):
+    return utils.getCommDateStart(frequency)
 
