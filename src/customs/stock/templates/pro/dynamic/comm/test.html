@@ -148,13 +148,16 @@ Date : 2019/09/01
             on("click", function(event) {
                var row=LCRUD.View.Grid.CurrentRow;
                if(!row) return ;
-              $.JWS("/dynamic/comm/test/test.json", { "_id":row._id,"frequency":row.frequency,"sn":row.sn }).success(function(json) {
-                if (json ) {
-                  alert(json.Message);
-                  PCRUD.View.Grid.Query();
-                }
-              });
 
+               stockService.dynamic.comm.testCRUD.post("test",{ "_id":row._id,"frequency":row.frequency,"sn":row.sn }).done(function(json){
+                  if (json ) {
+                    alert("OK");
+                    PCRUD.View.Grid.Query();
+                  }
+               })
+
+
+           
             })
 
 
@@ -163,12 +166,14 @@ Date : 2019/09/01
             on("click", function(event) {
                var row=LCRUD.View.Grid.CurrentRow;
                if(!row) return ;
-              $.JWS("/dynamic/comm/test/copy.json", { "_id":row._id }).success(function(json) {
+               stockService.dynamic.comm.testCRUD.post("copy",{ "_id":row._id }).done(function(json){
                 if (json ) {
-                  alert(json.Message);
+                  alert("OK");
                   LCRUD.View.Grid.Query();
                 }
-              });
+               })
+
+      
 
             })
 
@@ -273,9 +278,31 @@ Date : 2019/09/01
 
       PCRUD = jQuery.CRUD('#test', {
         View: {
+
+          GridOptions: {
+            singleSelect: false,
+            // checkOnSelect: false,
+          },
+
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
+            var jDom = this.Container;
 
+            jDom.find('.right_container').prepend("<button command='multiDelete'>multiDelete</button>").
+                on('click',function(event){
+                  var ids=PCRUD.View.Grid.Element.datagrid("getChecked").map(function(r){
+                    return r._id;
+                  });
+                  // todo
+                  stockService.dynamic.comm.testLogCRUD.post("multiDelete",ids ).done(function(json){
+                  if (json ) {
+                    alert("OK");
+                    PCRUD.View.Grid.Query();
+                  }
+               })
+
+                
+                })
 
 
           },
