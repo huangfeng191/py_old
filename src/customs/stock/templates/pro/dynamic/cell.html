@@ -231,7 +231,18 @@ Date : 2019/08/26
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-
+            var jDom = this.Container;
+            var view=this.Core.View;
+            jDom.find('.right_container').prepend('<button command=test>test</button>').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                stockService.dynamic.setting.linkCell.post("test", { "_id": selRow._id,"__pid":pid }).done(function(ret) {
+                  alert("OK");
+                  view.Grid.Query();
+                })
+              }
+            })
 
 
           },

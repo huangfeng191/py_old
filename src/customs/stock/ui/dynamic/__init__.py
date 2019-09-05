@@ -49,4 +49,19 @@ class DynamicLink(ArrayCRUD):
     self.module = dynamic_link
     self.array = 'cell'
 
+  def action(self, act, *args, **kwArgs):
+        if act == 'test':
+            return self.test(*args, **kwArgs)
+        else:
+            return ArrayCRUD.action(self, act, *args, **kwArgs)
+
+  def test(self, _id=None,pid=None, *args, **kwArgs):
+      p=self.module.get(pid)
+      one=None
+      for r in p.get("cell"):
+          if r.get("_id")==_id:
+              one=r
+      print one.get("_id")
+      return "OK"
+
 

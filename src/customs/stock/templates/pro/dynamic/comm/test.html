@@ -52,6 +52,7 @@ Date : 2019/09/01
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "frequency","title": "频率", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"frequency" },
         { "field": "outFrequency","title": "频率时间", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
         { "field": "outData", "title": "输出数据", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, formatter:function(v,r,i){
           return  JSON.stringify(r.data)   ;
         }},
@@ -71,7 +72,8 @@ Date : 2019/09/01
         [
         { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         { "Field": "outFrequency", "Name": "频率时间", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-        ],
+        {"Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },  
+      ],
       //  [
 
       //  ], 
@@ -105,7 +107,7 @@ Date : 2019/09/01
         { "field": "args", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "params", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "frequency","title": "频率", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"frequency" },
-
+        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
       ]
     ],
@@ -122,7 +124,8 @@ Date : 2019/09/01
         ],
         [
         { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-        ],
+        {"Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },  
+      ],
         [{ "Field": "args", "Name": "方法参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 }, ],
         [
           { "Field": "params", "Name": "复用参数", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 5 },

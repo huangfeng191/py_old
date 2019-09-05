@@ -48,6 +48,8 @@ class DynamicCommTestCRUD(CRUD):
             one["outFrequency"]=outFrequency
             old=dynamic_comm_test_log.get({"tid":one["tid"],"outFrequency":outFrequency,"sn":one.get("sn")})
             if old:
+                if one.get("outGenerate")=="first":
+                    return "OK"
                 one["_id"]=old.get("_id")
         log=dynamic_comm_test_log.upsert(**one)
 
