@@ -294,7 +294,7 @@ Date : 2019/09/01
                     return r._id;
                   });
                   // todo
-                  stockService.dynamic.comm.testLogCRUD.post("multiDelete",ids ).done(function(json){
+                  stockService.dynamic.comm.testLogCRUD.post("multiDelete",{ids} ).done(function(json){
                   if (json ) {
                     alert("OK");
                     PCRUD.View.Grid.Query();

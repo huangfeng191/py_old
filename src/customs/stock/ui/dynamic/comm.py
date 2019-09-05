@@ -62,3 +62,12 @@ class DynamicCommTestCRUD(CRUD):
 class DanamicCommCRUD(CRUD):
     def __init__(self):
         self.module = dynamic_comm_test_log
+
+    def action(self, act, *args, **kwArgs):
+          if act == 'multiDelete':
+              return self.multiDelete(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def multiDelete(self, ids=None, *args, **kwArgs):
+        return dynamic_comm_test_log.delete({"_id":{'$in':ids}},**{"multi":True})
