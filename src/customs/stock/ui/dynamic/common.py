@@ -8,7 +8,7 @@ import json
 from webservice import POST
 
 from ui import  path,wildcard,CRUD
-from customs.stock.service.dynamic.comm import *
+from customs.stock.service.dynamic.common import *
 
 from customs.stock.service.dynamic.rule import *
 from web.contrib.template import render_mako
@@ -39,24 +39,25 @@ class DynamicCommTestCRUD(CRUD):
         del one["_id"]
         return self.module.upsert(**one)
     def test(self, _id=None, frequency=None,*args, **kwArgs):
-
+        logSource="dynamic_comm_test_log"
         one=self.module.get(_id)
         one["tid"] = one["_id"]
         del one["_id"]
         if(frequency):
             outFrequency=reuse.getFrequencyStart(frequency)
             one["outFrequency"]=outFrequency
-            old=dynamic_comm_test_log.get({"tid":one["tid"],"outFrequency":outFrequency,"sn":one.get("sn")})
+            old=eval(logSource).get({"tid":one["tid"],"outFrequency":outFrequency,"sn":one.get("sn")})
             if old:
                 if one.get("outGenerate")=="first":
                     return "OK"
                 one["_id"]=old.get("_id")
-        log=dynamic_comm_test_log.upsert(**one)
+        log=eval(logSource).upsert(**one)
 
         p=json.loads(one.get("args") )# 方法参数
         if one.get("params"):
             p["params"]=json.loads(one.get("params")) # 公用参数
         p["log"]=log
+        p["logSource"]=eval(logSource)
         return eval(one.get("method"))(**p)
 
 
