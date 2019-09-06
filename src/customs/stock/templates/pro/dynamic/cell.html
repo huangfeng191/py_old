@@ -44,16 +44,20 @@ Date : 2019/08/26
 
 
         { "field": "name", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "ruleType", "title": "规则类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
+        { "field": "reuseParams","title": "复用参数", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        
         { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
+        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
         { "field": "out", "title": "输出规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "group", "title": "cell分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "desc", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "exchange", "title": "交易所", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "exchange" },
-
+        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
       ]
     ],
     form: [{
@@ -66,16 +70,29 @@ Date : 2019/08/26
           { "Field": "name", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "group", "Name": "cell分组", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "type", "Name": "cell类型", ShowType: "combo", Ext: "CellType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-        ],
+          { "Field": "exchange", "Name": "交易所", ShowType: "combo", Ext: "exchange", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
+        ],
+        [
+        { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+         { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+         
+         { "Field": "reuseParams", "Name": "复用参数", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+         { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+            
+        ],
         [
           { "Field": "rule", "Name": "生成规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
-        ],
+           ],
         [
           { "Field": "outType", "Name": "输出类型", ShowType: "combo", Ext: "outType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "exchange", "Name": "交易所", ShowType: "combo", Ext: "exchange", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        
+
+          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+    
         ],
         [
           { "Field": "out", "Name": "输出规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
@@ -232,12 +249,12 @@ Date : 2019/08/26
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
             var jDom = this.Container;
-            var view=this.Core.View;
+            var view = this.Core.View;
             jDom.find('.right_container').prepend('<button command=test>test</button>').
             on('click', function(event) {
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
-                stockService.dynamic.setting.linkCell.post("test", { "_id": selRow._id,"__pid":pid }).done(function(ret) {
+                stockService.dynamic.setting.linkCell.post("test", { "_id": selRow._id, "__pid": pid }).done(function(ret) {
                   alert("OK");
                   view.Grid.Query();
                 })

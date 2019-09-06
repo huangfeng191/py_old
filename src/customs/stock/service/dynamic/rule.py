@@ -9,7 +9,8 @@ import misc.reuse  as reuse
 import misc.wrapper as wrapper
 from customs.stock.service.tushare_beans import *
 from customs.stock.service.dynamic.comm import *
-
+from copy import deepcopy
+import json
 # 从对象中找出需要的字段
 def getFieldsFilter(row,fields):
     one={}
@@ -88,3 +89,46 @@ def getLastResult(source={},  out={}, **kwargs):
     else:
         pass
     return ret
+
+
+# 后续可以考虑 如果是 first 的时会 把原来的记录返回
+# bind 后续的 规则是否生成 ，还是获取
+
+def bind_outGenerate(func):
+    def wrap( **cell):
+        sn= cell.get("sn")
+        outType =cell.get("outType")
+        frequency=cell.get("frequency")
+        outGenerate=cell.get("outGenerate")
+        one=deepcopy(cell)
+        one["bid"]=one["_id"]
+        del one["_id"]
+        if outType == "log":
+            if (frequency):
+                outFrequency = reuse.getFrequencyStart(frequency)
+                one["outFrequency"]=outFrequency
+                old = dynamic_comm_test_log.get({ "outFrequency": outFrequency, "sn": sn})
+                if old:
+                    if outGenerate == "first":
+                        pass
+                    else:
+                        one["_id"]=old["_id"]
+
+        for s in ["rule","reuseParams","out"]:
+            if one[s]:
+                cell[s]=json.loads(one[s] )
+        log = dynamic_comm_test_log.upsert(**one)
+        kwArgs = cell["rule"]
+        kwArgs["out"]=cell["out"]
+        kwArgs["params"]=cell.get("reuseParams") # 公共参数
+        kwArgs["log"]=log # 日志
+        kwArgs["out"]["type"]=one.get("outType")
+        kwArgs["ruleType"]=log.get("ruleType")
+        res = func(**kwArgs)
+
+        return res
+
+    return wrap
+
+
+

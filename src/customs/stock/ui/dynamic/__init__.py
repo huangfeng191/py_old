@@ -61,7 +61,12 @@ class DynamicLink(ArrayCRUD):
       for r in p.get("cell"):
           if r.get("_id")==_id:
               one=r
-      print one.get("_id")
+      loadRule(**one)
       return "OK"
 
+@bind_outGenerate
+def loadRule(**kwArgs):
+  ruleType=kwArgs.get("ruleType")
+  if ruleType=="last": # 可以将方法也配置成参数
+      getLastResult(**kwArgs)
 
