@@ -804,7 +804,8 @@
 	                    panelWidth: Opts.PanelWidth,
 	                    height: Opts.Height,
 	                    panelHeight: Opts.PanelHeight,
-	                    multiple: Opts.Multiple
+						multiple: Opts.Multiple,
+					
 	                });
                     
 	                if(Opts.Value)
@@ -817,7 +818,12 @@
 	                    {
 	                        jQuery(Ele).find("input.value").combobox("setValue", Opts.Value);
 	                    }
-	                }
+					}else if(Opts.Required){
+						if(Opts.Data.length>0){
+							jQuery(Ele).find("input.value").combobox("setValue", Opts.Data[0][Opts.ValueField]);
+						}
+					}
+					
 	            });
 	        }
 	        var Handler =

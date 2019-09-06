@@ -8,7 +8,9 @@
 import misc.reuse  as reuse
 import misc.wrapper as wrapper
 from customs.stock.service.tushare_beans import *
-from customs.stock.service.dynamic.comm import *
+from customs.stock.service.dynamic import *
+from customs.stock.service.dynamic.common import *
+
 from copy import deepcopy
 import json
 # 从对象中找出需要的字段
@@ -60,13 +62,13 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
 
 
 def getLastResult(source={},  out={}, **kwargs):
-
+    logSource=kwargs.get("logSource")
     d = []  # 记录
 
     if source: # 获取数据
         d = dynamicQuery(source,**kwargs)
-    if "log" in kwargs:
-        dynamic_comm_test_log.upsert(**kwargs["log"])
+    if "log" in kwargs and logSource:
+        eval(logSource).upsert(**kwargs["log"])
 
     prep = out.get(out.get("type","log"))
     if out.get("type")=="log": #priority : field > fields 返回值 放在data 的 key 对应的字段里
@@ -81,7 +83,7 @@ def getLastResult(source={},  out={}, **kwargs):
             if "data" not in kwargs["log"]:
                 kwargs["log"]["data"] = {}
             kwargs["log"]["data"].update(ret)
-        dynamic_comm_test_log.upsert(**kwargs["log"])
+        eval(logSource).upsert(**kwargs["log"])
 
 
     elif out.get("type") in ["array"]: # 一般用于中间输出
@@ -94,12 +96,13 @@ def getLastResult(source={},  out={}, **kwargs):
 # 后续可以考虑 如果是 first 的时会 把原来的记录返回
 # bind 后续的 规则是否生成 ，还是获取
 
-def bind_outGenerate(func):
+def bind_outGenerate_wrapper(func):
     def wrap( **cell):
         sn= cell.get("sn")
         outType =cell.get("outType")
         frequency=cell.get("frequency")
         outGenerate=cell.get("outGenerate")
+        logSource=cell.get("logSource")
         one=deepcopy(cell)
         one["bid"]=one["_id"]
         del one["_id"]
@@ -107,7 +110,7 @@ def bind_outGenerate(func):
             if (frequency):
                 outFrequency = reuse.getFrequencyStart(frequency)
                 one["outFrequency"]=outFrequency
-                old = dynamic_comm_test_log.get({ "outFrequency": outFrequency, "sn": sn})
+                old = eval(logSource).get({ "outFrequency": outFrequency, "sn": sn})
                 if old:
                     if outGenerate == "first":
                         pass
@@ -117,11 +120,12 @@ def bind_outGenerate(func):
         for s in ["rule","reuseParams","out"]:
             if one[s]:
                 cell[s]=json.loads(one[s] )
-        log = dynamic_comm_test_log.upsert(**one)
+        log = eval(logSource).upsert(**one)
         kwArgs = cell["rule"]
         kwArgs["out"]=cell["out"]
         kwArgs["params"]=cell.get("reuseParams") # 公共参数
         kwArgs["log"]=log # 日志
+        kwArgs["logSource"]=logSource
         kwArgs["out"]["type"]=one.get("outType")
         kwArgs["ruleType"]=log.get("ruleType")
         res = func(**kwArgs)

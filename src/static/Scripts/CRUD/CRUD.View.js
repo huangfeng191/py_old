@@ -2404,8 +2404,13 @@ jQuery.extend(jQuery.CRUD,
 			                    	}else{
 			                    		    var None = {};
 					                        None[Quick.ValueField || "Id"] = "";
-					                        None[Quick.TextField || "Name"] = "不限";
-					                        Quick.Data = [None].concat(View.Binding[Quick.Source]) || [];
+											None[Quick.TextField || "Name"] = "不限";
+											if(Quick.Required){
+												Quick.Data = [].concat(View.Binding[Quick.Source]) || [];
+											}else{
+												Quick.Data = [None].concat(View.Binding[Quick.Source]) || [];
+											}
+					                        
 			                    	}
 			                       
 			                    }

@@ -12,7 +12,7 @@ from misc import utils
 
 
 import customs.stock.service.basic as basic
-
+from customs.stock.service.dynamic import *
 from web.contrib.template import render_mako
 render_out = render_mako(directories=[ "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
@@ -60,6 +60,11 @@ class ProStockBindings:
               bindings.append(
         {"Code":r.get("code"),"Records":r.get("dtls",[])}
       )
+      linkType={"Code": "linkType", "Records": []}
+      for  r  in dynamic_link.items(query={"$or":[{"isDelete":False},{"isDelete":{'$exists':0}}]}):
+          linkType["Records"].append({"name":r.get("nm"),"value":r.get("_id")})
+      bindings.append(linkType)
+
       bindings.append(
         {"Code":"STATE","Records":[
           {"_id":"1","name":"启用", "value":"1"},
@@ -72,7 +77,7 @@ class ProStockBindings:
           aRelation.append({"_id":r.get("Relation"),"name":r.get("Name"),"value":r.get("Code")})
       bindings.append(
         {"Code":"Relation","Records":aRelation}
-      )     
+      )
       return "var GBindings = %s; " % json.dumps(bindings)
 
 

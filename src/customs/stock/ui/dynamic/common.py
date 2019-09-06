@@ -57,7 +57,7 @@ class DynamicCommTestCRUD(CRUD):
         if one.get("params"):
             p["params"]=json.loads(one.get("params")) # 公用参数
         p["log"]=log
-        p["logSource"]=eval(logSource)
+        p["logSource"]=logSource
         return eval(one.get("method"))(**p)
 
 
