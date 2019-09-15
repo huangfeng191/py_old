@@ -178,7 +178,7 @@ Date : 2019/08/26
         Behavior: {
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
-              Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+            
 
 
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
@@ -250,7 +250,7 @@ Date : 2019/08/26
             this.Button.Hide(["filter", "order"]);
             var jDom = this.Container;
             var view = this.Core.View;
-            jDom.find('.right_container').prepend('<button command=test>test</button>').
+            jDom.find('.right_container').prepend('<button command=test>test</button>').find("[command=test]").
             on('click', function(event) {
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
@@ -296,7 +296,7 @@ Date : 2019/08/26
         Behavior: {
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
-              Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+            
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
               if (!pid) {

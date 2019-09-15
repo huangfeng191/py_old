@@ -13,6 +13,11 @@ from customs.stock.service.dynamic.common import *
 
 from copy import deepcopy
 import json
+
+
+
+
+
 # 从对象中找出需要的字段
 def getFieldsFilter(row,fields):
     one={}
@@ -45,7 +50,7 @@ def getFieldsFilter(row,fields):
 
 
 
-@wrapper.dynamic_params_wrapper
+@dynamic_params_wrapper
 def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
     d=None
     if(source and source.get("table")):
@@ -133,6 +138,4 @@ def bind_outGenerate_wrapper(func):
         return res
 
     return wrap
-
-
 
