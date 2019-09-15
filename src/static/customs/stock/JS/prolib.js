@@ -243,7 +243,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
                         retO["oOne"][sn]={sn,dataType,nm,width,showType,other};
 
                         var templateCols=`{ "field": "${sn}","title":"${nm}","width":"${width}", "halign": "center" ${other["columns"].join(",")} }`;
-                        var templateInputs=` { "Field": "${sn}", "Name": "${nm}", "ShowType":"${showType}" ${other["inputs"].join(",")} } `
+                        var templateInputs=` { "Field": "${sn}", "Name": "${nm}", "ShowType":"${showType}","ColSpan":1 ${other["inputs"].join(",")} } `
                         var templateProps=`{ "Field":"${sn}", "Name" : "${nm}", "ShowType":"${showType}","DataType": "${dataType}" ,"FilterEnabled": true,"OrderEnabled": true ${other["props"].join(",")}  }`;
                         retO.columns.push(JSON.parse(templateCols))
 
