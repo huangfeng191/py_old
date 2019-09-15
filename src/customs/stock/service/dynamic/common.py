@@ -42,7 +42,7 @@ def dynamic_params_wrapper(func):
         for k, v in queries.items():
             if k not in q:
                 q[k] = {}
-            if  isinstance(v,basestring) or not v.get("type") or v.get("type") == "normal":
+            if  isinstance(v,basestring) or isinstance(v,int) or  not v.get("type") or v.get("type") == "normal":
                 q[k] = v
             elif v.get("type") == "date":
                 if v.get("value") and params["date"] and params["date"][v.get("value")]:

@@ -201,6 +201,9 @@ function getInterfaceConfig({table_nm,multi_sn}){
                                 width="100"
                             }
                             dataType="DateTime"
+                        }else if(last_type=="n"){
+                            dataType="Number";
+                            // 
                         }else if(last_type=="a"){
                             showType="textarea";
                             // 
@@ -327,7 +330,7 @@ function getInterfaceConfig({table_nm,multi_sn}){
                            if(retO["oOne"][sn]){
                                let nm=retO["oOne"][sn].nm;
                                let width=retO["oOne"][sn].width;
-                               let dataType=retO["oOne"][sn].dataType;
+                            //    let dataType=retO["oOne"][sn].dataType; no used 
                                let showType=retO["oOne"][sn].showType;
                                let type=(showType=="combo"?"QCombox":(showType=="datetime"?"QDatetime":"QText"));
                                
