@@ -64,38 +64,66 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
 
 # last
 
-
+# 要把 key 也加上去
 
 def getLastResult(source={},  out={}, **kwargs):
-    logSource=kwargs.get("logSource")
+
     d = []  # 记录
 
     if source: # 获取数据
         d = dynamicQuery(source,**kwargs)
-    if "log" in kwargs and logSource:
-        eval(logSource).upsert(**kwargs["log"])
 
-    prep = out.get(out.get("type","log"))
-    if out.get("type")=="log": #priority : field > fields 返回值 放在data 的 key 对应的字段里
+    dealwithOut(out,d,**kwargs)
+
+
+def dealwithOut(out,d,log,**kwArgs):
+    logSource = kwArgs.get("logSource")
+    prep = out.get(out.get("type", "log"))
+    if out.get("type") == "log" and logSource:  # priority : field > fields 返回值 放在data 的 key 对应的字段里
+        eval(logSource).upsert(**log)
         if prep.get("field"):
             d = [r.get(prep.get("field")) for r in d]
-        elif   prep.get("fields"):
+        elif prep.get("fields"):
             d = [getFieldsFilter(r, out.get("fields")) for r in d]
-    ret= None   # 对于保存在 日志表里的记录， 可以理解为 是 object
-    if out.get("type") in ["log" ,"object"]  :
+    ret = None  # 对于保存在 日志表里的记录， 可以理解为 是 object
+    if out.get("type") in ["log", "object"]:
         ret = {prep.get("key"): d}
-        if  out.get("type") =="log":
-            if "data" not in kwargs["log"]:
-                kwargs["log"]["data"] = {}
-            kwargs["log"]["data"].update(ret)
-        eval(logSource).upsert(**kwargs["log"])
+        if out.get("type") == "log":
+            if "data" not in log:
+                log["data"] = {}
+            log["data"].update(ret)
+        eval(logSource).upsert(**log)
+    elif out.get("type")=="table":
+
+        # "table": {
+        #     "nm": "dynamic_daily_business",
+        #     "key": {
+        #         "sn": 1,
+        #         "outFrequency": 1
+        #     }
+        # }
+
+        config=out.get("table")
+        old_queries={}
+        for k,v in config.get("key").items():
+            if( k in log):
+                old_queries[k]=log.get(k)
+        eval(config.get("nm")).delete(old_queries, multi=True)
+        for r in d:
+            r.update(old_queries)
+            eval(config.get("nm")).upsert(**r)
 
 
-    elif out.get("type") in ["array"]: # 一般用于中间输出
+
+
+        pass
+
+    elif out.get("type") in ["array"]:  # 一般用于中间输出
         ret = d;
     else:
         pass
     return ret
+
 
 
 # 后续可以考虑 如果是 first 的时会 把原来的记录返回

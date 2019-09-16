@@ -20,6 +20,7 @@ dynamic_comm_test = comm.CRUD(ctx.dynamicdb, "test", [("method", 1)])
 dynamic_comm_test_log = comm.CRUD(ctx.dynamicdb, "test_log", [("method", 1)])
 
 dynamic_daily_business= comm.CRUD(ctx.dynamicdb, "daily_business", [("method", 1)])
+dynamic_comm_loop = comm.CRUD(ctx.dynamicdb, "loop", [("ts_code", 1)])
 
 
 
