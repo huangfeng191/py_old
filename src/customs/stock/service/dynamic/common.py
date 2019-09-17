@@ -13,14 +13,16 @@
 import ctx
 from service import comm
 import json
-
+from copy import deepcopy
 import misc.reuse  as reuse
+
+from customs.stock.service.tushare_beans import *
 
 dynamic_comm_test = comm.CRUD(ctx.dynamicdb, "test", [("method", 1)])
 dynamic_comm_test_log = comm.CRUD(ctx.dynamicdb, "test_log", [("method", 1)])
 
-dynamic_daily_business= comm.CRUD(ctx.dynamicdb, "daily_business", [("method", 1)])
-dynamic_comm_loop = comm.CRUD(ctx.dynamicdb, "loop", [("ts_code", 1)])
+dynamic_daily_business= comm.CRUD(ctx.dynamicdb, "daily_business", [("method", 1)]) # 明细
+dynamic_basic_business= comm.CRUD(ctx.dynamicdb, "basic_business", [("ts_code", 1)]) # 一个业务 一个 code 一条 汇总  outFrenquence  ts_code , result:{"business":{?}}
 
 
 
@@ -39,6 +41,9 @@ def dynamic_params_wrapper(func):
     def bindQueries(queries={}, params={},**kwArgs):
         params=reuse.bindReuse(params)
         log=kwArgs.get("log")
+        otherQueries={}
+        variable=[]
+        otherQueries["variable"]=variable
         q = {}
         for k, v in queries.items():
             if k not in q:
@@ -55,10 +60,27 @@ def dynamic_params_wrapper(func):
                     one = eval(logSource).get({"outFrequency": log.get("outFrequency"), "sn": v.get("sn")})
                     if one and one.get("data"):
                         q[k] = {"$"+v.get("operate","in"): one.get("data") [v.get("field")]}
+            elif v.get("type")=="loop":
+                # "type":"loop", "from":"stock_basic", "from_k":"ts_code", "from_q": r2.get("from_q")
+                one_com = {"field": k, "type": v.get("type"), "from": v.get("from"), "from_k": v.get("from_k"),
+                           "from_q": v.get("from_q")}
+                variable.append(one_com)
 
                 pass
-        return q
 
+        return q ,otherQueries
+
+    def combineQueries(must={},variable=[]):
+        ret=[]
+        if not variable:
+            ret.append(must)
+        for r_c in variable:
+            if r_c.get("type") == "loop":
+                l = eval(r_c.get("from")).items(query=(r_c.get("from_q") or {}),fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
+            for r_l in l:
+                must[r_c.get("field")] = r_l.get(r_c.get("from_k"))
+                ret.append(deepcopy(must))
+        return ret
     # "limit":{"rows":7 },
     def bindLimits(limits={}):
         size = None
@@ -83,7 +105,8 @@ def dynamic_params_wrapper(func):
             p["source"]=bindSource(source)
 
         if "queries" in kwArgs:  # 参数时需要规则，比如重用规则
-            p["queries"]=bindQueries(**kwArgs)
+            p["queries"],p["otherQueries"]=bindQueries(**kwArgs)
+            kwArgs["aQueries"] = combineQueries(p["queries"], p["otherQueries"].get("variable"))
 
         if "limits" in kwArgs:  # 参数时需要规则，比如重用规则
             p["limits"] = bindLimits(kwArgs["limits"])

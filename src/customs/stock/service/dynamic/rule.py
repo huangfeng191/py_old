@@ -7,9 +7,10 @@
 
 import misc.reuse  as reuse
 import misc.wrapper as wrapper
+from customs.stock.service.dynamic.common import *
 from customs.stock.service.tushare_beans import *
 from customs.stock.service.dynamic import *
-from customs.stock.service.dynamic.common import *
+
 
 from copy import deepcopy
 import json
@@ -45,12 +46,25 @@ def getFieldsFilter(row,fields):
 # }
 # params { "date":{"day"... "month" } }
 
-
-
-
-
-
+@wrapper.calc_runtime_wrapper
+@wrapper.loop_fun_reset_wrapper
 @dynamic_params_wrapper
+def beforeDynamicQuery(**kwArgs):
+    kw =deepcopy(kwArgs)
+
+    if(kwArgs.get("aQueries")):
+        for r in kwArgs.get("aQueries"):
+            kw["queries"]=r
+            dynamicDeal(**kw)
+
+        return "OK"
+    else:
+        return dynamicDeal(**kwArgs)
+
+
+
+
+
 def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
     d=None
     if(source and source.get("table")):
@@ -59,6 +73,12 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
                           size=limits.get("size") )
         d=list(d)
     return d
+@wrapper.loop_fun_wrapper
+def dynamicDeal(source={},  out={},**kwArgs):
+    d=dynamicQuery(source,**kwArgs)
+    ret=dealwithOut(out, d, **kwArgs)
+
+    return ret
 
 
 
@@ -66,15 +86,11 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
 
 # 要把 key 也加上去
 
-def getLastResult(source={},  out={}, **kwargs):
-
-    d = []  # 记录
-
-    if source: # 获取数据
-        d = dynamicQuery(source,**kwargs)
-
-    dealwithOut(out,d,**kwargs)
-
+def getLastResult( **kwArgs):
+    d=None
+    if kwArgs.get("source"): # 获取数据
+        d = beforeDynamicQuery(**kwArgs)
+    return d
 
 def dealwithOut(out,d,log,**kwArgs):
     logSource = kwArgs.get("logSource")
@@ -92,7 +108,7 @@ def dealwithOut(out,d,log,**kwArgs):
             if "data" not in log:
                 log["data"] = {}
             log["data"].update(ret)
-        eval(logSource).upsert(**log)
+
     elif out.get("type")=="table":
 
         # "table": {
@@ -105,23 +121,31 @@ def dealwithOut(out,d,log,**kwArgs):
 
         config=out.get("table")
         old_queries={}
-        for k,v in config.get("key").items():
+        for k,v in config.get("logKey").items():
             if( k in log):
                 old_queries[k]=log.get(k)
+        for k, v in config.get("dataKey").items():
+            if (k in kwArgs.get("queries",{})):
+                old_queries[k] = kwArgs.get("queries").get(k)
         eval(config.get("nm")).delete(old_queries, multi=True)
         for r in d:
+            if "_id" in r:
+                del r["_id"]
             r.update(old_queries)
             eval(config.get("nm")).upsert(**r)
 
+        ret="OK"
 
 
-
-        pass
 
     elif out.get("type") in ["array"]:  # 一般用于中间输出
         ret = d;
     else:
         pass
+    if logSource and log:
+        log["logState"] = 1
+        eval(logSource).upsert(**log)
+
     return ret
 
 
