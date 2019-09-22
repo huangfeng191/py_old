@@ -14,7 +14,7 @@ render_dynamic= render_mako(directories=["customs/stock/templates/pro/dynamic", 
 from customs.stock.service.dynamic import dynamic_link_cell_log,dynamic_link
 
 from customs.stock.ui.dynamic.common import *
-
+from bson.objectid import ObjectId
 
 
 
@@ -65,9 +65,21 @@ class DynamicLink(ArrayCRUD):
   def action(self, act, *args, **kwArgs):
         if act == 'test':
             return self.test(*args, **kwArgs)
+        elif act == 'copy':
+            return self.copy(*args, **kwArgs)
         else:
             return ArrayCRUD.action(self, act, *args, **kwArgs)
+  def copy(self,_id=None,**kwArgs):
 
+        p = self.module.get(kwArgs.get("__pid"))
+        record={"__pid":kwArgs.get("__pid")}
+        for r in p.get("cell",[]):
+            if r.get("_id")==_id:
+                record.update(r)
+                record["_id"]=str(ObjectId())
+
+
+        return self.action("insert",record=record)
   def test(self, _id=None,pid=None, *args, **kwArgs):
       p=self.module.get(pid)
       one=None
