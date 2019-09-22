@@ -300,6 +300,7 @@ def getCommDateStart(type="day",ts=time.time(),fmt=None,isTs=False):
     elif type =="year":
         fmt='%Y'
     s=time.strftime(fmt.encode('utf-8'), time.localtime(float(ts))).decode('utf-8')
+    # s=time.strftime(fmt.encode('utf-8'), time.gmtime(float(ts))).decode('utf-8')
     if isTs:
         return STR2TS(s)
     return s

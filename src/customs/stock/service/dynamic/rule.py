@@ -121,10 +121,10 @@ def dealwithOut(out,d,log,**kwArgs):
 
         config=out.get("table")
         old_queries={}
-        for k,v in config.get("logKey").items():
+        for k,v in config.get("logKey",{}).items():
             if( k in log):
                 old_queries[k]=log.get(k)
-        for k, v in config.get("dataKey").items():
+        for k, v in config.get("dataKey",{}).items():
             if (k in kwArgs.get("queries",{})):
                 old_queries[k] = kwArgs.get("queries").get(k)
         eval(config.get("nm")).delete(old_queries, multi=True)
@@ -191,3 +191,50 @@ def bind_outGenerate_wrapper(func):
 
     return wrap
 
+
+
+
+@wrapper.calc_runtime_wrapper
+@wrapper.loop_fun_reset_wrapper
+@dynamic_params_wrapper
+def beforeAggregateQuery(**kwArgs):
+    kw =deepcopy(kwArgs)
+
+    if(kwArgs.get("aQueries")):
+        for r in kwArgs.get("aQueries"):
+            kw["queries"]=r
+            aggregateDeal(**kw)
+
+        return "OK"
+    else:
+        return aggregateDeal(**kwArgs)
+
+
+
+def daggregateDealQuery(source,queries,*args,**kwArgs):
+    d=None
+    if(source and source.get("table")):
+
+        step=[]
+        if kwArgs.get("aggregate"):
+            step=kwArgs.get("aggregate")
+        if (queries):
+            step.insert(0,{"$match": queries})
+
+        d = eval(source.get("table")).db.aggregate(step)
+        d=list(d)
+    return d
+@wrapper.loop_fun_wrapper
+def aggregateDeal(source={},  out={},**kwArgs):
+    d=daggregateDealQuery(source,**kwArgs)
+    ret=dealwithOut(out, d, **kwArgs)
+
+    return ret
+
+
+# 通过聚合函数调用结果
+def getAggregateResult(**kwargs):
+    d = None
+    if kwargs.get("source"):  # 获取数据
+        d = beforeAggregateQuery(**kwargs)
+    return d

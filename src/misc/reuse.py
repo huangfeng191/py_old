@@ -26,5 +26,7 @@ def getParamsDateType():
 
 # 根据类型 返回字符串类型的时间
 def getFrequencyStart(frequency):
-    return utils.getCommDateStart(frequency)
+    d=utils.getCommDateStart(frequency)
+    d=d.replace("-","")
+    return d
 
