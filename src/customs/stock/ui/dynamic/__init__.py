@@ -18,11 +18,7 @@ from bson.objectid import ObjectId
 
 
 
-@bind_outGenerate_wrapper
-def loadRule(**kwArgs):
-  ruleType=kwArgs.get("ruleType")
-  if ruleType=="last": # 可以将方法也配置成参数
-      getLastResult(**kwArgs)
+
 
 
 
@@ -48,6 +44,15 @@ class DynamicLinkCRUD(CRUD):
 
     def __init__(self):
         self.module = dynamic_link
+    def action(self, act, *args, **kwArgs):
+          if act == 'generateLink':
+              return self.generateLink(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def generateLink(self, _id,*args, **kwArgs):
+       doLinkOne(**{"linkId":_id})
+       return {}
 
 
 @path("/dynamic/link/cell.html") 

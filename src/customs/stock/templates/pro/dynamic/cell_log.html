@@ -215,14 +215,14 @@ Date : 2019/09/07
                 Behavior: {
                     BeforeQuery: function (Filters, Orders) {
                         if (Cid) { 
-                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
+                           
 
                             Filters.forEach(function(v){
                                 if(v.Field=="linkType"){
                                     v.Field="__pid"
                                 }
                             })
-                            // Filters.Merge([{Field: "__pid", Operate: "=", Value: "1", Relation: "and"}]);
+                           
 
 
                             PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
@@ -327,14 +327,16 @@ Date : 2019/09/07
 
                         },
                         BeforeSet: function (Record, IsNew) {
-
+                            if(Record.data){
+                                Record.outData=JSON.stringify(Record.data)
+                            }
                         }
                     }
                 },
                 Behavior: {
                     BeforeQuery: function (Filters, Orders) {
                         if (Cid) {
-                            Filters.Merge([{Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
+                           
 
                             if (!pid) {
                                 return false;

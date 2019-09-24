@@ -27,7 +27,18 @@ ts.set_token(ctx.tushreToken)
 
 # table_nm 就是接口名
 def getInterfaceData(table_nm="stock_basic",fields=None,**kwargs):
-    pro = ts.pro_api()
+    pro=None
+    i=1
+    while True:
+       try:
+        pro = ts.pro_api()
+        break
+       except:
+           time.sleep(60*i)
+           i=i+1
+           pro = ts.pro_api()
+           print ("Reconnecting...")
+
     data=pro.query(table_nm,fields,**kwargs )
     return data
 # 将数据保存到数据库

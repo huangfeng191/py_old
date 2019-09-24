@@ -11,6 +11,8 @@ from ui import  path,wildcard,CRUD
 from customs.stock.service.dynamic.common import *
 
 from customs.stock.service.dynamic.rule import *
+from customs.stock.service.dynamic.ruleFun import *
+from customs.stock.service.dynamic.ruleLink import *
 from web.contrib.template import render_mako
 dynamic_comm= render_mako(directories=["customs/stock/templates/pro/dynamic/comm", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")

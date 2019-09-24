@@ -4,3 +4,33 @@
 # Author  : Wujj
 # Date    : 2019/09/25
 # Version : 1.0
+
+
+from customs.stock.service.dynamic.rule import *
+
+
+# last
+
+# 要把 key 也加上去
+
+def getLastResult( **kwArgs):
+    d=None
+    if kwArgs.get("source"): # 获取数据
+        d = beforeDynamicQuery(**kwArgs)
+    return d
+
+# 通过聚合函数调用结果
+def getAggregateResult(**kwargs):
+    d = None
+    if kwargs.get("source"):  # 获取数据
+        d = beforeAggregateQuery(**kwargs)
+    return d
+
+
+@bind_outGenerate_wrapper
+def loadRule(**kwArgs):
+  ruleType=kwArgs.get("ruleType")
+  if ruleType=="last": # 可以将方法也配置成参数
+      getLastResult(**kwArgs)
+  elif ruleType=="aggregate":
+      getAggregateResult(**kwArgs)

@@ -32,4 +32,6 @@ dynamic_link_cell_log = comm.CRUD(ctx.dynamicdb, "cell_log", [("cid", 1)])
 
 import common
 import rule
+import ruleFun
+import ruleLink
 

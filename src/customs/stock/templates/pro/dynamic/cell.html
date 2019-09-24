@@ -146,7 +146,18 @@ Date : 2019/08/26
 
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-
+            var jDom = this.Container;
+            var view=this.Core.View;
+            jDom.find('.right_container').prepend('<button command=generateLink>generateLink</button>').find('[command=generateLink]').
+            on('click', function(event) {
+                var selRow = view.Grid.CurrentRow;
+                if (selRow) {
+                  stockService.dynamic.setting.link.post("generateLink", { "_id": selRow._id }).done(function(ret) {
+                    alert("OK");
+                    PCRUD.view.Grid.Query();
+                  })
+                }
+              })      
 
 
           },

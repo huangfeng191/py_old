@@ -12,9 +12,9 @@ def calc_runtime_wrapper(func):
 
     def wrap(**kwArgs):
         st=time.time()
-        print "startCount"
+        print "runtime startCount"
         res=func(**kwArgs)
-        print "endCount:%f" % (time.time() - st)
+        print "runtime endCount:%f" % ((time.time() - st))
         return res
     return wrap
 

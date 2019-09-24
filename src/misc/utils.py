@@ -288,7 +288,9 @@ def STR2TS(strdate):
 
 
 #  获取 年月日 时间及时间戳
-def getCommDateStart(type="day",ts=time.time(),fmt=None,isTs=False):
+def getCommDateStart(type="day",ts=None,fmt=None,isTs=False):
+    if ts==None:
+        ts=time.time()
     s=None
     if type=="week":
         ts=getFirstEndDayOfWeek(ts)[0]

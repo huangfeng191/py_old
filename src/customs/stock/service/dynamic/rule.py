@@ -82,15 +82,7 @@ def dynamicDeal(source={},  out={},**kwArgs):
 
 
 
-# last
 
-# 要把 key 也加上去
-
-def getLastResult( **kwArgs):
-    d=None
-    if kwArgs.get("source"): # 获取数据
-        d = beforeDynamicQuery(**kwArgs)
-    return d
 
 def dealwithOut(out,d,log,**kwArgs):
     logSource = kwArgs.get("logSource")
@@ -163,16 +155,16 @@ def bind_outGenerate_wrapper(func):
         one=deepcopy(cell)
         one["bid"]=one["_id"]
         del one["_id"]
-        if outType == "log":
-            if (frequency):
-                outFrequency = reuse.getFrequencyStart(frequency)
-                one["outFrequency"]=outFrequency
-                old = eval(logSource).get({ "outFrequency": outFrequency, "sn": sn})
-                if old:
-                    if outGenerate == "first":
-                        pass
-                    else:
-                        one["_id"]=old["_id"]
+        # if outType == "log":
+        if (frequency):
+            outFrequency = reuse.getFrequencyStart(frequency)
+            one["outFrequency"]=outFrequency
+            old = eval(logSource).get({ "outFrequency": outFrequency, "sn": sn})
+            if old:
+                if outGenerate == "first":
+                    pass
+                else:
+                    one["_id"]=old["_id"]
 
         for s in ["rule","reuseParams","out"]:
             if one[s]:
@@ -232,9 +224,4 @@ def aggregateDeal(source={},  out={},**kwArgs):
     return ret
 
 
-# 通过聚合函数调用结果
-def getAggregateResult(**kwargs):
-    d = None
-    if kwargs.get("source"):  # 获取数据
-        d = beforeAggregateQuery(**kwargs)
-    return d
+

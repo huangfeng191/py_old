@@ -18,6 +18,8 @@ import misc.reuse  as reuse
 
 from customs.stock.service.tushare_beans import *
 
+from customs.stock.service.dynamic import *
+
 dynamic_comm_test = comm.CRUD(ctx.dynamicdb, "test", [("method", 1)])
 dynamic_comm_test_log = comm.CRUD(ctx.dynamicdb, "test_log", [("method", 1)])
 
