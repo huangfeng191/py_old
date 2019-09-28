@@ -81,9 +81,21 @@ def dynamicDeal(source={},  out={},**kwArgs):
     return ret
 
 
+# 只有表的时候需要删除，其他的不需要
+def dealWithOutClear(out,log):
+
+    if out.get("type")=="table":
+        config=out.get("table")
+        old_queries={}
+        for k,v in config.get("logKey",{}).items():
+            if( k in log):
+                old_queries[k]=log.get(k)
+        eval(config.get("nm")).delete(old_queries, multi=True)
 
 
-
+# dataKey 数据的key 一般用于 loop
+# logKey 此次产生的所有数据的key
+# 当 d =[] 时 可以理解为清空数据
 def dealwithOut(out,d,log,**kwArgs):
     logSource = kwArgs.get("logSource")
     prep = out.get(out.get("type", "log"))

@@ -15,6 +15,7 @@ from customs.stock.service.dynamic import dynamic_link_cell_log,dynamic_link
 
 from customs.stock.ui.dynamic.common import *
 from bson.objectid import ObjectId
+import json
 
 
 
@@ -74,6 +75,7 @@ class DynamicLink(ArrayCRUD):
             return self.copy(*args, **kwArgs)
         else:
             return ArrayCRUD.action(self, act, *args, **kwArgs)
+
   def copy(self,_id=None,**kwArgs):
 
         p = self.module.get(kwArgs.get("__pid"))
@@ -97,6 +99,7 @@ class DynamicLink(ArrayCRUD):
 
 
 
+
 @path("/dynamic/link/cell/log.html")
 class DynamicLinkCellLog:
     def GET(self, _cid = None, *args, **kwargs):
@@ -104,6 +107,18 @@ class DynamicLinkCellLog:
 
 @wildcard("/dynamic/link/cell/log/")
 class DynamicLinkCellLogCRUD(CRUD):
+    def action(self, act, *args, **kwArgs):
+          if act == 'delete':
+              return self.delete(act,*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def delete(self, act,  *args, **kwArgs):
+
+        one = self.module.get(kwArgs.get("record").get("_id"))
+        out = json.loads(one.get("out"))
+        dealWithOutClear(out, one)
+        return self.module.delete(**one)
 
     def __init__(self):
         self.module = dynamic_link_cell_log
