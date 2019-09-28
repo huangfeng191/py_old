@@ -52,8 +52,11 @@ class DynamicLinkCRUD(CRUD):
               return CRUD.action(self, act, *args, **kwArgs)
 
     def generateLink(self, _id,*args, **kwArgs):
-       doLinkOne(**{"linkId":_id})
-       return {}
+       st=time.time()
+       log=doLinkOne(**{"linkId":_id})
+       log["continue"]=(time.time()-st)
+       dynamic_link_log.upsert(**log)
+       return log
 
 
 @path("/dynamic/link/cell.html") 

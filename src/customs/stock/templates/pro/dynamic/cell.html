@@ -46,11 +46,11 @@ Date : 2019/08/26
         { "field": "name", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "ruleType", "title": "规则类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
-        { "field": "reuseParams","title": "复用参数", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+        { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        
+
         { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
-        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
+        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
         { "field": "out", "title": "输出规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "group", "title": "cell分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
@@ -74,25 +74,25 @@ Date : 2019/08/26
 
         ],
         [
-        { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
-         { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-         
-         { "Field": "reuseParams", "Name": "复用参数", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-         { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
 
-            
+          { "Field": "reuseParams", "Name": "复用参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+
         ],
         [
           { "Field": "rule", "Name": "生成规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
-           ],
+        ],
         [
           { "Field": "outType", "Name": "输出类型", ShowType: "combo", Ext: "outType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-        
+
 
           { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-    
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
         ],
         [
           { "Field": "out", "Name": "输出规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
@@ -110,6 +110,9 @@ Date : 2019/08/26
         { "field": "nm", "title": "规则名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "require", "title": "是否必填", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "SF" },
+        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
+        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
+
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
 
       ]
@@ -123,6 +126,9 @@ Date : 2019/08/26
           { "Field": "require", "Name": "是否必填", ShowType: "combo", Ext: "SF", DataType: "Number", "Required": true, RowSpan: 1, ColSpan: 1 },
         ],
         [
+          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
           { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
 
@@ -147,17 +153,17 @@ Date : 2019/08/26
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
             var jDom = this.Container;
-            var view=this.Core.View;
+            var view = this.Core.View;
             jDom.find('.right_container').prepend('<button command=generateLink>generateLink</button>').find('[command=generateLink]').
             on('click', function(event) {
-                var selRow = view.Grid.CurrentRow;
-                if (selRow) {
-                  stockService.dynamic.setting.link.post("generateLink", { "_id": selRow._id }).done(function(ret) {
-                    alert("OK");
-                    PCRUD.view.Grid.Query();
-                  })
-                }
-              })      
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                stockService.dynamic.setting.link.post("generateLink", { "_id": selRow._id }).done(function(ret) {
+                  alert("OK");
+
+                })
+              }
+            })
 
 
           },
@@ -189,7 +195,7 @@ Date : 2019/08/26
         Behavior: {
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
-            
+
 
 
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
@@ -266,7 +272,7 @@ Date : 2019/08/26
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
                 stockService.dynamic.setting.linkCell.post("test", { "_id": selRow._id, "__pid": pid }).done(function(ret) {
-                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
                   view.Grid.Query();
                 })
               }
@@ -275,16 +281,16 @@ Date : 2019/08/26
 
             jDom.find(".right_container").prepend("<button command='copy'>copy</button>").find("[command='copy']").
             on("click", function(event) {
-               var row=PCRUD.View.Grid.CurrentRow;
-               if(!row) return ;
-               stockService.dynamic.setting.linkCell.post("copy",{ "_id":row._id , "__pid": pid}).done(function(json){
-                if (json ) {
-                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+              var row = PCRUD.View.Grid.CurrentRow;
+              if (!row) return;
+              stockService.dynamic.setting.linkCell.post("copy", { "_id": row._id, "__pid": pid }).done(function(json) {
+                if (json) {
+                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
                   PCRUD.View.Grid.Query();
                 }
-               })
+              })
 
-      
+
 
             })
 
@@ -324,7 +330,7 @@ Date : 2019/08/26
         Behavior: {
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
-            
+
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
               if (!pid) {
