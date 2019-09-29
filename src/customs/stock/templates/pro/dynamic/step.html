@@ -269,7 +269,7 @@ Date : 2019/09/29
                 return false;
               } else {
                 //   defer
-                // Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
+                Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
               }
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();

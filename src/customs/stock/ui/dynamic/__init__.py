@@ -16,7 +16,7 @@ from customs.stock.service.dynamic import dynamic_link_cell_log,dynamic_link
 from customs.stock.ui.dynamic.common import *
 from bson.objectid import ObjectId
 import json
-
+from misc.utils import _parse_conditions
 
 
 
@@ -35,6 +35,35 @@ class DynamicStepCRUD(CRUD):
     def __init__(self):
         self.module = dynamic_step
         
+
+@wildcard("/dynamic/step/links/")
+class DynamicSteplinks(ArrayCRUD):
+  def __init__(self):
+    self.module = dynamic_step
+    self.array = 'links'
+  def action(self, act, *args, **kwArgs):
+        if act == 'query':
+            return self.query(*args, **kwArgs)
+        else:
+            return ArrayCRUD.action(self, act, *args, **kwArgs)
+
+  def query(self, record=None, *args, **kwArgs):
+
+          conditions = kwArgs.get('conditions', [])
+          query = _parse_conditions(conditions).get('$and', {})
+          step=self.module.get(query.get("__pid"))
+
+          link_ids=[r.get("_id") for r in step.get("links",[])]
+
+          del kwArgs["conditions"]
+          ret=dynamic_link.items(**kwArgs)
+          res=list(ret)
+          if ret:
+              for r in  res:
+                 if(r.get("_id") in link_ids):
+                     r["checked"]=1
+          return {'total': ret.count(), 'rows': res}
+
 
 
 

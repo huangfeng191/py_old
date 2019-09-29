@@ -308,6 +308,68 @@ def getCommDateStart(type="day",ts=None,fmt=None,isTs=False):
     return s
 
 
+def _parse_conditions(conditions=None):
+    q = {}
+
+    if conditions:
+
+        for c in conditions:
+
+            f = c.get('Field')
+            r = c.get('Relation', 'and')
+            o = c.get('Operate', '')
+            v = c.get('Value')
+
+            if f and o:
+
+                a = None
+
+                if r == 'and':
+                    q['$and'] = q.get('$and', {})
+                    a = q['$and']
+                elif r == 'or':
+                    q['$or'] = q.get('$or', {})
+                    a = q['$or']
+
+                if a is not None:
+                    if f not in a: a[f] = {}
+
+                    if o == 'like':
+                        # a.append({f:{'$regex':v}})
+                        a[f]['$regex'] = v
+                    elif o == '=':
+                        # a.append({f:v})
+                        a[f] = v
+                    elif o == '>=':
+                        # a.append({f:{'$gte':v}})
+                        a[f]['$gte'] = v
+                    elif o == '>':
+                        # a.append({f:{'$gt' :v}})
+                        a[f]['$gt'] = v
+                    elif o == '<=':
+                        # a.append({f:{'$lte':v}})
+                        a[f]['$lte'] = v
+                    elif o == '<':
+                        # a.append({f:{'$lt' :v}})
+                        a[f]['$lt'] = v
+                    elif o == 'nil':
+                        # a.append({f:{'$exists':False}})
+                        a[f]['$exists'] = False
+                    elif o == '!=':
+                        # a.append({f:{'$ne':v}})
+                        a[f]['$ne'] = v
+                    elif o == 'in':
+                        # a.append({f:{'$in':v}})
+                        a[f]['$in'] = v
+
+    if '$and' in q and len(q.get('$and')) == 0:
+        del q['$and']
+
+    if '$or' in q and len(q.get('$or')) == 0:
+        del q['$or']
+
+    return q
+
 
 
 
