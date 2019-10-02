@@ -36,33 +36,57 @@ class DynamicStepCRUD(CRUD):
         self.module = dynamic_step
         
 
-@wildcard("/dynamic/step/links/")
-class DynamicSteplinks(ArrayCRUD):
+@wildcard("/dynamic/step/link/")
+class DynamicStepLink(ArrayCRUD):
   def __init__(self):
     self.module = dynamic_step
-    self.array = 'links'
+    self.array = 'link'
   def action(self, act, *args, **kwArgs):
         if act == 'query':
-            return self.query(*args, **kwArgs)
+            conditions = kwArgs.get('conditions', [])
+            query = _parse_conditions(conditions).get('$and', {})
+            if query.get("ck")==1:
+                kwArgs["conditions"]=[{ "Field": "__pid", "Operate": "=", "Value": query.get("__pid"), "Relation": "and" }]
+
+                return ArrayCRUD.action(self, act, *args, **kwArgs)
+            else:
+                return self.queryAll(*args, **kwArgs)
+        elif act=="bindLink":
+            return self.bindLink(*args, **kwArgs)
         else:
             return ArrayCRUD.action(self, act, *args, **kwArgs)
 
-  def query(self, record=None, *args, **kwArgs):
 
-          conditions = kwArgs.get('conditions', [])
-          query = _parse_conditions(conditions).get('$and', {})
-          step=self.module.get(query.get("__pid"))
 
-          link_ids=[r.get("_id") for r in step.get("links",[])]
+        return self.action("insert",record=one)
+  def bindLink(self,links,pid):
+      step = self.module.get(pid)
+      if step:
+          step[self.array]=[]
+      step[self.array]=links
+      self.module.upsert(**step)
 
-          del kwArgs["conditions"]
-          ret=dynamic_link.items(**kwArgs)
-          res=list(ret)
-          if ret:
-              for r in  res:
-                 if(r.get("_id") in link_ids):
-                     r["checked"]=1
-          return {'total': ret.count(), 'rows': res}
+      return "OK"
+
+
+  def queryAll(self, record=None, *args, **kwArgs):
+      conditions = kwArgs.get('conditions', [])
+      query = _parse_conditions(conditions).get('$and', {})
+      step=self.module.get(query.get("__pid"))
+      o_links={}
+      for r in step.get("link", []):
+          o_links[r.get("_id")]=r
+      links_keys=o_links.keys();
+      del kwArgs["conditions"]
+      ret=dynamic_link.items(**kwArgs)
+      res=list(ret)
+      if ret:
+          for r in  res:
+             if(r.get("_id") in links_keys):
+                 r.update({"ck":1,"generateW":o_links.get(r.get("_id")).get("generateW")})
+      return {'total': ret.count(), 'rows': res}
+
+
 
 
 
@@ -77,9 +101,17 @@ class DynamicLinkCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
           if act == 'generateLink':
               return self.generateLink(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
+    def copy(self, fromId=None, **kwArgs):
+
+        one = self.module.get(fromId)
+        del one["_id"]
+
+        return self.action("insert", record=one)
     def generateLink(self, _id,*args, **kwArgs):
        st=time.time()
        log=doLinkOne(**{"linkId":_id})
@@ -105,20 +137,25 @@ class DynamicLink(ArrayCRUD):
             return self.test(*args, **kwArgs)
         elif act == 'copy':
             return self.copy(*args, **kwArgs)
+        elif act == 'copyToOther':
+            return self.copyToOther(*args, **kwArgs)
         else:
             return ArrayCRUD.action(self, act, *args, **kwArgs)
 
-  def copy(self,_id=None,**kwArgs):
+  def copyToOther(self,from_id=None,fromPid=None,toPid=None,**kwArgs):
 
-        p = self.module.get(kwArgs.get("__pid"))
-        record={"__pid":kwArgs.get("__pid")}
+        p = self.module.get(fromPid)
+        record={"__pid":toPid}
+        if "cell" not in p:
+            p["cell"]=[]
         for r in p.get("cell",[]):
-            if r.get("_id")==_id:
+            if r.get("_id")==from_id:
                 record.update(r)
                 record["_id"]=str(ObjectId())
 
 
         return self.action("insert",record=record)
+
   def test(self, _id=None,pid=None, *args, **kwArgs):
       p=self.module.get(pid)
       one=None

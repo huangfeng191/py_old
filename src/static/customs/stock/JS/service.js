@@ -38,6 +38,8 @@ var stockService={
             "testLogCRUD":CRUD("dynamic/comm/test/log")
         },
         "setting":{
+            "step":CRUD("dynamic/step"),
+            "stepLink":CRUD("dynamic/step/link"),
             "link":CRUD("dynamic/link"),
             "linkCell":CRUD("dynamic/link/cell")
         }

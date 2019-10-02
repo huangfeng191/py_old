@@ -47,6 +47,8 @@ Date : 2019/08/26
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "ruleType", "title": "规则类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
         { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+       
+        { "field": "inType","title": "输入类型", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"inType" },
         { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
 
         { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
@@ -83,6 +85,7 @@ Date : 2019/08/26
 
 
         ],
+        [{ "Field": "inType", "Name": "输入类型", ShowType: "combo", Ext: "inType",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
         [
           { "Field": "rule", "Name": "生成规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
         ],
@@ -159,11 +162,34 @@ Date : 2019/08/26
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
                 stockService.dynamic.setting.link.post("generateLink", { "_id": selRow._id }).done(function(ret) {
-                  alert("OK");
+                  view.ShowMessage("OK");
 
                 })
               }
             })
+
+
+
+            
+
+            jDom.find(".right_container").prepend("<button command='copy'>copy</button>").find("[command='copy']").
+            on("click", function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (!selRow) { 
+                view.ShowMessage("请选择被复制记录");
+                return;}
+              stockService.dynamic.setting.link.post("copy", { "fromId": selRow._id}).done(function(json) {
+                if (json) {
+                  view.ShowMessage("OK");
+                  view.Grid.Query();
+                }
+              })})
+
+
+
+            
+            
+
 
 
           },
@@ -277,19 +303,41 @@ Date : 2019/08/26
                 })
               }
             })
+ 
 
 
-            jDom.find(".right_container").prepend("<button command='copy'>copy</button>").find("[command='copy']").
+            jDom.find(".right_container").prepend("<button command='copyToOther'>copyToOther</button>").find("[command='copyToOther']").
             on("click", function(event) {
               var row = PCRUD.View.Grid.CurrentRow;
-              if (!row) return;
-              stockService.dynamic.setting.linkCell.post("copy", { "_id": row._id, "__pid": pid }).done(function(json) {
+       
+              if($(event.target).html()=="copyToOther"){
+                if (!row) {
+                PCRUD.View.ShowMessage("请先选择被复制cell");
+              };
+                if(!pid){
+                  PCRUD.View.ShowMessage("请先选择被复制Link");
+                }
+                $(event.target).data("copyInfo",{
+                  "fromPid":pid,
+                  "from_id":row._id,
+                  "toPid":""
+                })
+
+                $(event.target).html("selectToLink");
+
+              }else{
+                $(event.target).html("copyToOther");
+                var toData=$(event.target).data("copyInfo")
+                    toData["toPid"]=pid
+                stockService.dynamic.setting.linkCell.post("copyToOther", toData).done(function(json) {
                 if (json) {
                   Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
                   PCRUD.View.Grid.Query();
                 }
               })
 
+              }
+        
 
 
             })

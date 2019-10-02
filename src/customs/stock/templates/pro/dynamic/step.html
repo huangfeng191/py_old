@@ -37,18 +37,18 @@ Date : 2019/09/29
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var Title1 = "";
   var btnNm = "";
-
+  var queryMode="allCells";
 
   var oConfig = {
     columns: [
       [
-        { "field": "checkbox", "title": "checkbox", "checkbox": true, "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "ck", "title": "checkbox", "checkbox": true, "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "nm", "title": "规则名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "require", "title": "是否必填", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "SF" },
         { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
         { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
-
+        { "field": "generateW","title": "生成顺序", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
 
       ]
@@ -67,6 +67,7 @@ Date : 2019/09/29
 
           { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
+        [{ "Field": "generateW", "Name": "生成顺序", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },],
       ]
     }],
     props: [],
@@ -75,7 +76,7 @@ Date : 2019/09/29
       [
         { "field": "nm", "title": "步骤名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        { "field": "links", "title": "规则集", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "link", "title": "规则集", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
 
         { "field": "require", "title": "是否必须", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "require" },
 
@@ -90,7 +91,7 @@ Date : 2019/09/29
       "Inputs": [
         [{ "Field": "nm", "Name": "步骤名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          // s  { "Field": "links", "Name": "规则集", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          // s  { "Field": "link", "Name": "规则集", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
         [
 
@@ -223,15 +224,46 @@ Date : 2019/09/29
 
       PCRUD = jQuery.CRUD('#step', {
         View: {
+          GridOptions: {
+            singleSelect: false,
+            onLoadSuccess: function (data) {
+                    for (i = 0; i < data.rows.length; ++i) {
+                        if (data.rows[i]['ck'] == 1) $(this).datagrid('checkRow', i);
+                    }
+            }
+          },
           AfterRender: function() {
-            this.Button.Hide(["filter", "order"]);
-            //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-            //        jQuery("button[command=audit]").click(
-            //           function () {
+            this.Button.Hide(["filter", "order","insert","update","delete"]);
+            var jDom = this.Container;
+            var view=this.Core.View;
+            jDom.find('.right_container').prepend('<button command=bindLink>bindLink</button>').find('[command=bindLink]').
+            on('click', function(event) {
+               
+                  var selectedLink=(view.Grid.Element.datagrid("getChecked")||[]);
+                      selectedLink.map(function(v){
+                        v.ck=1;
+                      })
+                  stockService.dynamic.setting.stepLink.post("bindLink", { "pid": pid,"links":selectedLink }).done(function(ret) {
+                    view.ShowMessage("OK")
+                    view.Grid.Query();
+                  })
+                
+              })
+              var jDom = this.Container;
+              var view=this.Core.View;
+              jDom.find('.right_container').prepend('<button command=allCells>allCells</button>').find('[command=allCells]').
+              on('click', function(event) {
+                 queryMode=""
+                if(event.target.innerText=="allCells"){
+                  queryMode="selectedCell";
+                }else{
+                  queryMode="allCells";
+                }
+                $(event.target).html(queryMode);
 
+                PCRUD.View.Grid.Query();
 
-            //           }
-            //        );
+                })
 
 
           },
@@ -263,13 +295,18 @@ Date : 2019/09/29
         Behavior: {
           BeforeQuery: function(Filters, Orders) {
             if (Cid) {
-              Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+              // Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
 
               if (!pid) {
                 return false;
               } else {
                 //   defer
                 Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
+              }
+              if(queryMode=="selectedCell"){
+                Filters.Merge([{ Field: "ck", Operate: "=", Value:1, Relation: "and" }]);
+              }else{
+                Filters.Clear(["ck"])
               }
               PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
               Loading.Show();
@@ -310,7 +347,7 @@ Date : 2019/09/29
         Service: {
           Base: "./", //first
           Path: "",
-          Target: "step/links",  // 考虑变成数组， 数组如何处理？
+          Target: "step/link",  // 考虑变成数组， 数组如何处理？
 
         }
       }, {
