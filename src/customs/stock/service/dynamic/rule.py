@@ -46,7 +46,7 @@ def getFieldsFilter(row,fields):
 # }
 # params { "date":{"day"... "month" } }
 
-@wrapper.calc_runtime_wrapper
+@wrapper.calc_runtime_wrapper("DynamicQuery ")
 @wrapper.loop_fun_reset_wrapper
 @dynamic_params_wrapper
 def beforeDynamicQuery(**kwArgs):
@@ -198,7 +198,7 @@ def bind_outGenerate_wrapper(func):
 
 
 
-@wrapper.calc_runtime_wrapper
+@wrapper.calc_runtime_wrapper("AggregateQuery")
 @wrapper.loop_fun_reset_wrapper
 @dynamic_params_wrapper
 def beforeAggregateQuery(**kwArgs):

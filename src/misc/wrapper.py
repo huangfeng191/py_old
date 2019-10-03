@@ -7,7 +7,8 @@
 import reuse as reuse
 import json
 
-def calc_runtime_wrapper(func):
+
+def calc_runtime_wrapper_noText(func):
     import time
 
     def wrap(**kwArgs):
@@ -18,6 +19,19 @@ def calc_runtime_wrapper(func):
         return res
     return wrap
 
+
+" tip: 直接调用一次，可以锁定内部变量 text "
+def calc_runtime_wrapper(text):
+    def decorator(func):
+        import time
+        def wrap(**kwArgs):
+            st=time.time()
+            print "runtime %s startCount"%text
+            res=func(**kwArgs)
+            print "runtime %s endCount:%f" % (text,(time.time() - st))
+            return res
+        return wrap
+    return decorator
 
 # 多次调用时 监视进度用
 def loop_fun_wrapper(func):
@@ -56,7 +70,7 @@ def loop_fun_reset_wrapper(func):
 
 
 # test instance 
-@calc_runtime_wrapper
+@calc_runtime_wrapper("test ")
 def run_times(**kwArgs):
     print "OK"
 
