@@ -80,6 +80,8 @@ Date : 2019/09/29
 
         { "field": "require", "title": "是否必须", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "require" },
 
+        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
+        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
 
         { "field": "desc", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
@@ -102,6 +104,9 @@ Date : 2019/09/29
         ],
 
         [
+          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
             // todo 
           { "Field": "connect", "Name": "规则连接方式", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
@@ -118,13 +123,20 @@ Date : 2019/09/29
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-            //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-            //        jQuery("button[command=audit]").click(
-            //           function () {
+        
+            
+            var jDom = this.Container;
+            var view = this.Core.View;
+            jDom.find('.right_container').prepend('<button command=generateStep>generateStep</button>').find('[command=generateStep]').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                stockService.dynamic.setting.step.post("generateStep", { "stepId": selRow._id }).done(function(ret) {
+                  view.ShowMessage("OK");
 
-
-            //           }
-            //        );
+                })
+              }
+            })
 
 
           },

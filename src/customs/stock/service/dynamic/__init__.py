@@ -23,6 +23,7 @@ from service import comm
 
 
 dynamic_step = comm.CRUD(ctx.dynamicdb, "step", [("cid", 1)])
+dynamic_step_log = comm.CRUD(ctx.dynamicdb, "step_log", [("cid", 1)])
 
 dynamic_link = comm.CRUD(ctx.dynamicdb, "link", [("cid", 1)])
 

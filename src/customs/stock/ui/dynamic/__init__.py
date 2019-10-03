@@ -34,7 +34,24 @@ class DynamicStep:
 class DynamicStepCRUD(CRUD):
     def __init__(self):
         self.module = dynamic_step
-        
+    def action(self, act, *args, **kwArgs):
+          if act == 'generateStep':
+              return self.generateStep(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def generateStep(self, *args, **kwArgs):
+
+       return doStepOne(**kwArgs)
+
+
+    # st = time.time()
+    # log = doLinkOne(**{"linkId": _id})
+    # log["continue"] = (time.time() - st)
+    # dynamic_link_log.upsert(**log)
+    # return log
+
+
 
 @wildcard("/dynamic/step/link/")
 class DynamicStepLink(ArrayCRUD):

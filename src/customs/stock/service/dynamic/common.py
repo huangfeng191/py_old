@@ -120,7 +120,7 @@ def dynamic_params_wrapper(func):
     def wrap(source,**kwArgs):
         p={}
         if source:
-            seprateInType(source,**kwArgs)
+            # seprateInType(source,**kwArgs)
             p["source"]=bindSource(source)
 
         if "queries" in kwArgs:  # 参数时需要规则，比如重用规则
