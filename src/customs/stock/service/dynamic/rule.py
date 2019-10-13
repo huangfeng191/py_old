@@ -55,9 +55,9 @@ def beforeDynamicQuery(**kwArgs):
     if(kwArgs.get("aQueries")):
         for r in kwArgs.get("aQueries"):
             kw["queries"]=r
-            dynamicDeal(**kw)
+            log=dynamicDeal(**kw)
 
-        return "OK"
+        return log
     else:
         return dynamicDeal(**kwArgs)
 
@@ -76,13 +76,13 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
 @wrapper.loop_fun_wrapper
 def dynamicDeal(source={},  out={},**kwArgs):
     d=dynamicQuery(source,**kwArgs)
-    ret=dealwithOut(out, d, **kwArgs)
+    ret=saveWithOut(out, d, **kwArgs)
 
     return ret
 
 
 # 只有表的时候需要删除，其他的不需要
-def dealWithOutClear(out,log):
+def saveWithOutClear(out,log):
 
     if out.get("type")=="table":
         config=out.get("table")
@@ -90,68 +90,69 @@ def dealWithOutClear(out,log):
         for k,v in config.get("logKey",{}).items():
             if( k in log):
                 old_queries[k]=log.get(k)
-        eval(config.get("nm")).delete(old_queries, multi=True)
+        eval(config.get("table")).delete(old_queries, multi=True)
 
 
-# dataKey 数据的key 一般用于 loop
-# logKey 此次产生的所有数据的key
-# 当 d =[] 时 可以理解为清空数据
-def dealwithOut(out,d,log,**kwArgs):
+
+#
+def saveWithOut(out,d,**kwArgs):
     logSource = kwArgs.get("logSource")
-    prep = out.get(out.get("type", "log"))
-    if out.get("type") == "log" and logSource:  # priority : field > fields 返回值 放在data 的 key 对应的字段里
-        eval(logSource).upsert(**log)
-        if prep.get("field"):
-            d = [r.get(prep.get("field")) for r in d]
-        elif prep.get("fields"):
+    log=kwArgs.get("log")
+    unifyParsedOut(out, log, logSource)
+    parsedOut = log.get("parsedOut")
+    if(parsedOut.get("type")=="log"):
+
+        fieldKey=parsedOut.get("fieldKey")
+        if parsedOut.get("field"):
+            d = [r.get(parsedOut.get("field")) for r in d]
+        elif parsedOut.get("fields",[]):
             d = [getFieldsFilter(r, out.get("fields")) for r in d]
-    ret = None  # 对于保存在 日志表里的记录， 可以理解为 是 object
-    if out.get("type") in ["log", "object"]:
-        ret = {prep.get("key"): d}
+        ret = {fieldKey: d}
         if out.get("type") == "log":
             if "data" not in log:
                 log["data"] = {}
             log["data"].update(ret)
-
-    elif out.get("type")=="table":
-
-        # "table": {
-        #     "nm": "dynamic_daily_business",
-        #     "key": {
-        #         "sn": 1,
-        #         "outFrequency": 1
-        #     }
-        # }
-
-        config=out.get("table")
-        old_queries={}
-        for k,v in config.get("logKey",{}).items():
-            if( k in log):
-                old_queries[k]=log.get(k)
-        for k, v in config.get("dataKey",{}).items():
-            if (k in kwArgs.get("queries",{})):
-                old_queries[k] = kwArgs.get("queries").get(k)
-        eval(config.get("nm")).delete(old_queries, multi=True)
+    elif parsedOut.get("type")=="table":
+        dataQueries={}
+        dataQueries.update(parsedOut.get("recordKey",{}))
+        for k, v in parsedOut.get("dataKey", {}).items():
+            if (k in kwArgs.get("queries", {})):
+                dataQueries[k] = kwArgs.get("queries").get(k)
+        eval(parsedOut.get("table")).delete(dataQueries, multi=True)
         for r in d:
             if "_id" in r:
                 del r["_id"]
-            r.update(old_queries)
-            eval(config.get("nm")).upsert(**r)
+            r.update(dataQueries)
+            eval(parsedOut.get("table")).upsert(**r)
 
-        ret="OK"
-
-
-
-    elif out.get("type") in ["array"]:  # 一般用于中间输出
-        ret = d;
-    else:
-        pass
     if logSource and log:
         log["logState"] = 1
         eval(logSource).upsert(**log)
+        return log
+# recordKey 记录的key 也就是 单次 cell 生成的key 
+def unifyParsedOut(out,log,logSource):
+    # dataKey 的作用是对多条记录再次进行分类 ,parsedOut 主要是查询用
+    parsedOut = {"type":out.get("type"),"recordKey":{},"dataKey":{},"table":"","fields":[],"field":None,"fieldKey":None}
+    config = out.get(out.get("type"))
+    if out.get("type")=="table":
+        parsedOut["table"]=config.get("table")
+        parsedOut["dataKey"]=config.get("dataKey", {})
+        parsedOut["fields"]=config.get("fields")
+    elif out.get("type")=="log":
+        parsedOut["table"]=logSource
+        parsedOut["recordKey"]={"_id":log.get("_id")}
+        parsedOut["field"] = config.get("field")
+        parsedOut["fieldKey"] = config.get("fieldKey") if config.get("fieldKey") else config.get("field")
+        parsedOut["fields"] = config.get("fields")
 
-    return ret
+    #本次cell 的主键
+    for k, v in config.get("logKey", {}).items():
+        if (k in log):
+            parsedOut["recordKey"][k] = log.get(k)
 
+
+    log["parsedOut"] =  parsedOut
+    return log
 
 
 # 后续可以考虑 如果是 first 的时会 把原来的记录返回
@@ -227,11 +228,13 @@ def daggregateDealQuery(source,queries,*args,**kwArgs):
 
         d = eval(source.get("table")).db.aggregate(step)
         d=list(d)
+        for r in d:
+            r.update(r["_id"])
     return d
 @wrapper.loop_fun_wrapper
 def aggregateDeal(source={},  out={},**kwArgs):
     d=daggregateDealQuery(source,**kwArgs)
-    ret=dealwithOut(out, d, **kwArgs)
+    ret=saveWithOut(out, d, **kwArgs)
 
     return ret
 

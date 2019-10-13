@@ -203,7 +203,7 @@ class DynamicLinkCellLogCRUD(CRUD):
 
         one = self.module.get(kwArgs.get("record").get("_id"))
         out = json.loads(one.get("out"))
-        dealWithOutClear(out, one)
+        saveWithOutClear(out, one)
         return self.module.delete(**one)
 
     def __init__(self):

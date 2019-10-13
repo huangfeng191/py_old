@@ -24,7 +24,8 @@ def doLinkOne(linkId,**kwargs):
             one["logSource"] = "dynamic_link_cell_log"
             rule_data=loadRule(**one)
             # one["log"]=rule_data.get("log")
-            link["output_log"]=rule_data
+            if "log" in rule_data:
+              link["output_log"]=rule_data.get("log")
         return dynamic_link_log.upsert(**link)
     else:
         return link
@@ -59,7 +60,7 @@ def doStepOne(**kwargs):
     step_log,noGenerate=getStepLog(stepId)
     if not noGenerate:
         st=time.time()
-        step_log["link"]=sorted(step_log["link"],lambda x:x.gernateW)
+        step_log["link"]=sorted(step_log["link"],key=lambda x:x.get("generateW"))
         for one in step_log.get("link",[]):
             link_log=doLinkOne(**{"linkId":one["_id"]})
             step_log["output_log"]=link_log # 将最后一个处理的 link 结果写入 step 的 output_log 表示此step 的最后输出
