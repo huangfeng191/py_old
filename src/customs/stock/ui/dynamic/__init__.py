@@ -176,11 +176,16 @@ class DynamicLink(ArrayCRUD):
   def test(self, _id=None,pid=None, *args, **kwArgs):
       p=self.module.get(pid)
       one=None
+      tier={
+          "linkId":p.get("_id"),
+          "cellId":_id
+      }
       for r in p.get("cell"):
           if r.get("_id")==_id:
               one=r
+
       one["logSource"]="dynamic_link_cell_log"
-      loadRule(**one)
+      loadRule(tier,**one)
       return "OK"
 
 

@@ -158,8 +158,34 @@ def unifyParsedOut(out,log,logSource):
 # 后续可以考虑 如果是 first 的时会 把原来的记录返回
 # bind 后续的 规则是否生成 ，还是获取
 
-def bind_outGenerate_wrapper(func):
-    def wrap( **cell):
+def bind_dealWithCell_wrapper(func):
+    def rebindTier(log,tier): # 这样做的目的是:需求变更后可同一修改
+        if "linkId" in tier:
+            link=dynamic_link.get(tier["linkId"])
+            tier["link"]={
+                "sn":link.get("sn"),
+                "outFrequency":link.get("outFrequency"),
+            }
+        if "stepId" in tier:
+            step = dynamic_step.get(tier["stepId"])
+            tier["step"] = {
+                "sn": step.get("sn"),
+                "outFrequency": step.get("outFrequency"),
+            }
+        log["tier"]=tier
+        inType = log.get("inType")
+        if log.get("inTypeSn"):  # 如果有指定已指定的为准
+            return
+        if inType == "cell":
+            pass
+        elif tier[inType]:
+            log["inTypeSn"]=tier[inType]["sn"]
+
+
+
+
+
+    def wrap( tier={},**cell):
         sn= cell.get("sn")
         outType =cell.get("outType")
         frequency=cell.get("frequency")
@@ -168,13 +194,15 @@ def bind_outGenerate_wrapper(func):
         one=deepcopy(cell)
         one["bid"]=one["_id"]
         del one["_id"]
+        rebindTier(log=one,tier=tier)  # get inTypeSn
         # if outType == "log":
         if (frequency):
             outFrequency = reuse.getFrequencyStart(frequency)
             one["outFrequency"]=outFrequency
-            old = eval(logSource).get({ "outFrequency": outFrequency, "sn": sn})
+            old = eval(logSource).get({ "outFrequency": outFrequency, "sn": sn,"inTypeSn":one["inTypeSn"]})
             if old:
                 if outGenerate == "first":
+                    # TODO 返回输出类型 ，可以 与正常生成的放一起？
                     pass
                 else:
                     one["_id"]=old["_id"]

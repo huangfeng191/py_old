@@ -22,7 +22,11 @@ def doLinkOne(linkId,**kwargs):
 
         for one in link.get("cell",[]):
             one["logSource"] = "dynamic_link_cell_log"
-            rule_data=loadRule(**one)
+            tier = {
+                "linkId": linkId,
+                "cellId": one["_id"]
+            }
+            rule_data=loadRule(tier,**one)
             # one["log"]=rule_data.get("log")
             if "log" in rule_data:
               link["output_log"]=rule_data.get("log")

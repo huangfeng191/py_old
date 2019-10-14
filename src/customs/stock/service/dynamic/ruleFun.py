@@ -33,7 +33,7 @@ def getAggregateResult(**kwArgs):
     }
 
 
-@bind_outGenerate_wrapper
+@bind_dealWithCell_wrapper
 def loadRule(**kwArgs):
   ruleType=kwArgs.get("ruleType")
   if ruleType=="last": # 可以将方法也配置成参数

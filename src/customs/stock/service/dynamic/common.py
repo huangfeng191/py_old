@@ -31,8 +31,12 @@ dynamic_basic_business= comm.CRUD(ctx.dynamicdb, "basic_business", [("ts_code", 
 
 #  将参数 组合成需要的 格式 ， 配置与方法的转换
 def dynamic_params_wrapper(func):
+    #TODO:
     def seprateInType(source,inType,**kwArgs):
         log=kwArgs["log"]
+        if inType=="cell":
+            log["inTypeSn"]=""
+            #TODO:
         if inType=="link":
             link=source["link"]
             if(link["type"]=="sn"):

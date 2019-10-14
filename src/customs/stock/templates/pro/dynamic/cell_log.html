@@ -48,6 +48,12 @@ Date : 2019/09/07
         { "field": "sn","title": "编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
         { "field": "version", "title": "版本", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "isValid", "title": "有效", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "is_not" },
+       
+       
+        { "field": "inType","title": "输入类型", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"inType" },
+        { "field": "inTypeSn","title": "输入编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+    
+       
         { "field": "rule", "title": "方法参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
@@ -69,11 +75,17 @@ Date : 2019/09/07
           { "Field": "isValid", "Name": "有效", ShowType: "combo", Ext: "is_not", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
           { "Field": "version", "Name": "版本", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         ],
+
         [
         { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         { "Field": "outFrequency", "Name": "频率时间", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
         {"Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
       ],
+
+      [{ "Field": "inType", "Name": "输入类型", ShowType: "combo", Ext: "inType",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        { "Field": "inTypeSn", "Name": "输入编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 }
+        ],
+
       //  [
 
       //  ],
