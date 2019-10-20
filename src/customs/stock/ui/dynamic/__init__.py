@@ -173,8 +173,8 @@ class DynamicLink(ArrayCRUD):
 
         return self.action("insert",record=record)
 
-  def test(self, _id=None,pid=None, *args, **kwArgs):
-      p=self.module.get(pid)
+  def test(self, _id=None, *args, **kwArgs):
+      p=self.module.get(kwArgs.get("__pid"))
       one=None
       tier={
           "linkId":p.get("_id"),

@@ -173,7 +173,7 @@ def bind_dealWithCell_wrapper(func):
                 "outFrequency": step.get("outFrequency"),
             }
         log["tier"]=tier
-        inType = log.get("inType")
+        inType = log.get("inType") or "cell"
         if log.get("inTypeSn"):  # 如果有指定已指定的为准
             return
         if inType == "cell":

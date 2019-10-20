@@ -73,8 +73,8 @@ def dynamic_params_wrapper(func):
             if  isinstance(v,basestring) or isinstance(v,int) or  not v.get("type") or v.get("type") == "normal":
                 q[k] = v
             elif v.get("type") == "date":
-                if v.get("value") and params["date"] and params["date"][v.get("value")]:
-                    val = params["date"][v.get("value")]
+                if v.get("field") and params["date"] and params["date"][v.get("field")]:
+                    val = params["date"][v.get("field")]
                     q[k] = {"$" + v.get("operate", "eq"): val}
             elif v.get("type") == "log":
                 if v.get("field"):
