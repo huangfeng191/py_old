@@ -15,43 +15,46 @@ def calc_runtime_wrapper_noText(func):
         st=time.time()
         print "runtime startCount"
         res=func(**kwArgs)
-        print "runtime endCount:%f" % ((time.time() - st))
+        print "runtime endCount:%f second " % ((time.time() - st))
         return res
     return wrap
 
 
 " tip: 直接调用一次，可以锁定内部变量 text "
-def calc_runtime_wrapper(text):
+def calc_runtime_wrapper(text="no set "):
     def decorator(func):
         import time
         def wrap(**kwArgs):
             st=time.time()
-            print "runtime %s startCount"%text
+            print "method:%s runtime  startCount"%text
             res=func(**kwArgs)
-            print "runtime %s endCount:%f" % (text,(time.time() - st))
+            print "method:%s runtime  endCount:%f" % (text,(time.time() - st))
             return res
         return wrap
     return decorator
 
 # 多次调用时 监视进度用
-def loop_fun_wrapper(func):
-    import time
-    a_count=[0]
-    a_continue=[0]
-    def wrap(**kwArgs):
-        if kwArgs.get("resetCount") and kwArgs["resetCount"]["valid"]:
-            a_count[0]=0
-            kwArgs["resetCount"]["valid"]=0
-        st=time.time()
-        res=func(**kwArgs)
-        a_count[0] = a_count[0] + 1
-        if a_count[0] %100==0:
-            print "continue:%f"%(a_continue[0])
-            a_continue[0]=0
+def loop_fun_wrapper(text="loop_fun_wrapper ",times=100):
+    def decorator(func):
+        import time
+        a_count=[0]
+        a_continue=[0]
+        def wrap(**kwArgs):
 
-        a_continue[0]=a_continue[0]+time.time()-st
-        return res
-    return wrap
+            if kwArgs.get("resetCount") and kwArgs["resetCount"]["valid"]:
+                a_count[0]=0
+                kwArgs["resetCount"]["valid"]=0
+            st=time.time()
+            res=func(**kwArgs)
+            a_count[0] = a_count[0] + 1
+            if a_count[0] %times==0:
+                print "method %s execute %d  times: continue:%f second"%(text,times,a_continue[0])
+                a_continue[0]=0
+
+            a_continue[0]=a_continue[0]+time.time()-st
+            return res
+        return wrap
+    return decorator
 
 
 def loop_fun_reset_wrapper(func):

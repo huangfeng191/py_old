@@ -58,11 +58,14 @@ Date : 2019/09/07
         { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "description", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "frequency","title": "频率", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"frequency" },
-        { "field": "outFrequency","title": "频率时间", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
         { "field": "outData", "title": "输出数据", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 300, formatter:function(v,r,i){
           return  JSON.stringify(r.data)   ;
-        }},
+        } },
+        { "field": "outFrequency","title": "频率时间", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+        { "field": "outGenerate","title": "生成策略", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"outGenerate" },
+    
+        
+       
 			]
         ],
         form: [{

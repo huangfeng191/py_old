@@ -79,29 +79,38 @@ def dynamic_params_wrapper(func):
             elif v.get("type") == "log":
                 if v.get("field"):
                     logSource=kwArgs.get("logSource")
-                    one = eval(logSource).get({"outFrequency": log.get("outFrequency"), "sn": v.get("sn")})
+                    one = eval(logSource).get({"outFrequency": log.get("outFrequency"), "sn": v.get("sn"),"inTypeSn":v.get("inTypeSn","")   })
                     if one and one.get("data"):
                         q[k] = {"$"+v.get("operate","in"): one.get("data") [v.get("field")]}
             elif v.get("type")=="loop":
                 # "type":"loop", "from":"stock_basic", "from_k":"ts_code", "from_q": r2.get("from_q")
-                one_com = {"field": k, "type": v.get("type"), "from": v.get("from"), "from_k": v.get("from_k"),
-                           "from_q": v.get("from_q")}
+                from_loop=v.get("from")
+                one_com = {"queryKey": k, "type": v.get("type"), "from":{"table":from_loop.get("table"),
+                                                                         "query":from_loop.get("query"),
+                                                                         "field":from_loop.get("field"),
+                                                                         "sorts":from_loop.get("sorts")}}
                 variable.append(one_com)
 
                 pass
 
         return q ,otherQueries
-
+# 查询转换为 数组调用
     def combineQueries(must={},variable=[]):
         ret=[]
         if not variable:
             ret.append(must)
         for r_c in variable:
             if r_c.get("type") == "loop":
-                l = eval(r_c.get("from")).items(query=(r_c.get("from_q") or {}),fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
-            for r_l in l:
-                must[r_c.get("field")] = r_l.get(r_c.get("from_k"))
-                ret.append(deepcopy(must))
+                from_loop = r_c.get("from")
+                kwArg = {}
+                if from_loop.get("sorts"):
+                    kwArg=bindSorts(from_loop["sorts"])
+
+                l = eval(from_loop.get("table")).items(query=(from_loop.get("query") or {}),fields=[from_loop.get("field" ,
+                                                                                                                  r_c.get("queryKey"))], **kwArg)
+                for r_l in l:
+                    must[r_c.get("queryKey")] = r_l.get(from_loop.get("field"))
+                    ret.append(deepcopy(must))
         return ret
     # "limit":{"rows":7 },
     def bindLimits(limits={}):

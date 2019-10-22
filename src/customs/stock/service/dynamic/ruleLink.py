@@ -11,7 +11,7 @@ from customs.stock.service.dynamic.ruleFun import *
 
 # 1 计算每一个 cell
 # 2 将结果日志记录到 dynamic_link_log 的 field:output_log
-@wrapper.calc_runtime_wrapper(" do one link ")
+@wrapper.calc_runtime_wrapper("doLinkOne")
 def doLinkOne(linkId,**kwargs):
     pass
     # 此处记录日志
@@ -56,7 +56,7 @@ def getStepLog(stepId):
 
 # 1 计算每一个 link
 # 2 将结果日志记录到 dynamic_step_log 的 field:output_log
-@wrapper.calc_runtime_wrapper(" do step one ")
+@wrapper.calc_runtime_wrapper("doStepOne")
 def doStepOne(**kwargs):
     stepId=kwargs["stepId"]
     pass

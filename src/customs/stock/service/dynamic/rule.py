@@ -46,7 +46,7 @@ def getFieldsFilter(row,fields):
 # }
 # params { "date":{"day"... "month" } }
 
-@wrapper.calc_runtime_wrapper("DynamicQuery ")
+@wrapper.calc_runtime_wrapper("beforeDynamicQuery ")
 @wrapper.loop_fun_reset_wrapper
 @dynamic_params_wrapper
 def beforeDynamicQuery(**kwArgs):
@@ -73,7 +73,7 @@ def dynamicQuery(source,queries,limits,sorts,params=None,*args,**kwArgs):
                           size=limits.get("size") )
         d=list(d)
     return d
-@wrapper.loop_fun_wrapper
+@wrapper.loop_fun_wrapper("dynamicDeal",100)
 def dynamicDeal(source={},  out={},**kwArgs):
     d=dynamicQuery(source,**kwArgs)
     ret=saveWithOut(out, d, **kwArgs)
@@ -259,7 +259,7 @@ def daggregateDealQuery(source,queries,*args,**kwArgs):
         for r in d:
             r.update(r["_id"])
     return d
-@wrapper.loop_fun_wrapper
+@wrapper.loop_fun_wrapper("aggregateDeal",100)
 def aggregateDeal(source={},  out={},**kwArgs):
     d=daggregateDealQuery(source,**kwArgs)
     ret=saveWithOut(out, d, **kwArgs)
