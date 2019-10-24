@@ -1,0 +1,472 @@
+<!--<%inherit file="layout.html" /> -->
+<!-- left is link
+Author Wujj
+Date : 2019/08/26
+-->
+<style>
+  #leftgrid {
+    width: 400px;
+    height: 100%;
+    float: left;
+    margin-left: 6px !important;
+    overflow-x: auto;
+  }
+
+  #cell {
+    height: 100%;
+    margin-left: 400px;
+
+  }
+</style>
+<div style="width:100%;height: 100%;">
+  <div id='leftgrid' class='leftgrid'>
+    &nbsp;
+  </div>
+  <div id='cell'>
+    &nbsp;
+  </div>
+</div>
+<script type="text/javascript">
+  var PCRUD;
+  var Divisions = [];
+  var Cid = GCtx.customer._id;
+  var Cnm;
+  var Uid = GCtx.user._id;
+  var btnNn = "";
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var Title1 = "";
+  var btnNm = "";
+  var pid;
+
+  var oConfig = {
+    columns: [
+      [
+
+
+        { "field": "name", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "ruleType", "title": "规则类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
+        { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+       
+        { "field": "inType","title": "输入类型", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"inType" },
+        { "field": "inTypeSn","title": "输入编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
+       
+        { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+
+        { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
+        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
+        { "field": "out", "title": "输出规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "group", "title": "cell分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
+        { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "desc", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "exchange", "title": "交易所", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "exchange" },
+        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
+      ]
+    ],
+    form: [{
+      "Title": "",
+      "Inputs": [
+
+
+
+        [
+          { "Field": "name", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "group", "Name": "cell分组", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "type", "Name": "cell类型", ShowType: "combo", Ext: "CellType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "exchange", "Name": "交易所", ShowType: "combo", Ext: "exchange", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+        ],
+        [
+          { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
+
+          { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+          { "Field": "reuseParams", "Name": "复用参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+
+        ],
+        [{ "Field": "inType", "Name": "输入类型", ShowType: "combo", Ext: "inType",DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
+        { "Field": "inTypeSn", "Name": "输入编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 }
+        ],
+        [
+          { "Field": "rule", "Name": "生成规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+        ],
+        [
+          { "Field": "outType", "Name": "输出类型", ShowType: "combo", Ext: "outType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+
+          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+        ],
+        [
+          { "Field": "out", "Name": "输出规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+        ],
+        [
+          { "Field": "desc", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
+        ]
+      ]
+    }],
+    props: [],
+    quics: [],
+    leftColumns: [
+      [
+        { "field": "checkbox", "title": "checkbox", "checkbox": true, "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "nm", "title": "规则名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "require", "title": "是否必填", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "SF" },
+        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
+        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
+
+        { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+
+      ]
+    ],
+    leftForm: [{
+      "Title": "",
+      "Inputs": [
+        [
+          { "Field": "nm", "Name": "规则名称", ShowType: "text", Ext: "", DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
+          { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
+          { "Field": "require", "Name": "是否必填", ShowType: "combo", Ext: "SF", DataType: "Number", "Required": true, RowSpan: 1, ColSpan: 1 },
+        ],
+        [
+          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+
+          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
+        ],
+
+      ]
+    }],
+    leftProps: [],
+    leftQuics: [],
+
+    leftInit: function() {
+      LCRUD = jQuery.CRUD('#leftgrid', {
+        View: {
+
+
+          // 可以根据参数进行设置 ;
+          GridOptions: {
+            singleSelect: false,
+            checkOnSelect: false,
+          },
+
+
+
+          AfterRender: function() {
+            this.Button.Hide(["filter", "order"]);
+            var jDom = this.Container;
+            var view = this.Core.View;
+            jDom.find('.right_container').prepend('<button command=generateLink>generateLink</button>').find('[command=generateLink]').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                stockService.dynamic.setting.link.post("generateLink", { "_id": selRow._id }).done(function(ret) {
+                  view.ShowMessage("OK");
+
+                })
+              }
+            })
+
+
+
+            
+
+            jDom.find(".right_container").prepend("<button command='copy'>copy</button>").find("[command='copy']").
+            on("click", function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (!selRow) { 
+                view.ShowMessage("请选择被复制记录");
+                return;}
+              stockService.dynamic.setting.link.post("copy", { "fromId": selRow._id}).done(function(json) {
+                if (json) {
+                  view.ShowMessage("OK");
+                  view.Grid.Query();
+                }
+              })})
+
+
+
+            
+            
+
+
+
+          },
+          Form: {
+            AfterEnable: function() {
+
+            },
+            AfterDisable: function() {
+
+            },
+            AfterSet: function(Record, IsNew) { // 点击新建后
+
+              if (!IsNew) {
+                //FormContainer.find(".button_container").css("display", "none");
+              } else {
+
+              }
+
+            },
+            BeforeGet: function(Record, u, Valids) {},
+            AfterGet: function(Record, u, Valids) {
+
+            },
+            BeforeSet: function(Record, IsNew) {
+
+            }
+          }
+        },
+        Behavior: {
+          BeforeQuery: function(Filters, Orders) {
+            if (Cid) {
+
+
+
+              PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+              Loading.Show();
+              return true;
+            } else {
+              PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+              return false;
+            }
+            Loading.Show();
+          },
+          AfterQuery: function(Result) {
+            Loading.Hide();
+            return true;
+          },
+          BeforeSave: function(Record, Callback) {
+            if (Cid) {
+              Record.cid = Cid;
+              Record.cnm = Cnm;
+            }
+
+            return true;
+          },
+          AfterSave: function(Result) {
+            //  PCRUD.View.Grid.Query();
+            return true;
+          },
+
+          Grid: {
+            //   RowDblClick: function (Row) {
+
+            // },
+            AfterRowClick: function(row) {
+              pid = row._id;
+              PCRUD.View.Grid.Query();
+            }
+          }
+        },
+        Service: {
+          Path: "",
+          Target: "link",
+          Base: "/dynamic/"
+        }
+      }, {
+
+        "Bindings": GBindings,
+        "FrozenColumns": [
+          []
+        ],
+        "Columns": this.leftColumns,
+        "Form": this.leftForm,
+        "Properties": this.leftProps,
+        "Quicks": this.leftQuics,
+        "Rights": "CUD",
+        "Target": "cell",
+        "Title": "",
+        "ExportFmt": true,
+        Layout: "POP" ? "POP" : "POP",
+        ExportFoot: false,
+        ExportName: ""
+
+      });
+    },
+    init: function() {
+
+      PCRUD = jQuery.CRUD('#cell', {
+        View: {
+          AfterRender: function() {
+            this.Button.Hide(["filter", "order"]);
+            var jDom = this.Container;
+            var view = this.Core.View;
+            jDom.find('.right_container').prepend('<button command=test>test</button>').find("[command=test]").
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                stockService.dynamic.setting.linkCell.post("test", { "_id": selRow._id, "__pid": pid }).done(function(ret) {
+                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
+                  view.Grid.Query();
+                })
+              }
+            })
+ 
+
+
+            jDom.find(".right_container").prepend("<button command='copyToOther'>copyToOther</button>").find("[command='copyToOther']").
+            on("click", function(event) {
+              var row = PCRUD.View.Grid.CurrentRow;
+       
+              if($(event.target).html()=="copyToOther"){
+                if (!row) {
+                PCRUD.View.ShowMessage("请先选择被复制cell");
+              };
+                if(!pid){
+                  PCRUD.View.ShowMessage("请先选择被复制Link");
+                }
+                $(event.target).data("copyInfo",{
+                  "fromPid":pid,
+                  "from_id":row._id,
+                  "toPid":""
+                })
+
+                $(event.target).html("selectToLink");
+
+              }else{
+                $(event.target).html("copyToOther");
+                var toData=$(event.target).data("copyInfo")
+                    toData["toPid"]=pid
+                stockService.dynamic.setting.linkCell.post("copyToOther", toData).done(function(json) {
+                if (json) {
+                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
+                  PCRUD.View.Grid.Query();
+                }
+              })
+
+              }
+        
+
+
+            })
+
+
+
+          },
+          Form: {
+            AfterEnable: function() {
+
+            },
+            AfterDisable: function() {
+
+            },
+            AfterSet: function(Record, IsNew) { // 点击新建后
+
+              if (!IsNew) {
+
+              } else {
+
+              }
+
+              FC = $(".my_dialog") || this.Container;
+              // FC.find("textarea").width(FC.find("textarea").parent().parent().parent().width() - 10);
+              FC.find("textarea").width(FC.find("textarea").parent().parent().width() - 10);
+              FC.find("[field=rule]").height("300px");
+              FC.find("[field=out]").height("200px");
+            },
+            BeforeGet: function(Record, u, Valids) {},
+            AfterGet: function(Record, u, Valids) {
+
+            },
+            BeforeSet: function(Record, IsNew) {
+
+            }
+          }
+        },
+        Behavior: {
+          BeforeQuery: function(Filters, Orders) {
+            if (Cid) {
+
+              PCRUD.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+              Loading.Show();
+              if (!pid) {
+                return false;
+              } else {
+                Filters.Merge([{ Field: "__pid", Operate: "=", Value: pid, Relation: "and" }]);
+              }
+              return true;
+            } else {
+              PCRUD.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+              return false;
+            }
+            Loading.Show();
+          },
+          AfterQuery: function(Result) {
+            Loading.Hide();
+            return true;
+          },
+          BeforeSave: function(Record, Callback) {
+            if (!pid) {
+              return false;
+            }
+            if (Cid) {
+              Record.cid = Cid;
+              Record.cnm = Cnm;
+              Record.__pid = pid;
+            }
+
+            return true;
+          },
+          AfterSave: function(Result) {
+            //  PCRUD.View.Grid.Query();
+            return true;
+          },
+          BeforeDelete: function(row) {
+            if (!pid) {
+              return false;
+            } else {
+              row.__pid = pid;
+              return true;
+            }
+          },
+          Grid: {
+            //   RowDblClick: function (Row) {
+
+            // }
+          }
+        },
+        Service: {
+          Path: "link/",
+          Target: "cell",
+          Base: "../"
+        }
+      }, {
+
+        "Bindings": GBindings,
+        "FrozenColumns": [
+          []
+        ],
+        "Columns": this.columns,
+        "Form": this.form,
+        "Properties": this.props,
+        "Quicks": this.quics,
+        "Rights": "CUD",
+        "Target": "cell",
+        "Title": "",
+        "ExportFmt": true,
+        Layout: "POP" ? "POP" : "POP",
+        ExportFoot: false,
+        ExportName: ""
+
+      });
+
+
+    }
+
+  }
+
+
+  jQuery(document).ready(function() {
+
+
+    oConfig.leftInit();
+    oConfig.init();
+
+  });
+</script>
