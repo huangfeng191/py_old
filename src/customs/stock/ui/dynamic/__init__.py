@@ -152,13 +152,11 @@ class DynamicLink(ArrayCRUD):
   def action(self, act, *args, **kwArgs):
         if act == 'test':
             return self.test(*args, **kwArgs)
-        elif act == 'copy':
-            return self.copy(*args, **kwArgs)
         elif act == 'copyToOther':
             return self.copyToOther(*args, **kwArgs)
         else:
             return ArrayCRUD.action(self, act, *args, **kwArgs)
-
+  # 将配置复制到 本选中的 link 下
   def copyToOther(self,from_id=None,fromPid=None,toPid=None,**kwArgs):
 
         p = self.module.get(fromPid)
@@ -172,7 +170,7 @@ class DynamicLink(ArrayCRUD):
 
 
         return self.action("insert",record=record)
-
+  # 测试单个 cell
   def test(self, _id=None, *args, **kwArgs):
       p=self.module.get(kwArgs.get("__pid"))
       one=None
