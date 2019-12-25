@@ -10,7 +10,7 @@ from customs.stock.service.dynamic.ruleFun import *
 
 
 # 1 计算每一个 cell
-# 2 将结果日志记录到 dynamic_link_log 的 field:output_log
+# 2 将结果日志记录到 dynamic_log_link 的 field:output_log
 @wrapper.calc_runtime_wrapper("doLinkOne")
 def doLinkOne(linkId,**kwargs):
     pass
@@ -21,7 +21,7 @@ def doLinkOne(linkId,**kwargs):
         link["cell"]=sorted(link["cell"],key=lambda x:x["w"])
 
         for one in link.get("cell",[]):
-            one["logSource"] = "dynamic_link_cell_log"
+            one["logSource"] = "dynamic_log_cell"
             tier = {
                 "linkId": linkId,
                 "cellId": one["_id"]
@@ -30,7 +30,7 @@ def doLinkOne(linkId,**kwargs):
             # one["log"]=rule_data.get("log")
             if "log" in rule_data:
               link["output_log"]=rule_data.get("log")
-        return dynamic_link_log.upsert(**link)
+        return dynamic_log_link.upsert(**link)
     else:
         return link
 
@@ -55,23 +55,23 @@ def getStepLog(stepId):
 
 
 # 1 计算每一个 link
-# 2 将结果日志记录到 dynamic_step_log 的 field:output_log
+# 2 将结果日志记录到 dynamic_log_step 的 field:output_log
 @wrapper.calc_runtime_wrapper("doStepOne")
 def doStepOne(**kwargs):
     stepId=kwargs["stepId"]
     pass
 
-    step_log,noGenerate=getStepLog(stepId)
+    log_step,noGenerate=getStepLog(stepId)
     if not noGenerate:
         st=time.time()
-        step_log["link"]=sorted(step_log["link"],key=lambda x:x.get("generateW"))
-        for one in step_log.get("link",[]):
-            link_log=doLinkOne(**{"linkId":one["_id"]})
-            step_log["output_log"]=link_log # 将最后一个处理的 link 结果写入 step 的 output_log 表示此step 的最后输出
-        step_log["continue"] = (time.time() - st)
-        return dynamic_step_log.upsert(**step_log)
+        log_step["link"]=sorted(log_step["link"],key=lambda x:x.get("generateW"))
+        for one in log_step.get("link",[]):
+            log_link=doLinkOne(**{"linkId":one["_id"]})
+            log_step["output_log"]=log_link # 将最后一个处理的 link 结果写入 step 的 output_log 表示此step 的最后输出
+        log_step["continue"] = (time.time() - st)
+        return dynamic_log_step.upsert(**log_step)
     else:
-        return step_log
+        return log_step
 
 
 

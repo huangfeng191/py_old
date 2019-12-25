@@ -40,11 +40,11 @@ def dynamic_params_wrapper(func):
         if inType=="link":
             link=source["link"]
             if(link["type"]=="sn"):
-                link_log=dynamic_link_log.get({"sn":link["type"],"outFrequency":log })
-                if not link_log:
+                log_link=dynamic_log_link.get({"sn":link["type"],"outFrequency":log })
+                if not log_link:
                     pass
                 else:
-                    out=link_log.get("out")
+                    out=log_link.get("out")
                     if out:
                         out=json.loads(out)
                         if out.get("type")=="table":

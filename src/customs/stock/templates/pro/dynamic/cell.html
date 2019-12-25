@@ -43,70 +43,41 @@ Date : 2019/08/26
       [
 
 
-        { "field": "name", "title": "名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "name", "title": "规则名称", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "sn", "title": "规则编码", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        { "field": "ruleType", "title": "规则类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
-        { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-       
-        { "field": "inType","title": "输入类型", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100,binding:"inType" },
-        { "field": "inTypeSn","title": "输入编码", "align": "left", "halign":"center","colspan": 1,"hidden": false, "rowspan": 1,"width": 100, },
-       
-        { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-
-        { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
-        { "field": "outGenerate", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outGenerate" },
-        { "field": "out", "title": "输出规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        { "field": "group", "title": "cell分组", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "cycle", "title": "周期", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "type", "title": "cell类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellType" },
+        { "field": "level", "title": "唯一等级", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellLevel" },
+        { "field": "ruleType", "title": "生成类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "ruleType" },
+        { "field": "rule", "title": "生成规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "refresh", "title": "生成策略", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "CellRefresh" },
+        { "field": "reuseParams", "title": "复用参数", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+        { "field": "outType", "title": "输出类型", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "outType" },
+        { "field": "out", "title": "输出规则", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "w", "title": "排序", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
         { "field": "desc", "title": "描述", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
-        { "field": "exchange", "title": "交易所", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "exchange" },
-        { "field": "frequency", "title": "频率", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, binding: "frequency" },
+        { "field": "group", "title": "业务分类", "align": "left", "halign": "center", "colspan": 1, "hidden": false, "rowspan": 1, "width": 100, },
+
       ]
     ],
     form: [{
       "Title": "",
       "Inputs": [
 
-
-
-        [
-          { "Field": "name", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "group", "Name": "cell分组", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "type", "Name": "cell类型", ShowType: "combo", Ext: "CellType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "exchange", "Name": "交易所", ShowType: "combo", Ext: "exchange", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
-        ],
-        [
-          { "Field": "ruleType", "Name": "规则类型", ShowType: "combo", Ext: "ruleType", DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
-
-          { "Field": "sn", "Name": "规则编码", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
-          { "Field": "reuseParams", "Name": "复用参数", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
-
-        ],
-        [{ "Field": "inType", "Name": "输入类型", ShowType: "combo", Ext: "inType",DataType: "String", "Required": true, RowSpan: 1, ColSpan: 1 },
-        { "Field": "inTypeSn", "Name": "输入编码", ShowType: "text", Ext: "",DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 }
-        ],
-        [
-          { "Field": "rule", "Name": "生成规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
-        ],
-        [
-          { "Field": "outType", "Name": "输出类型", ShowType: "combo", Ext: "outType", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
-
-          { "Field": "frequency", "Name": "频率", ShowType: "combo", Ext: "frequency", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-          { "Field": "outGenerate", "Name": "生成策略", ShowType: "combo", Ext: "outGenerate", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 1 },
-
-        ],
-        [
-          { "Field": "out", "Name": "输出规则", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
-        ],
-        [
-          { "Field": "desc", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "Required": false, RowSpan: 1, ColSpan: 4 },
-        ]
+      [{ "Field": "name", "Name": "规则名称",DataType: "String", ShowType: "text", Ext: "", "Required": true, RowSpan: 1, ColSpan: "1" },
+{ "Field": "sn", "Name": "规则编码",DataType: "String", ShowType: "text", Ext: "", "Required": true, RowSpan: 1, ColSpan: "1" },
+{ "Field": "cycle", "Name": "周期",DataType: "String", ShowType: "combo", Ext: "cellCycle", "Required": true , RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "type", "Name": "cell类型",DataType: "String", ShowType: "combo", Ext: "cellType", "Required": true  , RowSpan: 1, ColSpan: "1" },
+{ "Field": "level", "Name": "cell等级",DataType: "String", ShowType: "combo", Ext: "cellLevel", "Required": true  , RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "reuseParams", "Name": "复用参数",DataType: "String", ShowType: "text", Ext: "", "Required": false, RowSpan: 1, ColSpan: "2" },
+{ "Field": "ruleType", "Name": "生成类型",DataType: "String", ShowType: "combo", Ext: "ruleType", "Required": true   , RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "rule", "Name": "生成规则",DataType: "String", ShowType: "textarea", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3 " },],
+[{ "Field": "refresh", "Name": "刷新策略",DataType: "String", ShowType: "combo", Ext: "cellRefresh", "Required": true , RowSpan: 1, ColSpan: "1" },
+{ "Field": "outType", "Name": "输出类型",DataType: "String", ShowType: "combo", Ext: "outType", "Required": true, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "out", "Name": "输出规则",DataType: "String", ShowType: "textarea", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "w", "Name": "排序",DataType: "String", ShowType: "text", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "group", "Name": "业务分类",DataType: "String", ShowType: "text", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "desc", "Name": "描述",DataType: "String", ShowType: "textarea", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
       ]
     }],
     props: [],
@@ -174,25 +145,27 @@ Date : 2019/08/26
 
 
 
-            
+
 
             jDom.find(".right_container").prepend("<button command='copy'>copy</button>").find("[command='copy']").
             on("click", function(event) {
               var selRow = view.Grid.CurrentRow;
-              if (!selRow) { 
+              if (!selRow) {
                 view.ShowMessage("请选择被复制记录");
-                return;}
-              stockService.dynamic.setting.link.post("copy", { "fromId": selRow._id}).done(function(json) {
+                return;
+              }
+              stockService.dynamic.setting.link.post("copy", { "fromId": selRow._id }).done(function(json) {
                 if (json) {
                   view.ShowMessage("OK");
                   view.Grid.Query();
                 }
-              })})
+              })
+            })
 
 
 
-            
-            
+
+
 
 
 
@@ -307,41 +280,41 @@ Date : 2019/08/26
                 })
               }
             })
- 
+
 
 
             jDom.find(".right_container").prepend("<button command='copyToOther'>copyToOther</button>").find("[command='copyToOther']").
             on("click", function(event) {
               var row = PCRUD.View.Grid.CurrentRow;
-       
-              if($(event.target).html()=="copyToOther"){
+
+              if ($(event.target).html() == "copyToOther") {
                 if (!row) {
-                PCRUD.View.ShowMessage("请先选择被复制cell");
-              };
-                if(!pid){
+                  PCRUD.View.ShowMessage("请先选择被复制cell");
+                };
+                if (!pid) {
                   PCRUD.View.ShowMessage("请先选择被复制Link");
                 }
-                $(event.target).data("copyInfo",{
-                  "fromPid":pid,
-                  "from_id":row._id,
-                  "toPid":""
+                $(event.target).data("copyInfo", {
+                  "fromPid": pid,
+                  "from_id": row._id,
+                  "toPid": ""
                 })
 
                 $(event.target).html("selectToLink");
 
-              }else{
+              } else {
                 $(event.target).html("copyToOther");
-                var toData=$(event.target).data("copyInfo")
-                    toData["toPid"]=pid
+                var toData = $(event.target).data("copyInfo")
+                toData["toPid"] = pid
                 stockService.dynamic.setting.linkCell.post("copyToOther", toData).done(function(json) {
-                if (json) {
-                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
-                  PCRUD.View.Grid.Query();
-                }
-              })
+                  if (json) {
+                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);
+                    PCRUD.View.Grid.Query();
+                  }
+                })
 
               }
-        
+
 
 
             })
@@ -365,10 +338,22 @@ Date : 2019/08/26
               }
 
               FC = $(".my_dialog") || this.Container;
-              // FC.find("textarea").width(FC.find("textarea").parent().parent().parent().width() - 10);
-              FC.find("textarea").width(FC.find("textarea").parent().parent().width() - 10);
-              FC.find("[field=rule]").height("300px");
-              FC.find("[field=out]").height("200px");
+             
+              
+              Object.keys(PCRUD.View.Field).forEach(function(k){
+                var v=PCRUD.View.Field[k];
+                if(v&&v.ColSpan>1){
+                  var $ele =FC.find("[field="+v.Field+"]");
+                  $ele.width($ele.closest("td").width()-10);
+                  if(v.Field=="rule"){
+                    $ele.height("250px")
+                  }
+                  if(v.Field=="out"){
+                    $ele.height("200px")
+                  }
+                }
+              })
+
             },
             BeforeGet: function(Record, u, Valids) {},
             AfterGet: function(Record, u, Valids) {

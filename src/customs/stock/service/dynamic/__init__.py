@@ -23,12 +23,12 @@ from service import comm
 
 
 dynamic_step = comm.CRUD(ctx.dynamicdb, "step", [("cid", 1)])
-dynamic_step_log = comm.CRUD(ctx.dynamicdb, "step_log", [("cid", 1)])
 
 dynamic_link = comm.CRUD(ctx.dynamicdb, "link", [("cid", 1)])
 
-dynamic_link_log = comm.CRUD(ctx.dynamicdb, "link_log", [("cid", 1)])
-dynamic_link_cell_log = comm.CRUD(ctx.dynamicdb, "cell_log", [("cid", 1)])
+dynamic_log_link = comm.CRUD(ctx.dynamicdb, "log_link", [("cid", 1)])
+dynamic_log_step = comm.CRUD(ctx.dynamicdb, "log_step", [("cid", 1)])
+dynamic_log_cell = comm.CRUD(ctx.dynamicdb, "log_cell", [("cid", 1)])
 
 dynamic_link_keepFields=["generateW","ck"]
 

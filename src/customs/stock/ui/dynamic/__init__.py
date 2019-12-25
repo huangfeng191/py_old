@@ -11,7 +11,7 @@ from web.contrib.template import render_mako
 render_dynamic= render_mako(directories=["customs/stock/templates/pro/dynamic", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
 
-from customs.stock.service.dynamic import dynamic_link_cell_log,dynamic_link
+from customs.stock.service.dynamic import dynamic_log_cell,dynamic_link
 
 from customs.stock.ui.dynamic.common import *
 from bson.objectid import ObjectId
@@ -48,7 +48,7 @@ class DynamicStepCRUD(CRUD):
     # st = time.time()
     # log = doLinkOne(**{"linkId": _id})
     # log["continue"] = (time.time() - st)
-    # dynamic_link_log.upsert(**log)
+    # dynamic_log_link.upsert(**log)
     # return log
 
 
@@ -133,7 +133,7 @@ class DynamicLinkCRUD(CRUD):
        st=time.time()
        log=doLinkOne(**{"linkId":_id})
        log["continue"]=(time.time()-st)
-       dynamic_link_log.upsert(**log)
+       dynamic_log_link.upsert(**log)
        return log
 
 
@@ -182,7 +182,7 @@ class DynamicLink(ArrayCRUD):
           if r.get("_id")==_id:
               one=r
 
-      one["logSource"]="dynamic_link_cell_log"
+      one["logSource"]="dynamic_log_cell"
       loadRule(tier,**one)
       return "OK"
 
@@ -192,7 +192,7 @@ class DynamicLink(ArrayCRUD):
 @path("/dynamic/link/cell/log.html")
 class DynamicLinkCellLog:
     def GET(self, _cid = None, *args, **kwargs):
-        return render_dynamic["cell_log"]()
+        return render_dynamic["log_cell"]()
 
 @wildcard("/dynamic/link/cell/log/")
 class DynamicLinkCellLogCRUD(CRUD):
@@ -210,4 +210,4 @@ class DynamicLinkCellLogCRUD(CRUD):
         return self.module.delete(**one)
 
     def __init__(self):
-        self.module = dynamic_link_cell_log
+        self.module = dynamic_log_cell
