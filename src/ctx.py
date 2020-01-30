@@ -84,4 +84,7 @@ tushreToken=get("tushreToken", "token", "")
 tushreMinuteLimit=get("tushreToken", "minuteLimit", 200)
 
 
-# 上面是mongodb
+# tide 2020-1-31 new
+
+tide_baseDb = get_db("tide")
+tide_outDb = get_db("out")

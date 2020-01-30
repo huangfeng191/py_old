@@ -159,27 +159,6 @@ def unifyParsedOut(out,log,logSource):
 # bind 后续的 规则是否生成 ，还是获取
 
 def bind_dealWithCell_wrapper(func):
-    def rebindTier(log,tier): # 这样做的目的是:需求变更后可同一修改
-        if "linkId" in tier:
-            link=dynamic_link.get(tier["linkId"])
-            tier["link"]={
-                "sn":link.get("sn"),
-                "outFrequency":link.get("outFrequency"),
-            }
-        if "stepId" in tier:
-            step = dynamic_step.get(tier["stepId"])
-            tier["step"] = {
-                "sn": step.get("sn"),
-                "outFrequency": step.get("outFrequency"),
-            }
-        log["tier"]=tier
-        inType = log.get("inType") or "cell"
-        if log.get("inTypeSn"):  # 如果有指定已指定的为准
-            return
-        if inType == "cell":
-            pass
-        elif tier[inType]:
-            log["inTypeSn"]=tier[inType]["sn"]
 
 
 
@@ -223,6 +202,27 @@ def bind_dealWithCell_wrapper(func):
         return res
 
     return wrap
+def rebindTier(log,tier): # 这样做的目的是:需求变更后可同一修改
+    if "linkId" in tier:
+        link=dynamic_link.get(tier["linkId"])
+        tier["link"]={
+            "sn":link.get("sn"),
+            "outFrequency":link.get("outFrequency"),
+        }
+    if "stepId" in tier:
+        step = dynamic_step.get(tier["stepId"])
+        tier["step"] = {
+            "sn": step.get("sn"),
+            "outFrequency": step.get("outFrequency"),
+        }
+    log["tier"]=tier
+    inType = log.get("inType") or "cell"
+    if log.get("inTypeSn"):  # 如果有指定已指定的为准
+        return
+    if inType == "cell":
+        pass
+    elif tier[inType]:
+        log["inTypeSn"]=tier[inType]["sn"]
 
 
 

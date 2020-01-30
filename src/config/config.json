@@ -2,7 +2,7 @@
 	"sys": {
 	   #"mongodb":{"host":"127.0.0.1"}, # MONGODB
 		"mongodb":{"host":"mongodb://127.0.0.1:27017"},
-		"customs":["stock"],
+		"customs":["stock","tide"],
 		# "customs":[],
 	"db_prefix":"STOCK_", # 数据库前缀
 		"web": {
