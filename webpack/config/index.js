@@ -22,7 +22,7 @@ var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/static/md/***",
 "/v.png","/upload","/export","/logout.html"];
 
-var server="http://localhost:82";
+var server="http://localhost:51";
 for (let i = 0; i < mods.length; i++) {
   const mod = mods[i];
   proxy[mod] = {

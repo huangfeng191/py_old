@@ -1,0 +1,194 @@
+<!--<%inherit file="../layout.html" /> -->
+<!-- function test
+Author Wujj
+Date : 2020/2/4
+-->
+<style>
+  #function {
+    height: 100%;
+    /*margin-left:190px;*/
+
+
+  }
+</style>
+<div style="width:100%;height: 100%;">
+
+  <div id='function'>
+    &nbsp;
+  </div>
+</div>
+<script type="text/javascript">
+  var PCRUD;
+  var Divisions = [];
+
+
+  var Pf = null;
+  var btnNn = "";
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var Title1 = "";
+
+  var cols = [
+    [
+      { "field": "name", "title": "名称", "width": 100, },
+      { "field": "sn", "title": "编码", "width": 100, },
+      { "field": "path", "title": "文件路径", "width": 100, },
+      { "field": "method", "title": "方法名", "width": 100, },
+      { "field": "args", "title": "参数", "width": 100, },
+      { "field": "desc", "title": "备注", "width": 100, },
+    ]
+  ];
+
+
+  var inp1 = [
+    [{ "Field": "name", "Name": "名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+      { "Field": "sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+    ],
+    [{ "Field": "path", "Name": "文件路径", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "2" },
+      { "Field": "method", "Name": "方法名", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+    ],
+    [{ "Field": "args", "Name": "参数", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "2" }, ],
+    [{ "Field": "desc", "Name": "备注", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+  ];
+  var props = [];
+
+  var quics = [];
+  var btnNm = "";
+
+  function init() {
+
+    PCRUD = jQuery.CRUD('#function', {
+      View: {
+        AfterRender: function() {
+        
+   
+            
+            this.Container.find(".right_container").prepend("<button command='doing'>doing</button>").find("[command='doing']").
+            on("click", function(event) {
+               var row=PCRUD.View.Grid.CurrentRow;
+               if(!row) return ;
+               tideService.test.method.post("doing",{ "row":row}).done(function(json){
+                  if (json ) {
+                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+                    // PCRUD.View.Grid.Query();
+                  }
+               })
+            })
+            
+            $(document).keydown(function (event) {
+              if (event.key == "F4"){
+                $("[command='doing']").click()
+              }
+            })
+
+ 
+        
+
+
+        },
+        Form: {
+          AfterEnable: function() {
+
+          },
+          AfterDisable: function() {
+
+          },
+          AfterSet: function(Record, IsNew) { // 点击新建后
+            //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+            //PCRUD.View.Form.Enable([]);
+            if (!IsNew) {
+              //FormContainer.find(".button_container").css("display", "none");
+            } else {
+
+            }
+
+            var FC = $(".my_dialog") || this.Container;
+
+            Object.keys(PCRUD.View.Field).forEach(function(k) {
+              var v = PCRUD.View.Field[k];
+              if (v && v.ColSpan > 1) {
+                var $ele = FC.find("[field=" + v.Field + "]");
+                $ele.width($ele.closest("td").width() - 10);
+                if (v.Field == "rule") {
+                  $ele.height("250px")
+                }
+                if (v.Field == "out") {
+                  $ele.height("200px")
+                }
+              }
+            })
+
+
+
+          },
+          BeforeGet: function(Record, u, Valids) {},
+          AfterGet: function(Record, u, Valids) {
+
+          },
+          BeforeSet: function(Record, IsNew) {
+
+          }
+        }
+      },
+      Behavior: {
+        BeforeQuery: function(Filters, Orders) {
+
+          Loading.Show();
+          return true;
+        },
+        AfterQuery: function(Result) {
+          Loading.Hide();
+          return true;
+        },
+        BeforeSave: function(Record, Callback) {
+
+          return true;
+        },
+        AfterSave: function(Result) {
+          //  PCRUD.View.Grid.Query();
+          return true;
+        },
+        Grid: {
+          //   RowDblClick: function (Row) {
+
+          // }
+        }
+      },
+      Service: {
+        Path: "test/",
+        Target: "method",
+        Base: "../"
+      }
+    }, {
+
+      "Bindings": GBindings,
+      "FrozenColumns": [
+        []
+      ],
+      "Columns": cols,
+      "Form": [{
+          "Title": Title1,
+          "Inputs": inp1
+        }
+
+
+      ],
+      "Properties": props,
+      "Quicks": quics,
+      "Rights": "CUD",
+      "Target": "method",
+      "Title": "",
+      "ExportFmt": true,
+      Layout: "POP" ? "POP" : "POP",
+      ExportName: ""
+
+    });
+
+
+  }
+
+  jQuery(document).ready(function() {
+
+    init();
+
+  });
+</script>

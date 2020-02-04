@@ -5,16 +5,50 @@
 # Date    : 2020/2/3
 # Version : 1.0
 
-import re
-import time
-from misc import utils
-from ui import path, wildcard, CRUD, ArrayCRUD
-from web.contrib.template import render_mako
-from webservice import POST
-import customs.xining.service.building  as xiningbuilding
-import service.biz as Biz
-from ui.scada import _parse_conditions
+from ui import wildcard,CRUD,path
 
-render_building = render_mako(directories=["customs/xining/templates/building", "templates"], input_encoding="utf-8",
-                              output_encoding="utf-8")
-from bson.objectid import ObjectId
+
+from web.contrib.template import render_mako
+render_tide= render_mako(directories=["customs/tide/templates/", "templates"], input_encoding="utf-8",
+                       output_encoding="utf-8")
+
+from  customs.tide.service.bean.misc import *
+
+import logging
+import importlib
+
+from customs.tide.service.gather.layer import *
+
+
+#  测试写的写的方法
+@path("/tide/test/method.html")
+class TideTest:
+    def GET(self, _cid = None, *args, **kwargs):
+        return render_tide["test/method"]()
+
+@wildcard("/tide/test/method/")
+class TideTestCRUD(CRUD):
+
+    def __init__(self):
+        self.module = tide_test
+        
+    def action(self, act, *args, **kwArgs):   
+      if act == 'doing':
+          return self.doing(*args, **kwArgs)
+      else:
+          return CRUD.action(self, act, *args, **kwArgs)
+              
+    def doing(self, row=None, *args, **kwArgs):
+        if row:
+            if row.get("path") and row.get("method"):
+                try:
+                    # importlib.import_module("%s" % row.get("path"))
+                    # importlib.import_module("customs.tide.service.gather")
+                    doing={"doing":"%s(%s)"%(row.get("method"),row.get("args",""))}
+                    row.update(doing)
+                    tide_test_log.upsert(**row)
+                    eval(doing.get("doing"))
+                except Exception, e:
+                    logging.error(e)
+
+        return []
