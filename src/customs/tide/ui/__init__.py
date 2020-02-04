@@ -13,6 +13,6 @@ from web.contrib.template import render_mako
 render_tide= render_mako(directories=["customs/tide/templates/", "templates"], input_encoding="utf-8",
                        output_encoding="utf-8")
 
-
+import customs.tide.ui.base
 import customs.tide.ui.comm
 import  customs.tide.ui.test

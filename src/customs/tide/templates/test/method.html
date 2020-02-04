@@ -108,12 +108,7 @@ Date : 2020/2/4
               if (v && v.ColSpan > 1) {
                 var $ele = FC.find("[field=" + v.Field + "]");
                 $ele.width($ele.closest("td").width() - 10);
-                if (v.Field == "rule") {
-                  $ele.height("250px")
-                }
-                if (v.Field == "out") {
-                  $ele.height("200px")
-                }
+
               }
             })
 

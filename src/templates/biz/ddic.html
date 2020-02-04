@@ -1,383 +1,356 @@
 <!--<%inherit file="layout.html"/>-->
-	<!--style-->
-	<style>
-		#binding
-		{
-			width: 520px;
-			float: left;
-			height: 100%;
-		}
-		#record
-		{
-			margin-left: 530px;
-			height: 100%;
-		}
-	</style>
-	<!--html-->
-	<div id='binding'>
-		&nbsp;</div>
-	<div id='record'>
-		&nbsp;</div>
-	<!--script-->
-	<script type="text/javascript" src="/static/Scripts/ImageView/ImageView.js"></script>
-	<script type="text/javascript">
-	var Images = [];
-	var IVE = jQuery.ImageView({
-			Editable: true,
-			IconSize: "big",
-			OnClose: function(Result)
-			{
-				Images = Result;
-			}
-		});
-	
-	var IV = jQuery.ImageView({
-			Editable: false,
-			IconSize: "small"
-		});
-	jQuery(document).ready(function()
-	{
+<!--style-->
+<style>
+  #binding {
+    width: 520px;
+    float: left;
+    height: 100%;
+  }
 
-	function getBindConfig(){
-    let p=co($.po("/prostock/interfaceconfig/query.json",{ query: {},order:[{"Field":"w", "Type": false}] },{"async":false})).done(function(json){
-        if(json.rows&&json.rows.length>0){
-            let records=[];  
-            json.rows.forEach(element => {
-                records.push({"name":element.nm,"value":element.table_nm,"other":element.sendway})
-            });
-            GBindings.push({
-                Code: 'StockConfig',
-                Records: records
-               });
+  #record {
+    margin-left: 530px;
+    height: 100%;
+  }
+</style>
+<!--html-->
+<div id='binding'>
+  &nbsp;</div>
+<div id='record'>
+  &nbsp;</div>
+<!--script-->
+<script type="text/javascript" src="/static/Scripts/ImageView/ImageView.js"></script>
+<script type="text/javascript">
+  var Images = [];
+  var IVE = jQuery.ImageView({
+    Editable: true,
+    IconSize: "big",
+    OnClose: function(Result) {
+      Images = Result;
+    }
+  });
+
+  var IV = jQuery.ImageView({
+    Editable: false,
+    IconSize: "small"
+  });
+  jQuery(document).ready(function() {
+
+    function getBindConfig() {
+      let p = co($.po("/prostock/interfaceconfig/query.json", { query: {}, order: [{ "Field": "w", "Type": false }] }, { "async": false })).done(function(json) {
+        if (json.rows && json.rows.length > 0) {
+          let records = [];
+          json.rows.forEach(element => {
+            records.push({ "name": element.nm, "value": element.table_nm, "other": element.sendway })
+          });
+          GBindings.push({
+            Code: 'StockConfig',
+            Records: records
+          });
         }
+      });
+
+    }
+    getBindConfig()
+
+    var Path;
+    var kkk = "CUD";
+    if (getUrlParam('sjcd') == 'JSBQTREASON') {
+      kkk = "";
+
+    }
+    var Cid;
+    var Pid = "0";
+    var Ptype = 0;
+    var App = Proxy.GetUrlParam('app') || Proxy.GetUrlParam('App');
+    var Properties = [
+      { "DataType": "String", "Ext": "", "Field": "Code", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "编码", "OrderEnabled": true, "ShowType": "text", "Unique": 1 },
+      { "DataType": "String", "Ext": "", "Field": "Name", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "名称", "OrderEnabled": true, "ShowType": "text", "Unique": 2 }
+    ];
+    if (window["GCtx"] && GCtx.customer) {
+      //特定客户
+      jQuery("#customer").hide();
+      jQuery("#ddef").css("margin-left", 0);
+      jQuery("#drecords").css("margin-left", jQuery("#ddef").outerWidth(true));
+      Cid = GCtx.customer._id;
+      Path = "biz/";
+      Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 1 });
+      Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 2 });
+    } else {
+      Path = "biz/";
+    }
+    CRUD_Binding = jQuery.CRUD('#binding', {
+      View: {
+        Form: {
+          AfterGet: function(Record) {
+
+          },
+          AfterSet: function(Record, IsNew) { // 点击新建后
+
+
+
+            var FC = $(".my_dialog") || this.Container;
+
+            if (!IsNew) {
+              //FormContainer.find(".button_container").css("display", "none");
+            } else {
+              FC.find("[field=" + "desc" + "]").val("tide");
+            }
+
+            Object.keys(CRUD_Binding.View.Field).forEach(function(k) {
+              var v = CRUD_Binding.View.Field[k];
+              if (v && v.ColSpan > 1) {
+                var $ele = FC.find("[field=" + v.Field + "]");
+                $ele.width($ele.closest("td").width() - 10);
+
+              }
+            })
+
+          },
+        },
+        Pagination: {
+          displayMsg: ""
+        },
+        GridOptions: {
+          rowStyler: function(index, row) {
+            if (Cid && Cid.length > 0 && !row.cid) {
+              return { "class": "sys_default" };
+            }
+          },
+          pagination: false
+        },
+        AfterRender: function() {
+          this.Button.Hide(["filter", "order"]);
+        }
+      },
+      Behavior: {
+        BeforeQuery: function(Filters, Orders) {
+          if (Cid) {
+            Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and" }]);
+          }
+          if (App) {
+            Filters.Merge([{ Field: "App", Operate: "in", Value: [App], Relation: "and" }]);
+          }
+
+
+
+
+          Pid = "0";
+          CRUD_Record.View.Grid.Query();
+          CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert"])
+          return true;
+        },
+        Grid: {
+          AfterRowClick: function(Row) {
+            Pid = Row._id;
+            if (Row.cid) {
+              Ptype = 1;
+              CRUD_Binding.View.Button.Enable(["delete", "update"]);
+              CRUD_Record.View.Button.Enable(["reset", "filter", "order", "column", "insert"]);
+            } else {
+              Ptype = 0;
+              CRUD_Binding.View.Button.Disable(["delete"]);
+              CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert"]);
+            }
+
+            CRUD_Record.View.Grid.Query();
+          }
+        },
+        BeforeSave: function(Record) {
+          //delete Record.Records;
+          //Record.Records = [];
+          if (App) {
+            Record['App'] = [App];
+          }
+          if (Cid && Cid.length > 0) {
+            Record.cid = Cid;
+          }
+          return true;
+        },
+
+
+
+        AfterSave: function(Result) {
+          if (Result.Code == 0) {
+            Pid = "0";
+            CRUD_Record.View.Grid.Clear();
+            CRUD_Binding.View.Grid.Query();
+            return true;
+          } else {
+            return false;
+          }
+        },
+        AfterDelete: function(Result) {
+          if (Result.Code == 0) {
+            Pid = "0";
+            CRUD_Record.View.Grid.Clear();
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      Service: {
+        Path: Path,
+        Target: "ddic",
+        Base: "../"
+      }
+    }, {
+      Layout: "POP",
+      "Bindings": GBindings,
+      "FrozenColumns": [
+        []
+      ],
+      "Columns": [
+        [
+          { "align": "left", "colspan": 1, "field": "Code", "hidden": false, "rowspan": 1, "title": "编码", "width": 160 },
+          { "align": "left", "colspan": 1, "field": "desc", "hidden": false, "rowspan": 1, "title": "描述", "width": 100 },
+          { "align": "left", "colspan": 1, "field": "Effect", "hidden": false, "rowspan": 1, "title": "关联对象", "width": 100, binding: "StockConfig" },
+          { "align": "left", "colspan": 1, "field": "Name", "hidden": false, "rowspan": 1, "title": "名称", "width": 300 },
+          { "align": "left", "colspan": 1, "field": "Relation", "hidden": false, "rowspan": 1, "title": "关联字段", "width": 100 },
+        ]
+      ],
+      "Form": [{
+        "Title": "字典信息",
+        "Inputs": [
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Code", Name: "编码", ShowType: "text", "Required": true },
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Relation", Name: "关联字段", ShowType: "text", "Required": false },
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "StockConfig", Field: "Effect", Name: "关联字段", ShowType: "combocheck", "Required": true },
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Name", Name: "名称", ShowType: "text", "Required": true }
+          ],
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "desc", Name: "描述", ShowType: "text", "Required": false },
+          ]
+        ]
+      }],
+      "Properties": Properties,
+      "Quicks": [],
+      "Rights": kkk,
+      "Target": "ddic",
+      ExportName: "数据字典"
     });
-  
-}
-getBindConfig()
 
-        var Path;
-		var kkk="CUD";
-		if (getUrlParam('sjcd') == 'JSBQTREASON') {
-		kkk="";
-		
-		}
-        var Cid;
-        var Pid = "0";
-        var Ptype = 0;
-        var App = Proxy.GetUrlParam('app') || Proxy.GetUrlParam('App');
-        var Properties = [
-                { "DataType": "String", "Ext": "", "Field": "Code", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "编码", "OrderEnabled": true, "ShowType": "text", "Unique": 1 },
-				{ "DataType": "String", "Ext": "", "Field": "Name", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "名称", "OrderEnabled": true, "ShowType": "text", "Unique": 2 }];
-        if(window["GCtx"] && GCtx.customer)
-        {
-            //特定客户
-            jQuery("#customer").hide();
-            jQuery("#ddef").css("margin-left", 0);
-            jQuery("#drecords").css("margin-left",jQuery("#ddef").outerWidth(true));
-            Cid = GCtx.customer._id;
-            Path = "biz/";
-            Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 1 });
-            Properties.push({ "DataType": "String", "Ext": "", "Field": "cid", "FilterEnabled": true, "Frozen": false, "Hidden": true, "Name": "", "OrderEnabled": false, "ShowType": "text", "Unique": 2 });
+    CRUD_Record = jQuery.CRUD('#record', {
+      View: {
+        Form: {
+          BeforeSet: function(Record) {
+            jQuery("<button type='button' class='upload'>管理</button>").insertAfter(CRUD_Record.View.FormContainer.find("[field=icon]").hide()).click(function(Evt) {
+              Images = [];
+              var Icons = CRUD_Record.View.FormContainer.find("[field=icon]").val();
+              if (Icons.length > 0) {
+                Images = Icons.split(",");
+              }
+              IVE.Show(Images);
+            });
+          },
+          AfterSet: function(Record) {
+            if (jQuery.isArray(Record.icon)) {
+              CRUD_Record.View.FormContainer.find("[field=icon]").val(Record.icon.join(","));
+            }
+          },
+          AfterGet: function(Record) {
+            Record.icon = Images;
+          }
+        },
+        AfterRender: function() {
+          this.Button.Hide(["filter", "order"]);
+          if (Pid == "0")
+            this.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+          else if (Cid && Ptype == 0)
+            this.Button.Disable(["insert", "delete", "update"]);
+          else
+            this.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
         }
-        else
-        {
-            Path = "biz/";
-        }
-		CRUD_Binding = jQuery.CRUD('#binding',
-		{
-			View:
-			{
-				Form:
-				{
-					AfterGet:function(Record)
-					{
-						
-					}
-				},
-				Pagination:
-				{
-				    displayMsg: ""
-				},
-                GridOptions:
-                {
-                    rowStyler: function(index,row){
-                        if (Cid && Cid.length > 0 && !row.cid)
-						{
-                            return { "class": "sys_default" };
-                        }
-                    },
-                    pagination:false
-                },
-				AfterRender:function()
-				{
-					this.Button.Hide(["filter","order"]);
-				}
-			},
-			Behavior:
-			{
-                BeforeQuery: function(Filters, Orders)
-                {
-                    if(Cid)
-                    {
-                        Filters.Merge([{ Field: "cid", Operate: "=", Value: Cid, Relation: "and"}]);
-                    }
-                    if (App) {
-                        Filters.Merge([{ Field: "App", Operate: "in", Value: [App], Relation: "and" }]);
-                    }
-					
-				
-					
-					
-					Pid="0";
-					CRUD_Record.View.Grid.Query();
-                    CRUD_Record.View.Button.Disable(["reset","filter","order","column","insert"])
-                    return true;
-                },
-				Grid:
-				{
-					AfterRowClick: function(Row)
-					{
-						Pid = Row._id;
-                        if(Row.cid)
-                        {
-                            Ptype = 1;
-                            CRUD_Binding.View.Button.Enable(["delete", "update"]);
-                            CRUD_Record.View.Button.Enable(["reset","filter","order","column","insert"]);
-                        }
-                        else
-                        {
-                            Ptype = 0;
-                            CRUD_Binding.View.Button.Disable(["delete"]);
-                            CRUD_Record.View.Button.Disable(["reset","filter","order","column","insert"]);
-                        }
-
-						CRUD_Record.View.Grid.Query();
-					}
-				},
-				BeforeSave:function(Record)
-				{
-				    //delete Record.Records;
-				    //Record.Records = [];
-				    if (App) {
-				        Record['App'] = [App];
-				    }
-                    if (Cid && Cid.length > 0)
-                    {
-                        Record.cid = Cid;
-                    }
-					return true;
-				},
-				AfterSave:function(Result)
-				{
-					if(Result.Code == 0)
-					{
-						Pid = "0";
-						CRUD_Record.View.Grid.Clear();
-						CRUD_Binding.View.Grid.Query();
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				},
-				AfterDelete:function(Result)
-				{
-					if(Result.Code == 0)
-					{
-						Pid = "0";
-						CRUD_Record.View.Grid.Clear();
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				}
-			},
-			Service:
-			{
-				Path: Path,
-				Target: "ddic",
-				Base: "../"
-			}
-		},
-		{
-			Layout: "POP",
-			"Bindings": GBindings,
-			"FrozenColumns": [[]],
-			"Columns":
-			[
-				[
-					{ "align": "left", "colspan": 1, "field": "Code", "hidden": false, "rowspan": 1, "title": "编码", "width": 160 },
-					{ "align": "left", "colspan": 1, "field": "Relation", "hidden": false, "rowspan": 1, "title": "关联字段", "width": 100 },
-					{ "align": "left", "colspan": 1, "field": "Effect", "hidden": false, "rowspan": 1, "title": "关联对象", "width": 100,binding:"StockConfig" },
-					{ "align": "left", "colspan": 1, "field": "Name", "hidden": false, "rowspan": 1, "title": "名称", "width": 300 },
-				]
-			],
-			"Form":
-			[
-				{
-					"Title": "字典信息",
-					"Inputs": 
-					[
-						[
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Code", Name: "编码", ShowType: "text", "Required": true},
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Relation", Name: "关联字段", ShowType: "text", "Required": false},
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "StockConfig", Field: "Effect", Name: "关联字段", ShowType: "combocheck", "Required": true},
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "Name", Name: "名称", ShowType: "text", "Required": true}
-						]
-					]
-				}
-			],
-			"Properties": Properties,
-			"Quicks": [],
-			"Rights": kkk,
-			"Target": "ddic",
-			ExportName:"数据字典"
-		});
-
-		CRUD_Record = jQuery.CRUD('#record',
-		{
-			View:
-			{
-				Form:
-				{
-					BeforeSet:function(Record)
-					{
-						jQuery("<button type='button' class='upload'>管理</button>").insertAfter(CRUD_Record.View.FormContainer.find("[field=icon]").hide()).click(function(Evt)
-						{
-							Images = [];
-							var Icons = CRUD_Record.View.FormContainer.find("[field=icon]").val();
-							if(Icons.length > 0)
-							{
-								Images = Icons.split(",");
-							}
-							IVE.Show(Images);
-						});
-					},
-					AfterSet:function(Record)
-					{
-						if(jQuery.isArray(Record.icon))
-						{
-							CRUD_Record.View.FormContainer.find("[field=icon]").val(Record.icon.join(","));
-						}
-					},
-					AfterGet: function(Record)
-					{
-						Record.icon = Images;
-					}
-				},
-				AfterRender:function()
-				{
-					this.Button.Hide(["filter","order"]);
-					if (Pid == "0")
-                        this.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
-                    else if (Cid && Ptype == 0)
-                        this.Button.Disable(["insert", "delete", "update"]);
-                    else
-                       this.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
-                }
-			},
-			Behavior:
-			{
-                Grid: {
-                    AfterRowClick: function (Row) {
-                        if (Cid && Ptype == 0) {
-                            CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert", "delete", "update"]);
-                        } else {
-                            CRUD_Record.View.Button.Enable(["reset", "filter", "order", "column", "insert"]);
-                        }
-                    }
-                },
-				BeforeQuery: function(Filters, Orders) {
-                    Filters.Clear();
-                    if(Cid && Ptype == 0){
-                        Filters.Merge([
-                            { Field: "__id", Operate: "=", Value: Pid || "0", Relation: "and" }
-                        ]);
-                    }else{
-                        Filters.Merge([
-                            { Field: "__pid", Operate: "=", Value: Pid || "0", Relation: "and" }
-                        ]);
-                    }
-                    return Pid != "0";
-                },
-				AfterQuery:function(Result) {
-                    if (Pid == "0")
-                        CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
-                    else if (Cid && Ptype == 0)
-                        CRUD_Record.View.Button.Disable(["insert", "delete", "update"]);
-                    else
-                        CRUD_Record.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
-                    return true;
-                },
-				BeforeSave: function(Record)
-				{
-				    if(Pid && Pid!="0")
-					{
-					   Record.__pid = Pid;
-					   return true;
-					}
-					else{
-					   return false;
-					}
-				},
-				BeforeDelete: function(Record) {
+      },
+      Behavior: {
+        Grid: {
+          AfterRowClick: function(Row) {
+            if (Cid && Ptype == 0) {
+              CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert", "delete", "update"]);
+            } else {
+              CRUD_Record.View.Button.Enable(["reset", "filter", "order", "column", "insert"]);
+            }
+          }
+        },
+        BeforeQuery: function(Filters, Orders) {
+          Filters.Clear();
+          if (Cid && Ptype == 0) {
+            Filters.Merge([
+              { Field: "__id", Operate: "=", Value: Pid || "0", Relation: "and" }
+            ]);
+          } else {
+            Filters.Merge([
+              { Field: "__pid", Operate: "=", Value: Pid || "0", Relation: "and" }
+            ]);
+          }
+          return Pid != "0";
+        },
+        AfterQuery: function(Result) {
+          if (Pid == "0")
+            CRUD_Record.View.Button.Disable(["reset", "filter", "order", "column", "insert", "export"]);
+          else if (Cid && Ptype == 0)
+            CRUD_Record.View.Button.Disable(["insert", "delete", "update"]);
+          else
+            CRUD_Record.View.Button.Enable(["reset", "filter", "order", "column", "insert", "export"]);
+          return true;
+        },
+        BeforeSave: function(Record) {
+          if (Pid && Pid != "0") {
+            Record.__pid = Pid;
+            return true;
+          } else {
+            return false;
+          }
+        },
+        BeforeDelete: function(Record) {
           Record.__pid = Pid;
           return true;
         }
-			},
-			Service:
-			{
-				Path:Path,
-				Target: "ddic/record",
-				Base: "../"
-			}
-		},
-		{
-			Layout: "POP",
-			"Bindings": [],
-			"FrozenColumns": [[]],
-			"Columns":
-			[
-				[
-					{ "align": "left", "colspan": 1, "field": "name", "hidden": false, "rowspan": 1, "title": "名称", "width": 160 },
-					{ "align": "left", "colspan": 1, "field": "value", "hidden": false, "rowspan": 1, "title": "值", "width": 160 },
-					{ "align": "left", "colspan": 1, "field": "extend", "hidden": false, "rowspan": 1, "title": "扩展", "width": 260 }
-				]
-			],
-			"Form":
-			[
-				{
-					"Title": "字典项目",
-					"Inputs":
-					[
-						[
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "name", Name: "名称", ShowType: "text", "Required": true}
-						],
-						[
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "value", Name: "值", ShowType: "text", "Required": true}
-						],
-						[
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "extend", Name: "扩展", ShowType: "text", "Required": false}
-						],
-						[
-							{ RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "icon", Name: "图标", ShowType: "text", "Required": false}
-						]
-					]
-				}
-			],
-			"Properties":
-			[
-				{ "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "name", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "名称", "OrderEnabled": true, "ShowType": "text", "Unique": null },
-				{ "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "value", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "值", "OrderEnabled": true, "ShowType": "text", "Unique": 1 },
-				{ "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "extend", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "扩展", "OrderEnabled": true, "ShowType": "text", "Unique": 1 }
-			],
-			"Quicks": [],
-			"Rights": "CUD",
-			"Target": "ddic/record",
-		     ExportName:"字典项目"
-		});
-	});
-	</script>
+      },
+      Service: {
+        Path: Path,
+        Target: "ddic/record",
+        Base: "../"
+      }
+    }, {
+      Layout: "POP",
+      "Bindings": [],
+      "FrozenColumns": [
+        []
+      ],
+      "Columns": [
+        [
+          { "align": "left", "colspan": 1, "field": "name", "hidden": false, "rowspan": 1, "title": "名称", "width": 160 },
+          { "align": "left", "colspan": 1, "field": "value", "hidden": false, "rowspan": 1, "title": "值", "width": 160 },
+          { "align": "left", "colspan": 1, "field": "extend", "hidden": false, "rowspan": 1, "title": "扩展", "width": 260 }
+        ]
+      ],
+      "Form": [{
+        "Title": "字典项目",
+        "Inputs": [
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "name", Name: "名称", ShowType: "text", "Required": true }
+          ],
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "value", Name: "值", ShowType: "text", "Required": true }
+          ],
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "extend", Name: "扩展", ShowType: "text", "Required": false }
+          ],
+          [
+            { RowSpan: 1, ColSpan: 1, DataType: "String", Ext: "", Field: "icon", Name: "图标", ShowType: "text", "Required": false }
+          ]
+        ]
+      }],
+      "Properties": [
+        { "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "name", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "名称", "OrderEnabled": true, "ShowType": "text", "Unique": null },
+        { "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "value", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "值", "OrderEnabled": true, "ShowType": "text", "Unique": 1 },
+        { "ColumnEnabled": true, "DataType": "String", "Ext": "", "Field": "extend", "FilterEnabled": true, "Frozen": false, "Hidden": false, "Name": "扩展", "OrderEnabled": true, "ShowType": "text", "Unique": 1 }
+      ],
+      "Quicks": [],
+      "Rights": "CUD",
+      "Target": "ddic/record",
+      ExportName: "字典项目"
+    });
+  });
+</script>
