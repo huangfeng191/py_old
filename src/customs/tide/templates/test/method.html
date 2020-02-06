@@ -24,15 +24,15 @@ Date : 2020/2/4
 
   var Pf = null;
   var btnNn = "";
-  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 2 });
   var Title1 = "";
 
   var cols = [
     [
-      { "field": "name", "title": "名称", "width": 100, },
-      { "field": "sn", "title": "编码", "width": 100, },
+      { "field": "name", "title": "名称", "width": 150, },
+      { "field": "sn", "title": "编码", "width": 150, },
       { "field": "path", "title": "文件路径", "width": 300, },
-      { "field": "method", "title": "方法名", "width": 100, },
+      { "field": "method", "title": "方法名", "width": 150, },
       { "field": "args", "title": "参数", "width": 100, },
       { "field": "desc", "title": "备注", "width": 100, },
     ]
@@ -66,7 +66,9 @@ Date : 2020/2/4
             on("click", function(event) {
                var row=PCRUD.View.Grid.CurrentRow;
                if(!row) return ;
+               Loading.Show()
                tideService.test.method.post("doing",{ "row":row}).done(function(json){
+                Loading.Hide()
                   if (json ) {
                     Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 1 }, null, null);            
                     // PCRUD.View.Grid.Query();
