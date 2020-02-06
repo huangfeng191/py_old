@@ -15,6 +15,17 @@ chain_level_down.reverse()
 
 
 def gatherChains(layer,t=None,hook="plan",**kwargs):
+    '''
+
+    Args:
+        layer:  {}
+        t: 时间，可为空，为了数据的重复计算 以及补数据
+        hook: 从那个环节开始，
+        **kwargs: 暂时没用到
+
+    Returns:
+
+    '''
     def getHookDetail(layer,t,hook,chain,chains):
         '''
 
@@ -31,7 +42,7 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
         fetch={}
         option={}
         chain[hook]={ "fetch":fetch,"option":option }
-        for s in ["sn", "level",  "cycle"]:
+        for s in ["sn", "level","cycle"]:
             fetch[s]=layer[s]
         fetch["t"]=tide_utils.getCycleToT(fetch.get("cycle"),t)
 

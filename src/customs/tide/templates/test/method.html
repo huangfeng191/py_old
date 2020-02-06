@@ -68,7 +68,7 @@ Date : 2020/2/4
                if(!row) return ;
                tideService.test.method.post("doing",{ "row":row}).done(function(json){
                   if (json ) {
-                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 1 }, null, null);            
                     // PCRUD.View.Grid.Query();
                   }
                })

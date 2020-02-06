@@ -55,6 +55,15 @@ export default {
   mounted() {
     var h = $(".menutab-index").height() - 40;
     this.stl = "width: 100%;height:" + h + "px";
+    let self=this;
+    
+        $(document).keydown(function (event) {
+              if (event.key == "F2"){
+                document.getElementById(self.$store.state.History.Current.Id).contentWindow.location.reload(true);
+              }
+            })
+
+
   },
   computed: {
     Pages: function() {

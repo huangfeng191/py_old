@@ -154,7 +154,7 @@ Date : 2019/09/01
 
                stockService.dynamic.comm.testCRUD.post("test",{ "_id":row._id,"frequency":row.frequency,"sn":row.sn }).done(function(json){
                   if (json ) {
-                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+                    Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 1 }, null, null);            
                     PCRUD.View.Grid.Query();
                   }
                })
@@ -171,7 +171,7 @@ Date : 2019/09/01
                if(!row) return ;
                stockService.dynamic.comm.testCRUD.post("copy",{ "_id":row._id }).done(function(json){
                 if (json ) {
-                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 3 }, null, null);            
+                  Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: "操作成功", AutoClose: 1 }, null, null);            
                   LCRUD.View.Grid.Query();
                 }
                })
