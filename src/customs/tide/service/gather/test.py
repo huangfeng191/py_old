@@ -32,9 +32,10 @@ def test_Class_Chains():
     chain = c_chains.getChainByCellId("5e391f623a065b4658e885e8")
     chain_after = c_chains.getAfterChainByCellId("5e391f623a065b4658e885e8")
     chain_front = c_chains.getFrontChainByCellId("5e391f623a065b4658e885e8")
+
     print 1
 
-#TODO:
+
 def test_Class_Chains_recount():
     '''
     测试 chain 的 上下级
@@ -44,3 +45,20 @@ def test_Class_Chains_recount():
 
     c_chains = Chains("5e391e6e3a065b4658e885e7", "link")
     c_chains.recount("hook","_id")
+
+
+
+def test_Class_Chain():
+    '''
+    测试 chain level 的 上下级
+    Returns:
+
+    '''
+    pass
+    c_chains = Chains("5e391e6e3a065b4658e885e7", "link")
+    chains = c_chains.getChains()
+    chain = c_chains.getChainByCellId("5e391f623a065b4658e885e8")
+    c_chain =Chain(chain)
+    link=c_chain.getLayer("link")
+    base.tide_log.upsert(**{"chains": chains})
+    print 1

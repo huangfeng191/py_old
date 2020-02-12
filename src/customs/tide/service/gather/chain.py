@@ -13,7 +13,7 @@ chain_level_up= ["cell","link","step","measure","plan"]
 chain_level_down= deepcopy(chain_level_up)
 chain_level_down.reverse()
 
-def getChildChain(hook="plan"):
+def getChildLevel(hook="plan"):
     '''
     获取chain 上的 下一级 level
     Args:
@@ -28,7 +28,7 @@ def getChildChain(hook="plan"):
     return child_hook
 
 
-def getParentChain(hook="cell"):
+def getParentLevel(hook="cell"):
     '''
     获取chain 上的 上一级 level
     Args:
@@ -67,19 +67,29 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
         Returns:
 
         '''
-        fetch={}
-        option={}
-        chain[hook]={ "fetch":fetch,"option":option,"hookId":layer.get("_id") }
-        for s in ["sn", "level","cycle"]:
-            fetch[s]=layer[s]
-        for s in ["refresh"]:
-            option[s] = layer[s]
-        child_hook=getChildChain(hook)
+
+        fetch={
+            "key":{},
+            "option":{}
+        }
+        chain[hook]={ "fetch":fetch,"hookId":layer.get("_id") }
+       # 获取配置
+        fetch_template=[
+            ("key",["sn", "level","cycle"]),
+            ( "option",["refresh"])
+        ]
+        for tK,tA in fetch_template:
+            for s in tA:
+                fetch[tK][s]=layer[s]
+
+
+        child_hook=getChildLevel(hook)
         if child_hook:
             l = eval(("base.tide_%s") % child_hook).items(query={"pid": layer.get("_id")}, sort=[("w", -1)])
             for one in l:
                 getHookDetail(one,child_hook,chain,chains)
         else:
+            chain["cell"]["config"]=layer
             chains.append(deepcopy(chain))
     def redoChain(chain,hook,t):
         '''
@@ -91,32 +101,32 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
         Returns:
 
         '''
-        default_fill=[
-            ( "fetch",[("cycle", "day")]),
+        fetch_template_default=[
+            ( "key",[("cycle", "day")]),
             ("option",[("refresh", "refresh")])
         ]
         #  最高层 添加 默认值 ,其他层级继承父级
-        for fill_k,fill_v in default_fill:
-            o=chain[hook][fill_k]
+        for fill_k,fill_v in fetch_template_default:
+            o=chain[hook]["fetch"][fill_k]
             if chain.get("hook") == hook:
                 for k, v in fill_v:
                     if not o.get(k):
                         o[k] = v
             else:
-                parent_chain = getParentChain(hook)
-                if parent_chain:
-                    pO = chain[parent_chain][fill_k]
+                parent_level = getParentLevel(hook)
+                if parent_level:
+                    pO = chain[parent_level]["fetch"][fill_k]
                     for k, v in fill_v:
                         if not o.get(k):
                             o[k] = pO[k]
         # 生成 levelSn
-        fetch=chain[hook]["fetch"]
-        level_fetch=chain[fetch.get("level", hook)]["fetch"]
-        fetch["levelSn"] = level_fetch["sn"]
+        fetch_key=chain[hook]["fetch"]["key"]
+        level_fetch_key=chain[fetch_key.get("level", hook)]["fetch"]["key"]
+        fetch_key["levelSn"] = level_fetch_key["sn"]
         # 生成 t
-        fetch["t"] = tide_utils.getCycleToT(fetch.get("cycle"), t)
+        fetch_key["t"] = tide_utils.getCycleToT(fetch_key.get("cycle"), t)
 
-        child_hook=getChildChain(hook)
+        child_hook=getChildLevel(hook)
         if child_hook:
             redoChain(chain,child_hook,t)
         else:
@@ -175,4 +185,30 @@ class Chains:
         for r in chains:
             o=r[hook]
             o["option"]["refresh"]="refresh"
+
+
+
+
+class Chain:
+    def __init__(self,chain):
+        self.chain =chain
+    def getLayer(self,level):
+        
+        layer=self.chain[level]
+        return layer
+    def getParentLayer(self,level):
+        level=getParentLevel(level)
+        layer=None
+        if level:
+            layer = self.chain[level]
+        return layer
+    def getChildLayer(self,level):
+        level=getChildLevel(level)
+        layer=None
+        if level:
+            layer = self.chain[level]
+        return layer
+
+
+
 
