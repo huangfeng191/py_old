@@ -8,6 +8,11 @@
 
 
 from customs.stock.service.tushare_beans import *
+from customs.tide.service.utils import *
+
+
+rule_doing_methods=[("table",{}),("agg",{})]
+
 
 # rule_doing_(ruleType)
 def rule_doing_table(source,rule):
@@ -43,6 +48,4 @@ def rule_doing_aggregate(source,rule):
         for r in d:
             r.update(r["_id"])
     return ret
-
-
 

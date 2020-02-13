@@ -19,7 +19,7 @@ import importlib
 
 from customs.tide.service.gather.layer import *
 from customs.tide.service.gather.test import *
-
+from customs.tide.service.utils.test import *
 #  测试写的写的方法
 @path("/tide/test/method.html")
 class TideTest:

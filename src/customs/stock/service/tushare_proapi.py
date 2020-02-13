@@ -38,8 +38,12 @@ def getInterfaceData(table_nm="stock_basic",fields=None,**kwargs):
            i=i+1
            pro = ts.pro_api()
            print ("Reconnecting...")
-
-    data=pro.query(table_nm,fields,**kwargs )
+    try:
+        data=pro.query(table_nm,fields,**kwargs )
+    except:
+        print "I`am error "
+        time.sleep(60 * i)
+        data = pro.query(table_nm, fields, **kwargs)
     return data
 # 将数据保存到数据库
 def handleDate(table_nm,fields,config,**kws):
