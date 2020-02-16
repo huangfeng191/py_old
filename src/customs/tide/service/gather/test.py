@@ -7,6 +7,7 @@
 
 from  customs.tide.service.bean import base as base
 from  customs.tide.service.gather.chain import  *
+from  customs.tide.service.gather.layer import  *
 def test_gatherChains():
     '''
     测试 gatherChains 方法： 获取完整的 cell 链路
@@ -62,3 +63,15 @@ def test_Class_Chain():
     link=c_chain.getLayer("link")
     base.tide_log.upsert(**{"chains": chains})
     print 1
+
+def test_Class_Layer():
+    hook="cell"
+    fetchKey = {
+        "t": "20200208",
+        "level": "cell",
+        "sn": "cell_last7days",
+        "levelSn": "cell_last7days",
+        "cycle": "day"
+    }
+    layer=LayerLog(hook,fetchKey)
+    print 2

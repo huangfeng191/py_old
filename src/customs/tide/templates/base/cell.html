@@ -45,14 +45,16 @@ Date : 2020/2/4
       [
         { "field": "sn", "title": "规则编码", "width": 100, },
         { "field": "nm", "title": "规则名称", "width": 100, },
-        { "field": "type", "title": "规则类型", "width": 100, binding: "cell_type" },
         { "field": "level", "title": "规则等级", "width": 100, binding: "cell_level" },
         { "field": "cycle", "title": "周期", "width": 100, binding: "cycle" },
-        { "field": "loop", "title": "循环配置", "width": 100, },
+        { "field": "loopType", "title": "循环类型", "width": 100, binding: "loopType" },
+        { "field": "loopConfig", "title": "循环配置", "width": 100, },
+        { "field": "sourceType", "title": "源类型", "width": 100, binding: "sourceType" },
+        { "field": "sourceConfig", "title": "源配置", "width": 100, },
         { "field": "ruleType", "title": "计算规则", "width": 100, binding: "ruleType" },
-        { "field": "rule", "title": "计算配置", "width": 100, },
+        { "field": "ruleConfig", "title": "计算配置", "width": 100, },
         { "field": "outType", "title": "输出规则", "width": 100, binding: "outType" },
-        { "field": "out", "title": "输出配置", "width": 100, },
+        { "field": "outConfig", "title": "输出配置", "width": 100, },
         { "field": "w", "title": "排序", "width": 100, },
         { "field": "refresh", "title": "刷新", "width": 100, binding: "refresh" },
         { "field": "classify", "title": "分类", "width": 100, },
@@ -65,16 +67,18 @@ Date : 2020/2/4
       "Inputs": [
         [{ "Field": "sn", "Name": "规则编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
           { "Field": "nm", "Name": "规则名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "type", "Name": "规则类型", ShowType: "combo", DataType: "String", Ext: "cell_type", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "level", "Name": "规则等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
         ],
-        [{ "Field": "level", "Name": "规则等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+        [{ "Field": "cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "loopType", "Name": "循环类型", ShowType: "combo", DataType: "String", Ext: "loopType", "Required": false, RowSpan: 1, ColSpan: " " },
         ],
-        [{ "Field": "loop", "Name": "循环配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+        [{ "Field": "loopConfig", "Name": "循环配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+        [{ "Field": "sourceType", "Name": "源类型", ShowType: "combo", DataType: "String", Ext: "sourceType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
+        [{ "Field": "sourceConfig", "Name": "源配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
         [{ "Field": "ruleType", "Name": "计算规则", ShowType: "combo", DataType: "String", Ext: "ruleType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-        [{ "Field": "rule", "Name": "计算配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+        [{ "Field": "ruleConfig", "Name": "计算配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
         [{ "Field": "outType", "Name": "输出规则", ShowType: "combo", DataType: "String", Ext: "outType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-        [{ "Field": "out", "Name": "输出配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+        [{ "Field": "outConfig", "Name": "输出配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
         [{ "Field": "w", "Name": "排序", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
           { "Field": "refresh", "Name": "刷新", ShowType: "combo", DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
           { "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
@@ -87,29 +91,32 @@ Date : 2020/2/4
     quics: [],
     leftColumns: [
       [
-        { "field": "sn","title": "编码", "width": 100, },
-        { "field": "nm","title": "名称", "width": 100, },
-        { "field": "level","title": "规则等级", "width": 100,binding:"cell_level" },
-        { "field": "cycle","title": "周期", "width": 100,binding:"cycle" },
-        { "field": "refresh","title": "刷新", "width": 100,binding:"refresh" },
-        { "field": "w","title": "排序", "width": 100, },
-        { "field": "classify","title": "分类", "width": 100, },
-        { "field": "desc","title": "描述", "width": 100, },
-        { "field": "pid","title": "pid", "width": 100, },
+        { "field": "sn", "title": "编码", "width": 100, },
+        { "field": "nm", "title": "名称", "width": 100, },
+        { "field": "level", "title": "规则等级", "width": 100, binding: "cell_level" },
+        { "field": "cycle", "title": "周期", "width": 100, binding: "cycle" },
+        { "field": "refresh", "title": "刷新", "width": 100, binding: "refresh" },
+        { "field": "w", "title": "排序", "width": 100, },
+        { "field": "classify", "title": "分类", "width": 100, },
+        { "field": "desc", "title": "描述", "width": 100, },
+        { "field": "pid", "title": "pid", "width": 100, },
       ]
     ],
     leftForm: [{
       "Title": "",
       "Inputs": [
-      [{ "Field": "sn", "Name": "编码", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-{ "Field": "nm", "Name": "名称", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-{ "Field": "level", "Name": "规则等级", ShowType: "combo",DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },],
-[{ "Field": "cycle", "Name": "周期", ShowType: "combo",DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
-{ "Field": "refresh", "Name": "刷新", ShowType: "combo",DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
-{ "Field": "w", "Name": "排序", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
-[{ "Field": "classify", "Name": "分类", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
-[{ "Field": "desc", "Name": "描述", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
-[{ "Field": "pid", "Name": "pid", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],      ]
+        [{ "Field": "sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "nm", "Name": "名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "level", "Name": "规则等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
+        ],
+        [{ "Field": "cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "refresh", "Name": "刷新", ShowType: "combo", DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
+          { "Field": "w", "Name": "排序", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        ],
+        [{ "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
+        [{ "Field": "desc", "Name": "描述", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+        [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
+      ]
     }],
     leftProps: [],
     leftQuics: [],
@@ -262,13 +269,16 @@ Date : 2020/2/4
                   var $ele = FC.find("[field=" + v.Field + "]");
                   $ele.width($ele.closest("td").width() - 10);
 
-                  if(v.Field=="rule"){
+                  if (v.Field == "sourceConfig") {
+                    $ele.height("180px")
+                  }
+                  if (v.Field == "ruleConfig") {
                     $ele.height("250px")
                   }
-                  if(v.Field=="out"){
-                    $ele.height("200px")
+                  if (v.Field == "outConfig") {
+                    $ele.height("180px")
                   }
-                  
+
 
                 }
               })

@@ -15,34 +15,34 @@ rule_doing_methods=[("table",{}),("agg",{})]
 
 
 # rule_doing_(ruleType)
-def rule_doing_table(source,rule):
-    source={
-        "table":"",
+def rule_doing_table(table,rule):
+    table={
+        "nm":"",
         "query":""
     }
     arrange={}
     for s in ["query","sorts","limits"]:
         arrange[s]=rule[s]
         if s=="query":
-            arrange[s].update(source.get("query"))
+            arrange[s].update(table.get("query"))
     ret = None
-    if(source and source.get("table")):
-        l=eval(source.get("table")).items(**arrange)
+    if(table and table.get("nm")):
+        l=eval(table.get("nm")).items(**arrange)
         ret=list(l)
     return ret
 
 
-def rule_doing_aggregate(source,rule):
-    source={
-        "table":"",
+def rule_doing_aggregate(table,rule):
+    table={
+        "nm":"",
         "query":""
     }
 
     ret = None
-    if (source and source.get("table")):
-        if (source and source.get("query")): # 合并查询条件
-            rule.insert(0, {"$match": source.get("query")})
-        d = eval(source.get("table")).db.aggregate(rule)
+    if (table and table.get("nm")):
+        if (table and table.get("query")): # 合并查询条件
+            rule.insert(0, {"$match": table.get("query")})
+        d = eval(table.get("nm")).db.aggregate(rule)
         ret = list(d)
         # 将 数据组成 同一级对象
         for r in d:

@@ -35,3 +35,62 @@ class CellDoing:
     def go(self):
         pass
 #     完善 chain.cell 对象
+
+
+
+class QueryParsed:
+    '''
+        field:{ type:}
+                type
+                    date
+                    jump
+                =value
+    '''
+    def __init__(self, type, config):
+        self.type = type
+        self.config = config[type]
+
+
+class SourceParsed:
+    # 返回对外解析的source 目前只支持 table
+    def __init__(self,type,config):
+        self.type=type
+        self.config=config[type]
+
+    def  get(self):
+        pass
+
+
+
+class SourceConfig:
+    '''
+        提供源的可获取配置, 不输出结果
+        sourceType
+            fixed
+            jump
+            slot
+        sourceConfig
+            fixed
+                type: table
+    '''
+    def __init__(self,sourceType,sourceConfig):
+        self.type=sourceType
+        self.config=sourceConfig.get(sourceType) or None
+    def getJumpData(self):
+        self.config
+        return {}
+    def get(self):
+        source=None
+        if self.type =="fixed":
+                source=SourceParsed(self.config["type"],self.config[self.config["type"]])
+        elif self.type =="jump":
+            out=self.getJumpData()
+            source=SourceParsed(out["type"],out[out["type"]])
+        elif self.type=="slot":
+            pass
+
+
+
+
+
+
