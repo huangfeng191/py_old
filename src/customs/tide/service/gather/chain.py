@@ -56,16 +56,16 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
     '''
     def getHookDetail(layer,hook,chain,chains):
         '''
-        取配置表里的数据，形成 chain 树
+        取配置表里的数据，形成 chain 树 ,  递归配置 子一级
         Args:
-            layer: hool 里的具体设置
+            layer: hook 里的具体设置
             t:
-            hook: "那个表开始"
+            hook: "表"
             chain: 一个cell 的 整条 chain
             chains: 所有 cell的数组
 
         Returns:
-
+            设置 chain.hook 的值 , fetch ,hookId
         '''
 
         fetch={
@@ -108,7 +108,7 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
         #  最高层 添加 默认值 ,其他层级继承父级
         for fill_k,fill_v in fetch_template_default:
             o=chain[hook]["fetch"][fill_k]
-            if chain.get("hook") == hook:
+            if chain.get("topHook") == hook:
                 for k, v in fill_v:
                     if not o.get(k):
                         o[k] = v
@@ -132,10 +132,10 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
         else:
             pass
     chains=[]
-    chain = {"hook": hook}
+    chain = {"topHook": hook}
     getHookDetail(layer, hook, chain,chains)
     for r in chains:
-        redoChain(r,r.get("hook"),t)
+        redoChain(r,r.get("topHook"),t)
     return chains
 
 
@@ -146,6 +146,9 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
 class Chains:
     '''
      与 chain 相关的 信息获取
+     params
+        hook 从那个级别开始 形成链路
+        id  级别的_id
     '''
     def __init__(self,_id,hook="plan" ):
        layer=eval(("base.tide_%s") % hook).get(_id)

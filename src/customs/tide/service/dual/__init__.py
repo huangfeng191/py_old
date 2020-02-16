@@ -6,6 +6,3 @@
 # Version : 1.0
 
 
-class CellDual:
-    def __init__(self, chain):
-        self.chain = chain
