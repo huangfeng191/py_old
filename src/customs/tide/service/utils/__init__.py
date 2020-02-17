@@ -52,3 +52,33 @@ def contactToMethod(str,params={}):
     s=(str+"(**%s)")%json.dumps(params)
     return  s
 
+
+
+
+def compressObject(obj):
+    '''
+    #  将多级object 对象 压缩成  一级用 . 区分的对象
+    Args:
+        obj: {"a":1,"b":{"c":1}}
+
+    Returns:
+        {"a":1,"b.c":1}
+
+    '''
+    def plusKey(base, key, val, compressed):
+        base1 = base + key
+        if type(val) == dict and len(val.keys()) > 0:
+            base1 = base1 + "."
+            for k, v in val.items():
+                plusKey(base1, k, v, compressed)
+
+        else:
+            compressed[base1] = val
+
+    o = {}
+    base = ""
+    compressed = {}
+    for k, v in obj.items():
+        plusKey(base, k, v, compressed)
+
+    return compressed

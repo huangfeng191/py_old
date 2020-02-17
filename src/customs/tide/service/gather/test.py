@@ -73,5 +73,10 @@ def test_Class_Layer():
         "levelSn": "cell_last7days",
         "cycle": "day"
     }
-    layer=LayerLog(hook,fetchKey)
+    layer=None
+    try:
+        layer=LayerLog(hook,fetchKey)
+    except Exception ,e:
+        print e
+    print layer
     print 2
