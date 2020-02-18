@@ -18,7 +18,7 @@ rule_doing_methods=[("table",{}),("agg",{})]
 def rule_doing_table(table,rule):
     table={
         "nm":"",
-        "query":""
+        "query":{}
     }
     arrange={}
     for s in ["query","sorts","limits"]:

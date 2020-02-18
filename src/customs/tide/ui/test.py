@@ -17,6 +17,7 @@ from  customs.tide.service.bean.misc import *
 import logging
 import importlib
 
+from customs.tide.service.dual.rule.test import *
 from customs.tide.service.gather.layer import *
 from customs.tide.service.gather.test import *
 from customs.tide.service.utils.test import *
