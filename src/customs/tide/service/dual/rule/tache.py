@@ -107,18 +107,6 @@ class CellSourceConfig:
         return source
 
 
-class CellDoing:
-    def __init__(self,loop,source,rule,chain):
-        pass
-
-    def go(self):
-        pass
-#     完善 chain.cell 对象
-# source
-# loop
-# rule
-# out
-
 
 
 

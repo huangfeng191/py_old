@@ -72,7 +72,7 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
             "key":{},
             "option":{}
         }
-        chain[hook]={ "fetch":fetch,"hookId":layer.get("_id") }
+        chain[hook]={ "fetch":fetch,"hookId":layer.get("_id"),"hook":hook }
        # 获取配置
         fetch_template=[
             ("key",["sn", "level","cycle"]),
@@ -178,7 +178,7 @@ class Chains:
             chain=self.getChainByCellId(_id)
         return chain
 
-    def getChains(self):
+    def get(self):
        chains=self.chains
        return chains
 

@@ -16,15 +16,14 @@ rule_doing_methods=[("table",{}),("agg",{})]
 
 # rule_doing_(ruleType)
 def rule_doing_table(table,rule):
-    table={
-        "nm":"",
-        "query":{}
-    }
+
     arrange={}
     for s in ["query","sorts","limits"]:
         arrange[s]=rule[s]
         if s=="query":
-            arrange[s].update(table.get("query"))
+            arrange[s].update(table.get("query",{}))
+        elif s=="limits":
+            arrange["size"]=rule.get("limits",{}).get("size")
     ret = None
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)

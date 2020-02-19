@@ -7,69 +7,34 @@
 
 
 
+from method import *
 
-from customs.tide.service.dual.rule.method import *
+from tache import *
 
-class BindQuery:
-    def __init__(self,ruleType,query,fetch ):
-        query={
-            "sn":"",
-            "t":{
-                "type":"date",
-                "likely":"cycle" # cycle  day month week year
-                # cycle   fetch.t
-            },
-            "trade_date":{
-                "type":"jump",
-                "hook":"cell",
-                "fetch":{
-                    "sn":"cell_last7days",
-                    "likely": "cycle" , # cycle  day month week year   # cycle   fetch.t
-                    "level":"cell",
-                    "levelSn":"cell_last7days"
-                },
-                "parseOut":{
-                    "out":"array" , # string
-# outType == "log" 时 可以取 ，  table  时  in   if  result.length==1 时 =
-                    # 根据 jump 类型 生成 "operate": "in"
-
-                    "objectToField":{
-                        "field":""
-                    }
-
-                },
+class CellDoing:
+    def __init__(self,cell_layer,chain):
+        self.cell_layer=cell_layer
+        self.basket=cell_layer.getBasket()
+        self.chain=chain
 
 
-    #  log  or table
-
-            }
-        }
-    def  getTable(self):
-        pass
-    def getAgg(self):
-        pass
-
-    def get(self):
-        pass
-
-
-
-
-class  RuleDoing:
-    '''
-    rule 只用到 两个 参数 ruleType  ruleConfig
-    '''
-    def __init__(self,ruleType,ruleConfig,fetch):
-
-        self.ruleType = ruleType
-        self.config = (json.loads(ruleConfig) or {}).get(ruleType)
-        self.fetch=fetch
-
-    def parseConfig(self):
-        pass
-        query=self.config.get("query")
     def go(self):
-        for s,_ in rule_doing_methods:
-            if s == self.ruleType:
-                eval(contactToMethod(s,{"rule":self.rule }))
+        basket=self.basket
+        d_layer=self.cell_layer.getLayer()
+        S=CellSourceConfig(basket.get("sourceType"),
+                           basket.get("sourceConfig"),d_layer)
+        source=S.get()
+        R =CellRuleConfig(basket.get("ruleType"),
+                             basket.get("ruleConfig"),d_layer)
+        rule=R.get()
 
+        if basket.get("ruleType")=="table":
+            if source.get("type")=="table":
+                l=rule_doing_table(source.get(source.get("type")),rule)
+        pass
+
+#     完善 chain.cell 对象
+# source
+# loop
+# rule
+# out

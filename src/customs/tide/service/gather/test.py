@@ -29,12 +29,12 @@ def test_Class_Chains():
     '''
     pass
     c_chains = Chains("5e391e6e3a065b4658e885e7", "link")
-    chains = c_chains.getChains()
+    chains = c_chains.get()
     chain = c_chains.getChainByCellId("5e391f623a065b4658e885e8")
     chain_after = c_chains.getAfterChainByCellId("5e391f623a065b4658e885e8")
     chain_front = c_chains.getFrontChainByCellId("5e391f623a065b4658e885e8")
 
-    print 1
+    print "test_Class_Chains"
 
 
 def test_Class_Chains_recount():
@@ -57,7 +57,7 @@ def test_Class_Chain():
     '''
     pass
     c_chains = Chains("5e391e6e3a065b4658e885e7", "link")
-    chains = c_chains.getChains()
+    chains = c_chains.get()
     chain = c_chains.getChainByCellId("5e391f623a065b4658e885e8")
     c_chain =Chain(chain)
     link=c_chain.getLayer("link")
