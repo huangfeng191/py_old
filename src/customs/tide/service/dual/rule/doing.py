@@ -10,7 +10,6 @@
 from method import *
 
 from tache import *
-
 class CellDoing:
     def __init__(self,cell_layer,chain):
         self.cell_layer=cell_layer
@@ -35,9 +34,14 @@ class CellDoing:
 
         Out=OutParsed(basket.get("outType"),basket.get("outConfig"))
         out=Out.get(data)
-        table=Out.getTable()
+
+
+        return {
+            "out":out
+        }
+
         # save
-        save_data(table,out,d_layer.get("fetch").get("key"))
+        # save_data(table,out,d_layer.get("fetch").get("key"))
 
 #     完善 chain.cell 对象
 # source

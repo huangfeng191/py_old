@@ -84,7 +84,12 @@ def compressObject(obj):
     return compressed
 
 
-
+def equalObj(obj1={},obj2={}):
+    i=cmp(obj1,obj2)
+    if i==0:
+        return True
+    else:
+        return False
 
 def parseConditions(conditions=None):
     q = {}

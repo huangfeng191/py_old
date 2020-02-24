@@ -8,13 +8,17 @@
 from  customs.tide.service.gather.chain import  *
 from  customs.tide.service.gather.layer import  *
 from customs.tide.service.dual.rule.doing import *
+from customs.tide.service.dual.virus import *
 class TaskRun:
     def __init__(self,hookId,hook):
         self.hook=hook
         self.hookId=hookId
         self.o_chains=Chains(hookId,hook )
-    def doChain(self,chain):
+    def doChain(self,chain,nextChain=None):
         o_chain = Chain(chain)
+        o_nextChain=None
+        if nextChain:
+            o_nextChain=Chain(nextChain)
         cell_layer = o_chain.getLayer("cell")
         o_layer = Layer(cell_layer)
 
@@ -24,11 +28,20 @@ class TaskRun:
             "cell_layer":o_layer,
         }
         task=CellDoing(**kw)
-        return task.go()
+        # 保存cell 数据,返回获取输出的获取配置
+        # TODO：2
+        out=task.go()
+        # out 里面有 take
+        # 计入日志
+        C = ContactVirus(chain, o_nextChain,out.get("take"))
+        C.spread()
+        return out
 
 
     def go(self):
         chains = self.o_chains.get()
-        for chain in  chains:
-           ret=self.doChain(chain)
-           print "OK"
+        for i in range(0,len(chains)):
+            chain=chains[i]
+            ret=self.doChain(chain,(chains[i + 1] or None))
+
+            print "OK"

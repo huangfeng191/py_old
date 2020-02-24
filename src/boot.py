@@ -71,6 +71,6 @@ def _main():
     main()
 
     while True:
-        time.sleep(2 ** 20)
+        time.get(2 ** 20)
 if __name__ == "__main__":
     _main()
