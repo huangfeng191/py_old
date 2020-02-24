@@ -105,3 +105,129 @@ class SourceParsed:
             source[self.type]=table
         return source
 
+
+
+
+
+class TransformReqular:
+    def __init__(self,type,config):
+        self.type=type
+        self.config=config
+
+    def  quote(self,o={}):
+        '''
+        quote ={"field1":"field2" ,"field3":"field4" }
+        Args:
+            o:
+
+        Returns:
+
+        '''
+        config=self.config.get("quote")
+        for k,q in config.items():
+            o[k]=o[q]
+            if o.has_key(q):
+                del o[q]
+    def restrain(self,o={}):
+        '''
+        restrain=["field1","field2"...]
+        Args:
+            o:
+
+        Returns:
+
+        '''
+        fields = self.config.get("restrain")
+        for  k,v in o.items():
+            if k not in fields:
+                del o[k]
+
+    def extract(self,l):
+        '''
+        从数组中抽取字段变为 Obj
+        Args:
+            a:
+
+        Returns:
+
+        '''
+        way=self.config.get("way")
+        fields=self.config.get("fields")
+        o={}
+        if way=="rowsToField":
+            for f in fields:
+                if f not in o:
+                    o[f]=[]
+                for r in l:
+                    o[f].append(r.get(f))
+
+        return o
+
+
+
+
+    def go(self,data=[]) :
+        pass
+        if type(data)=="dict":
+            self[self.type](data)
+        elif self.type=="extract":
+            data= self[self.type](data)
+        else:
+            for r in data:
+               self[self.type](data)
+        return data
+class TransformConfig:
+    '''
+
+    '''
+    def __init__(self,config):
+        '''
+            config =[oneConfig,]
+        Args:
+            config:
+        '''
+        self.config=config or []
+    def go(self,data):
+        '''
+            数据转换 按数组的方式应用规则
+        Args:
+            data:
+
+        Returns:
+
+        '''
+        for r in self.config:
+            oneReqular=TransformReqular(r.get("type"))
+            data=oneReqular.go(data)
+        return data
+
+
+class OutParsed:
+    def __init__(self,type,config,layer):
+        self.type=type
+        self.config=config
+        self.table={}
+        if(type=="log"):
+            self.table["nm"]="cell_log"
+        else:
+            self.table["nm"] = config.get("table")["nm"]
+
+    def restrain(self,o):
+        fields=self.config.get("fields")
+        for  k,v in o.items():
+            if k not in fields:
+                del o[k]
+
+
+    def getData(self,data):
+        self[self.config](data)
+        l=data
+        if type=="log":
+            l=[data]
+        for r in l:
+            self.restrain(r)
+        return data
+    def getTable(self):
+        return self.table
+
+

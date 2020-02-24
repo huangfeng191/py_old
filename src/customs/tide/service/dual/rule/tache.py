@@ -5,15 +5,20 @@
 # Date    : 2020/2/16
 # Version : 1.0
 
-from factor  import *
+from factor import *
+
+
 class CellLoopConfig:
-    def __init__(self,loopType,loopConfig):
+    def __init__(self, loopType, loopConfig):
         pass
+
     def parse(self):
         pass
+
     def getCellLoop(self):
         pass
         # return array
+
 
 class CellRuleConfig:
     '''
@@ -36,23 +41,36 @@ class CellRuleConfig:
         }
 
     '''
-    def __init__(self, type, config,layer):
+
+    def __init__(self, type, config, layer):
         self.type = type
         self.config = config.get(type) or None
-        self.layer=layer
+        self.layer = layer
+
     def get(self):
-        rule={}
-        if self.type=="table":
+        rule = {}
+        if self.type == "table":
             rule.update(self.config)
             QP = QueryParsed(self.config.get("query"), self.layer)
             rule["query"] = QP.get()
-        elif self.type=="agg":
+        elif self.type == "agg":
             pass
         return rule
 
+
 class CellOutConfig:
-    def __init__(self,outType,outConfig):
-        pass
+    def __init__(self, type, config):
+        self.type=type
+        self.config=config
+
+
+    def get(self,data):
+        if self.config.get("transform"):
+             T=TransformConfig(self.config.get("transform"))
+             data=T.go()
+
+
+
 
 class CellSourceConfig:
     '''
@@ -70,10 +88,10 @@ class CellSourceConfig:
                 }
     '''
 
-    def __init__(self, type, config,layer):
+    def __init__(self, type, config, layer):
         self.type = type
         self.config = config.get(type) or None
-        self.layer=layer
+        self.layer = layer
 
     def getJumpData(self):
         self.config
@@ -95,18 +113,13 @@ class CellSourceConfig:
         '''
         source = None
         if self.type == "fixed":
-            SP=SourceParsed(self.config["type"], self.config, self.layer)
+            SP = SourceParsed(self.config["type"], self.config, self.layer)
             source = SP.get()
         elif self.type == "jump":
             out = self.getJumpData()
-            SP = SourceParsed(out["type"], out[out["type"]],self.layer)
+            SP = SourceParsed(out["type"], out[out["type"]], self.layer)
             source = SP.get()
         elif self.type == "slot":
             pass
 
         return source
-
-
-
-
-

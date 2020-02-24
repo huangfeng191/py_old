@@ -27,14 +27,22 @@ class CellDoing:
         R =CellRuleConfig(basket.get("ruleType"),
                              basket.get("ruleConfig"),d_layer)
         rule=R.get()
-
+        data=None
         if basket.get("ruleType")=="table":
             if source.get("type")=="table":
-                l=rule_doing_table(source.get(source.get("type")),rule)
+                data=rule_doing_table(source.get(source.get("type")),rule)
         pass
+
+        Out=OutParsed(basket.get("outType"),basket.get("outConfig"))
+        out=Out.get(data)
+        table=Out.getTable()
+        # save
+        save_data(table,out,d_layer.get("fetch").get("key"))
 
 #     完善 chain.cell 对象
 # source
 # loop
 # rule
 # out
+
+

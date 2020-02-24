@@ -48,3 +48,15 @@ def rule_doing_aggregate(table,rule):
             r.update(r["_id"])
     return ret
 
+
+
+
+
+def save_data(table,data,key):
+    l=data
+    if type(data)==dict:
+        l=[data]
+    else:
+        for r in l:
+            r["key"]=key
+            eval(table.get("nm")).upsert(**r)
