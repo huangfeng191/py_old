@@ -36,4 +36,7 @@ class Virus:
         RNA=self.take
         for r in self.chains:
             infect=self.getInfectHook(r.get("topHook")) or "cell"
+            r[infect].take=RNA
+            for getChildLevel(infect):
+                pass 
             
