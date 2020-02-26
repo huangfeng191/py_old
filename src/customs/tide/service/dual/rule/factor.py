@@ -23,8 +23,8 @@ class QueryParsed:
                         fetchKey
                             take
                                 table  // 1条记录
-                        latch
-                             "assist":""
+                        latch // 将 take 数据中 抽取符合的字段 
+                             "assist":""   // if null get field 
 
                 value
                 operate
@@ -109,7 +109,22 @@ class SourceParsed:
 
 
 
-class TransformReqular:
+class TransformRegulate:
+    '''
+        数据转换的规则: 单个规则 
+        object:
+            quote:  中的对象 字段改名 {"field1":"field2" ,"field3":"field4" }
+            restrain: 提取有用的字段 ["field1","field2"...]
+        array:
+            extract 
+                way 
+                    rowsToField
+                        fields:[f1,f2,f3...]
+
+
+
+        func go(data ) start translate 
+    '''
     def __init__(self,type,config):
         self.type=type
         self.config=config
@@ -178,7 +193,7 @@ class TransformReqular:
         return data
 class TransformConfig:
     '''
-
+        将数据按 配置的 数组规则进行 转换 
     '''
     def __init__(self,config):
         '''
@@ -197,8 +212,8 @@ class TransformConfig:
 
         '''
         for r in self.config:
-            oneReqular=TransformReqular(r.get("type"))
-            data=oneReqular.go(data)
+            oneRegulate=TransformRegulate(r.get("type"))
+            data=oneRegulate.go(data)
         return data
 
 
@@ -228,6 +243,6 @@ class OutParsed:
             self.restrain(r)
         return data
     def getTable(self):
-        return self.table
+        return self.table 
 
 
