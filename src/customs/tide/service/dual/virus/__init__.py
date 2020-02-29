@@ -6,92 +6,55 @@
 # Version : 1.0
 from customs.tide.service.gather.chain import *
 from customs.tide.service.utils import *
-class Virus:
-    def __init__(self,chains,layer,outConfig):
-        self.chains=chains
-        self.layer=layer
-        self.outConfig=outConfig
-        self.take=self.getTake(layer)
-    def getTake(self):
-        fetch=self.layer.get("fetch")
-        take={
-            "key":fetch.get("key"),
-            "type":self.outConfig.get("type") # 为的是以后扩展 , 解析take 可以写成一个类
-        }
-        take[self.outConfig.get("type")]=self.outConfig.get(self.outConfig.get("type"))
-        return take 
-    def getInfectHook(self,hook,infect ):
-        for i in range(1,len(self.chains)):
-                cursor=self.chains[i-1]
-                next=self.chains[i]
-                if getChildLevel(hook):
-                    if cursor[hook]!=next[hook]:
-                        infect=hook 
-                        return 
-                    else:
-                        self.getInfectHook(getChildLevel(hook,infect ))
-        return infect 
-         
-
-    def spread(self):
-        RNA=self.take
-        for r in self.chains:
-            infect=self.getInfectHook(r.get("topHook")) or "cell"
-            while getChildLevel(infect):
-                r[infect].take = RNA
-                infect=getChildLevel(infect)
-        pass
-
 
 class ContactVirus:
 
-    def __init__(self, chain, nextChain, outConfig):
+    def __init__(self, chain, nextChain, cell_layer):
         self.chain= chain
         self.nextChain= nextChain
-        self.outConfig = outConfig
-        self.cellLayer=chain.getLayer("cell")
-        self.take = self.getTake()
+        self.cell_layer = cell_layer
+        self.RNA = {}
+        for s in ["take","info"]:
+            self.RNA[s]=cell_layer.get(s)
 
-    def getTake(self):
-        fetch = self.cellLayer.get("fetch")
-        take = {
-            "key": fetch.get("key"),
-            "type": self.outConfig.get("type")  # 为的是以后扩展 , 解析take 可以写成一个类
-        }
-        take[self.outConfig.get("type")] = self.outConfig.get(self.outConfig.get("type"))
-        return take
+
 
     def getInfectHook(self):
+        '''
+            获取 RNA 的最长扩散路径
+        Returns:
 
-        cursor = self.chain
-        next = self.nextChain
+        '''
+        cursor = self.chain.get()
+        next =self.nextChain.get() if  self.nextChain else  None
         infect=cursor.get("topHook")
         if next:
             while infect:
                 layer_cursor = cursor.get(infect)
                 layer_next = next.get(infect)
                 if equalObj(layer_cursor.get("fetch").get("key"),layer_next.get("fetch").get("key")):
-                    layer=cursor.getChildLayer(infect)
+                    layer=self.chain.getChildLayer(infect)
                     if layer:
                         infect= layer.get("hook")
                 else:
-                    infect=layer_cursor .get("hook")
+                    infect=layer_cursor.get("hook")
                     break
         return infect
 
     def doLog(self,hook,data):
-        pass
-        print "haha~haha "
+        if hook!="cell":
+            eval("tide_%s_log"%hook).update(**data)
+
 
 
 
     def spread(self):
-        RNA = self.take
+        RNA = self.RNA
         infect=self.getInfectHook()
-        self.chain[infect].take=RNA
-        self.doLog(infect,self.chain[infect])
-
-        while getChildLevel(infect):
+        while True:
+            data=self.chain.getLayer(infect)
+            data.update(**RNA)
+            self.doLog(infect,data)
             infect=getChildLevel(infect)
-            self.chain[infect].take = RNA
-            self.doLog(infect,self.chain[infect])
+            if not infect:
+                break

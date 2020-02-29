@@ -16,6 +16,7 @@ from customs.tide.service.gather.log import *
 class CellDoing:
     def __init__(self,cell_layer,chain):
         self.cell_layer=cell_layer
+        self.layer=cell_layer.getLayer()
         self.basket=cell_layer.getBasket()
         self.chain=chain
 

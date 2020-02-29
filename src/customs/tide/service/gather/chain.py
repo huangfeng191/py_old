@@ -211,6 +211,8 @@ class Chain:
         if level:
             layer = self.chain[level]
         return layer
+    def get(self):
+        return self.chain
 
 
 

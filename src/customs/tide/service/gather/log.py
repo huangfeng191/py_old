@@ -25,7 +25,9 @@ class CellLog:
         config=info.get(info.get("type"))
         if refresh=="refresh":
             if info.get("type")=="table":
-                eval(config.get("nm")).delete(info.get("query",{}), multi=True)
+                id=tide_utils.compressObject(config.get("query",{}))
+                eval(config.get("nm")).delete(id, multi=True)
+        pass
     def dataResolve(self,fetch,info,take,data):
         layer=self.layer
         compressedKey = tide_utils.compressObject({"fetch.key": fetch.get("key")})

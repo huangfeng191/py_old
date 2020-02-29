@@ -33,7 +33,7 @@ class TaskRun:
         layer=task.getLayer()
         # out 里面有 take
         # 计入日志
-        C = ContactVirus(chain, o_nextChain,layer.get("take"))
+        C = ContactVirus(o_chain, o_nextChain,layer)
         C.spread()
         return layer
 

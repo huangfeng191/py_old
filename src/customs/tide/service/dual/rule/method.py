@@ -19,11 +19,13 @@ def rule_doing_table(table,rule):
 
     arrange={}
     for s in ["query","sorts","limits"]:
-        arrange[s]=rule[s]
         if s=="query":
-            arrange[s].update(table.get("query",{}))
+            arrange[s]=table.get("query",{})
         elif s=="limits":
             arrange["size"]=rule.get("limits",{}).get("size")
+
+        elif s=="sorts":
+            arrange["order"]=rule.get("sorts").get("order")
     ret = None
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)

@@ -93,8 +93,12 @@ class CellOutConfig:
             o["fields"]=[config.get("field")]
         else:
             o["fields"] = config.get("fields")
-        se={"nm": "tide_cell","fields":o["fields"]}
-        se["query"]=take.get("key")
+        se={"nm": "tide_cell_log","fields":o["fields"]}
+        se["query"]={
+            "fetch":{
+                "key":take.get("key")
+            }
+        }
         objBindType("table", info, se)
 
     def accrue(self):
