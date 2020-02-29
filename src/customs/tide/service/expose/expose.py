@@ -29,13 +29,13 @@ class TaskRun:
         }
         task=CellDoing(**kw)
         # 保存cell 数据,返回获取输出的获取配置
-        # TODO：2
-        out=task.go()
+        task.go()
+        layer=task.getLayer()
         # out 里面有 take
         # 计入日志
-        C = ContactVirus(chain, o_nextChain,out.get("take"))
+        C = ContactVirus(chain, o_nextChain,layer.get("take"))
         C.spread()
-        return out
+        return layer
 
 
     def go(self):

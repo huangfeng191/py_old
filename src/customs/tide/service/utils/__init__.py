@@ -152,3 +152,8 @@ def parseConditions(conditions=None):
         del q['$or']
 
     return q
+
+
+def objBindType(type,o,data={}):
+    o["type"]=type
+    o[type]=data

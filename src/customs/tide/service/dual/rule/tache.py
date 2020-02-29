@@ -7,7 +7,7 @@
 
 from factor import *
 
-
+from  customs.tide.service import utils as tide_utils
 class CellLoopConfig:
     def __init__(self, loopType, loopConfig):
         pass
@@ -59,16 +59,59 @@ class CellRuleConfig:
 
 
 class CellOutConfig:
-    def __init__(self, type, config):
+    def __init__(self, type, config,layer):
         self.type=type
         self.config=config
+        self.layer=layer
+        self.layer["take"]={
+            "type":type,
+            "key":layer.get("fetch").get("key")
+        }
+        self.layer["take"][type]={
+            "hook":"cell"
+        }
+        self.layer["info"]={}
+    def table(self):
+        config = self.config["table"]
+        take=self.layer["take"]
+        info=self.layer["info"]
+        o = take["table"]
+        o["nm"]=config.get("nm")
+
+        se = {"nm": "tide_cell", "query": o.get("key")}
+        if config.get("query"):
+            se["query"].update(config.get("query"))
+        objBindType("table",info,se)
 
 
-    def get(self,data):
-        if self.config.get("transform"):
-             T=TransformConfig(self.config.get("transform"))
-             data=T.go()
+    def log(self):
+        config=self.config["log"]
+        take = self.layer["take"]
+        info = self.layer["info"]
+        o=take["log"]
+        if config.get("field"):
+            o["fields"]=[config.get("field")]
+        else:
+            o["fields"] = config.get("fields")
+        se={"nm": "tide_cell","fields":o["fields"]}
+        se["query"]=take.get("key")
+        objBindType("table", info, se)
 
+    def accrue(self):
+        if self.type:
+            if(self.type=="log"):
+                self.log()
+            elif(self.type=="table"):
+                self.table()
+        else:
+            raise Exception("CellOutConfig error ")
+        pass
+    def go(self,data):
+        if self.config.get("regulates"):
+             T=TransformConfig(self.config.get("regulates"))
+             data=T.go(data)
+        self.accrue() # 绑定 take and info
+        return data
 
 
 

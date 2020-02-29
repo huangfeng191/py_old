@@ -81,9 +81,9 @@ class ContactVirus:
 
     def doLog(self,hook,data):
         pass
-    # 保存表
-    def doInfect(self,take):
-        pass
+        print "haha~haha "
+
+
 
     def spread(self):
         RNA = self.take

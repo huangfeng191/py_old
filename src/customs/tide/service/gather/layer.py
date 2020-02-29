@@ -26,6 +26,8 @@ class LayerLog:
             raise Exception("未找到layer 的 历史记录,请先生成 fetch.key: %s"% json.dumps(fetchKey))
     def getTake(self):
         return self.take;
+    def get(self):
+        return self.log;
 
 class Layer:
     def __init__(self,layer):
@@ -37,15 +39,19 @@ class Layer:
 
     def parseBasket(self):
         basket={}
-        config= self.layer.get("config") or{}
-        if self.hook=="cell":
-            for s in ["sourceType","ruleType","outType"]:
-                basket[s]= config.get(s)
-            for s in ["sourceConfig","ruleConfig","outConfig"]:
-                if config.get(s):
-                     basket[s] =json.loads( config.get(s))
-                else:
-                    basket[s]={}
+        try:
+            config= self.layer.get("config") or{}
+            if self.hook=="cell":
+                for s in ["sourceType","ruleType","outType"]:
+                    basket[s]= config.get(s)
+                for s in ["sourceConfig","ruleConfig","outConfig"]:
+                    if config.get(s):
+                         basket[s] =json.loads( config.get(s))
+                    else:
+                        basket[s]={}
+        except:
+            print "解析参数错误"
+            raise Exception("解析参数错误")
         return basket
 
     def getBasket(self):

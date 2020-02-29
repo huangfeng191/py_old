@@ -169,13 +169,18 @@ class TransformRegulate:
         way=self.config.get("way")
         fields=self.config.get("fields")
         o={}
-        if way=="rowsToField":
+        if way=="rowsToObject":
             for f in fields:
                 if f not in o:
                     o[f]=[]
                 for r in l:
                     o[f].append(r.get(f))
-
+        elif way=="rowToObject":
+            idx=self.config.get("index",0)
+            if len(l or [])>idx:
+                o=l[idx]
+            else:
+                o=None
         return o
 
 
@@ -184,12 +189,19 @@ class TransformRegulate:
     def go(self,data=[]) :
         pass
         if type(data)=="dict":
-            self[self.type](data)
+            if self.type == "restrain":
+                self.restrain(data)
+            elif self.type == "quoto":
+                self.quoto(data)
+
         elif self.type=="extract":
-            data= self[self.type](data)
+            data= self.extract(data)
         else:
             for r in data:
-               self[self.type](data)
+                if self.type=="restrain":
+                    self.restrain(r)
+                elif self.type=="quoto":
+                    self.quoto(r)
         return data
 class TransformConfig:
     '''
@@ -212,37 +224,6 @@ class TransformConfig:
 
         '''
         for r in self.config:
-            oneRegulate=TransformRegulate(r.get("type"))
+            oneRegulate=TransformRegulate(r.get("type"),r[r.get("type")])
             data=oneRegulate.go(data)
         return data
-
-
-class OutParsed:
-    def __init__(self,type,config,layer):
-        self.type=type
-        self.config=config
-        self.table={}
-        if(type=="log"):
-            self.table["nm"]="cell_log"
-        else:
-            self.table["nm"] = config.get("table")["nm"]
-
-    def restrain(self,o):
-        fields=self.config.get("fields")
-        for  k,v in o.items():
-            if k not in fields:
-                del o[k]
-
-
-    def getData(self,data):
-        self[self.config](data)
-        l=data
-        if type=="log":
-            l=[data]
-        for r in l:
-            self.restrain(r)
-        return data
-    def getTable(self):
-        return self.table 
-
-

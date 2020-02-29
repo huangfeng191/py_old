@@ -10,12 +10,21 @@
 from method import *
 
 from tache import *
+
+from customs.tide.service.gather.log import *
+
 class CellDoing:
     def __init__(self,cell_layer,chain):
         self.cell_layer=cell_layer
         self.basket=cell_layer.getBasket()
         self.chain=chain
 
+    def method(self,basket,source,rule):
+        data=None
+        if basket.get("ruleType")=="table":
+            if source.get("type")=="table":
+                data=rule_doing_table(source.get(source.get("type")),rule)
+        return data
 
     def go(self):
         basket=self.basket
@@ -26,27 +35,16 @@ class CellDoing:
         R =CellRuleConfig(basket.get("ruleType"),
                              basket.get("ruleConfig"),d_layer)
         rule=R.get()
-        data=None
-        if basket.get("ruleType")=="table":
-            if source.get("type")=="table":
-                data=rule_doing_table(source.get(source.get("type")),rule)
+
+        data=self.method(basket,source,rule)
+        O=CellOutConfig(basket.get("outType"),basket.get("outConfig"),d_layer)
+        data=O.go(data)
+        pass
+        cellLog=CellLog(**{"layer":d_layer,"isNew":True})
+        cellLog.accrue(data)
         pass
 
-        Out=OutParsed(basket.get("outType"),basket.get("outConfig"))
-        out=Out.get(data)
-
-
-        return {
-            "out":out
-        }
-
-        # save
-        # save_data(table,out,d_layer.get("fetch").get("key"))
-
-#     完善 chain.cell 对象
-# source
-# loop
-# rule
-# out
+    def getLayer(self):
+        return self.layer
 
 
