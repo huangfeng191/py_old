@@ -62,4 +62,6 @@ class CellLog:
     def getLayer(self):
         return self.layer
     def getData(self):
+        info=self.layer.get("info")
         pass
+

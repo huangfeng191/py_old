@@ -5,7 +5,8 @@
 # Date    : 2020/2/17
 # Version : 1.0
 from customs.tide.service.utils import * 
-
+from customs.tide.service.gather.layer import *
+from customs.tide.service.gather.log import *
 class QueryParsed:
     '''
      一般理解是 table 的 查询
@@ -37,13 +38,41 @@ class QueryParsed:
         self.layer=layer
     def parseTypeDate(self,restrain,**kwargs):
         t="";
-        if restrain=="cycle":
+        if restrain=="extend":
             t=self.layer.get("fetch").get("key").get("t")
         else:
             t=getCycleToT(restrain)
         return t
-    def parseTypeJump(self,hook,fetchKey,latch ,**kwargs):
+    def parseJumpFetchKey(self,fetchKey):
+        key={}
+        for s in ["level","levelSn","sn"]:
+            key[s]=fetchKey[s]
+        if fetchKey.get("cycleLikely") =="extend":
+            key["t"]=self.layer.get("fetch").get("key").get("t")
+            key["cycle"]=self.layer.get("fetch").get("key").get("cycle")
+        else:
+            pass
+        #     如果生成过 需要取历史 时间的 TODO:
+        return  key
+    def parseTypeJump(self,hook,fetchKey,latch ={},**kwargs):
+
+        key=self.parseJumpFetchKey(fetchKey)
+
+        layerLog = LayerLog(hook, key)
+        take=layerLog.getTake()
+        fetch={"key":take.get("key")}
+        cellLog=CellLog(fetch)
+        d=cellLog.getData()
         pass
+    # 1. LayerLog  get take  
+    # 2. CellLog 通过 这个能力
+    # 3. getData
+
+    def parseTypeSlot(self,**kwargs):
+        pass
+    # 1. LayerLog  get take
+    # 2. CellLog 通过 这个能力
+    # 3. getData
 
     def praseOperate(self):
         pass
@@ -64,7 +93,8 @@ class QueryParsed:
                 if v.get("type")=="date":
                     value=self.parseTypeDate(**v)
                 elif v.get("type")=="jump":
-                    value = self.parseTypeJump(**v)
+                    jump=v.get("jump",{})
+                    value = self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"))
                 condition["value"]=value
                 conditions.append(condition)
             else:
