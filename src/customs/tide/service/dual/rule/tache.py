@@ -9,15 +9,27 @@ from factor import *
 
 from  customs.tide.service import utils as tide_utils
 class CellLoopConfig:
-    def __init__(self, loopType, loopConfig):
-        pass
+    def __init__(self, layer):
+        self.layer = layer
+        basket = layer.get("basket")
+        self.type = basket.get("loopType")
+        self.config = basket.get("loopConfig")
+        self.origin = OriginConfig(self.type, self.config, self.layer)
 
-    def parse(self):
-        pass
+    def get(self):
+        return self.origin.get()
 
-    def getCellLoop(self):
-        pass
-        # return array
+
+class CellSourceConfig:
+    def __init__(self, layer):
+        self.layer=layer
+        basket=layer.get("basket")
+        self.type=basket.get("sourceType")
+        self.config=basket.get("sourceConfig")
+        self.origin= OriginConfig(self.type,self.config,self.layer)
+    def get(self):
+        return self.origin.get()
+
 
 
 class CellRuleConfig:
@@ -118,55 +130,3 @@ class CellOutConfig:
         return data
 
 
-
-class CellSourceConfig:
-    '''
-        提供源的可获取配置, 不输出结果
-        sourceType
-            fixed
-            jump
-            slot
-        sourceConfig
-            fixed
-                type: table
-                table:{
-                    nm:""
-                    query:{}
-                }
-    '''
-
-    def __init__(self, type, config, layer):
-        self.type = type
-        self.config = config.get(type) or None
-        self.layer = layer
-
-    def getJumpData(self):
-        self.config
-        return {}
-
-    def get(self):
-        '''
-
-        Returns:
-            source
-                {  // 返回可配置对象的原因是 方便以后的扩展
-                    "type":"table",
-                    "table":{
-                        query:{},
-                        nm:""
-                    }
-                }
-
-        '''
-        source = None
-        if self.type == "fixed":
-            SP = SourceParsed(self.config["type"], self.config, self.layer)
-            source = SP.get()
-        elif self.type == "jump":
-            out = self.getJumpData()
-            SP = SourceParsed(out["type"], out[out["type"]], self.layer)
-            source = SP.get()
-        elif self.type == "slot":
-            pass
-
-        return source

@@ -19,3 +19,15 @@ def test_Class_TaskRun():
     pass
 
 
+
+def test_Class_TaskRun_Cell():
+    '''
+    测试 chain 的 上下级
+    Returns:
+
+    '''
+    pass
+    teskRun = TaskRun("5e39204d3a065b4658e885e9", "cell")
+    teskRun.go()
+    pass
+

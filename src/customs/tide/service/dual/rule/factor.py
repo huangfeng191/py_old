@@ -75,7 +75,7 @@ class QueryParsed:
         return q
 
 
-class SourceParsed:
+class OriginParsed:
     '''
     type
         table
@@ -106,6 +106,59 @@ class SourceParsed:
         return source
 
 
+
+
+class OriginConfig:
+    '''
+        提供源的可获取配置, 不输出结果
+        type
+            fixed
+            jump
+            slot
+        config
+            fixed
+                type: table
+                table:{
+                    nm:""
+                    query:{}
+                }
+    '''
+
+    def __init__(self, type, config, layer):
+        self.type = type
+        self.config = config.get(type) or None
+        self.layer = layer
+
+    def getJumpData(self):
+        self.config
+        return {}
+
+    def get(self):
+        '''
+
+        Returns:
+            source
+                {  // 返回可配置对象的原因是 方便以后的扩展
+                    "type":"table",
+                    "table":{
+                        query:{},
+                        nm:""
+                    }
+                }
+
+        '''
+        source = None
+        if self.type == "fixed":
+            SP = OriginParsed(self.config["type"], self.config, self.layer)
+            source = SP.get()
+        elif self.type == "jump":
+            out = self.getJumpData()
+            SP = OriginParsed(out["type"], out[out["type"]], self.layer)
+            source = SP.get()
+        elif self.type == "slot":
+            pass
+
+        return source
 
 
 

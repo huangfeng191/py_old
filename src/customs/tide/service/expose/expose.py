@@ -42,6 +42,6 @@ class TaskRun:
         chains = self.o_chains.get()
         for i in range(0,len(chains)):
             chain=chains[i]
-            ret=self.doChain(chain,(chains[i + 1] or None))
+            ret=self.doChain(chain,chains[i + 1]  if i+1<len(chains) else None )
 
             print "OK"

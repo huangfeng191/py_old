@@ -52,5 +52,6 @@ class TideTestCRUD(CRUD):
                     eval(doing.get("doing"))
                 except Exception, e:
                     logging.error(e)
+                    raise Exception(e)
 
         return []

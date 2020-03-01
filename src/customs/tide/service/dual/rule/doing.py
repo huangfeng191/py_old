@@ -24,14 +24,16 @@ class CellDoing:
         data=None
         if basket.get("ruleType")=="table":
             if source.get("type")=="table":
-                data=rule_doing_table(source.get(source.get("type")),rule)
+                data=rule_doing_table(source.get("table"),rule)
         return data
 
     def go(self):
         basket=self.basket
         d_layer=self.cell_layer.getLayer()
-        S=CellSourceConfig(basket.get("sourceType"),
-                           basket.get("sourceConfig"),d_layer)
+        S = CellLoopConfig(d_layer)
+        loop = S.get()
+        pass
+        S=CellSourceConfig(d_layer)
         source=S.get()
         R =CellRuleConfig(basket.get("ruleType"),
                              basket.get("ruleConfig"),d_layer)

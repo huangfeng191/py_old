@@ -38,7 +38,7 @@ def test_QueryParsed():
     a=list(l)
     pass
 
-def tet_CellSourceConfig():
+def tet_OriginConfig():
     sourceType="fixed"
     sourceConfig={
         "fixed":{
@@ -66,7 +66,7 @@ def tet_CellSourceConfig():
         }
         }
     }
-    S=CellSourceConfig(sourceType,sourceConfig,layer)
+    S=OriginConfig(sourceType,sourceConfig,layer)
     source=S.get()
     pass
 

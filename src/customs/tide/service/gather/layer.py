@@ -35,6 +35,7 @@ class Layer:
         self.hook=layer.get("hook")
 
         self.basket = self.parseBasket()
+        self.layer["basket"]=self.basket
 
 
     def parseBasket(self):
@@ -42,16 +43,16 @@ class Layer:
         try:
             config= self.layer.get("config") or{}
             if self.hook=="cell":
-                for s in ["sourceType","ruleType","outType"]:
+                for s in ["loopType","sourceType","ruleType","outType"]:
                     basket[s]= config.get(s)
-                for s in ["sourceConfig","ruleConfig","outConfig"]:
+                for s in ["loopConfig","sourceConfig","ruleConfig","outConfig"]:
                     if config.get(s):
                          basket[s] =json.loads( config.get(s))
                     else:
                         basket[s]={}
         except:
             print "解析参数错误"
-            raise Exception("解析参数错误")
+            raise Exception("解析参数错误 gather.Layer.parseBasket")
         return basket
 
     def getBasket(self):
