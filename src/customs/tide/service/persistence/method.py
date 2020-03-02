@@ -9,23 +9,26 @@
 
 from customs.stock.service.tushare_beans import *
 from customs.tide.service.utils import *
-
+from customs.tide.service.bean.base import *
 
 rule_doing_methods=[("table",{}),("agg",{})]
 
 
 # rule_doing_(ruleType)
-def rule_doing_table(table,rule):
+def rule_doing_table(table,rule={}):
 
     arrange={}
-    for s in ["query","sorts","limits"]:
-        if s=="query":
-            arrange[s]=table.get("query",{})
-        elif s=="limits":
-            arrange["size"]=rule.get("limits",{}).get("size")
+    if table.get("query"):
+        arrange["query"]=compressObject(table.get("query"))
+    if rule:
+        for s in ["query","sorts","limits"]:
+            if s=="query":
+                arrange[s].update(**rule.get("query",{}))
+            elif s=="limits":
+                arrange["size"]=rule.get("limits",{}).get("size")
 
-        elif s=="sorts":
-            arrange["order"]=rule.get("sorts").get("order")
+            elif s=="sorts":
+                arrange["order"]=rule.get("sorts").get("order")
     ret = None
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)
