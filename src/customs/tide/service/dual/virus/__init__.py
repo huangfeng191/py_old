@@ -6,7 +6,7 @@
 # Version : 1.0
 from customs.tide.service.gather.chain import *
 from customs.tide.service.utils import *
-
+from customs.tide.service.persistence import *
 class ContactVirus:
 
     def __init__(self, chain, nextChain, cell_layer):
@@ -42,8 +42,7 @@ class ContactVirus:
         return infect
 
     def doLog(self,hook,data):
-        if hook!="cell":
-            eval("tide_%s_log"%hook).update(**data)
+        return doTideLog(hook,data)
 
 
 

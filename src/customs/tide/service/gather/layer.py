@@ -16,9 +16,11 @@ import json
 
 class LayerLog:
 
-    def __init__(self,hook,fetchKey):
+    def __init__(self,hook,fetchKey={},id=None):
         self.hook=hook
         compressedKey=tide_utils.compressObject({"fetch.key":fetchKey})
+        if id:
+            compressedKey=id
         self.log=eval(("base.tide_%s_log") % hook).get(compressedKey)
         self.take=self.log.get("take") if self.log else None
         self.fetch=self.log.get("fetch") if self.log else None

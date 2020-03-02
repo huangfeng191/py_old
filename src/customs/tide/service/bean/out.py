@@ -11,4 +11,8 @@ from service import comm
 
 
 tide_daily= comm.CRUD(ctx.tide_outDb, "daily") # 明细
-tide_basic= comm.CRUD(ctx.tide_outDb, "basic") 
+tide_basic= comm.CRUD(ctx.tide_outDb, "basic")
+
+
+tide_daily_business= comm.CRUD(ctx.tide_outDb, "daily_business", [("method", 1)]) # 明细
+tide_basic_business= comm.CRUD(ctx.tide_outDb, "basic_business", [("ts_code", 1)])

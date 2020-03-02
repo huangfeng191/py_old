@@ -67,7 +67,7 @@ def compressObject(obj):
     '''
     def plusKey(base, key, val, compressed):
         base1 = base + key
-        if type(val) == dict and len(val.keys()) > 0:
+        if type(val) == dict and len(val.keys()) > 0 and   "$" not in  val.keys()[0] :
             base1 = base1 + "."
             for k, v in val.items():
                 plusKey(base1, k, v, compressed)

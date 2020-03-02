@@ -56,7 +56,7 @@ class CellRuleConfig:
 
     def __init__(self, type, config, layer):
         self.type = type
-        self.config = config.get(type) or None
+        self.config = config.get(type) or {}
         self.layer = layer
 
     def get(self):
@@ -90,7 +90,7 @@ class CellOutConfig:
         o = take["table"]
         o["nm"]=config.get("nm")
 
-        se = {"nm": "tide_cell", "query": o.get("key")}
+        se = {"nm": "tide_cell", "query": take.get("key")}
         if config.get("query"):
             se["query"].update(config.get("query"))
         objBindType("table",info,se)

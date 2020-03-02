@@ -5,9 +5,13 @@
 # Date    : 2020/2/29
 # Version : 1.0
 
-from customs.tide.service.bean.base import *
 from customs.tide.service.gather.layer import *
 from  customs.tide.service import utils as tide_utils
+# from customs.tide.service.persistence.method import *
+from customs.tide.service.persistence import *
+
+from customs.tide.service.bean.out import *
+
 
 class CellLog:
     def __init__(self,fetch=None,layer=None,isNew=False):
@@ -35,7 +39,7 @@ class CellLog:
         if old:
             pass
         else:
-            config = info.get(info.get("type"))
+            config = take.get(take.get("type"))
             if take.get("type")=="log":
                 for s in config.get("fields",[]):
                     if "data" not in layer:
@@ -45,8 +49,10 @@ class CellLog:
                 if type(data)==dict :
                     data=[data]
                 for r in data:
-                    r.update(info.get("query"))
+                    r.update(take.get("key"))
                     eval(config.get("nm")).upsert(**r)
+            if "basket" in layer:
+                del layer["basket"]
             self.module.upsert(**layer)
             self.bindLayer(fetch)
 
@@ -62,6 +68,9 @@ class CellLog:
     def getLayer(self):
         return self.layer
     def getData(self):
-        info=self.layer.get("info")
+        take = self.layer.get("take")
+        emphasis=EmphasisTake(take)
+        ret=emphasis.get()
+        return ret
         pass
 

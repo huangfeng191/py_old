@@ -151,6 +151,7 @@ class Chains:
         id  级别的_id
     '''
     def __init__(self,_id,hook="plan" ):
+
        layer=eval(("base.tide_%s") % hook).get(_id)
        self.chains=gatherChains(layer,t=None, hook=hook ) or []
        self.cellIds= [r["cell"]["hookId"] for r in self.chains]

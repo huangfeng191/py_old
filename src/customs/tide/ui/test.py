@@ -22,6 +22,7 @@ from customs.tide.service.gather.layer import *
 from customs.tide.service.gather.test import *
 from customs.tide.service.utils.test import *
 from customs.tide.service.expose.test import *
+from customs.tide.service.persistence.test import *
 #  测试写的写的方法
 @path("/tide/test/method.html")
 class TideTest:
@@ -49,7 +50,9 @@ class TideTestCRUD(CRUD):
                     doing={"doing":"%s(%s)"%(row.get("method"),row.get("args",""))}
                     row.update(doing)
                     tide_test_log.upsert(**row)
+
                     eval(doing.get("doing"))
+                    pass
                 except Exception, e:
                     logging.error(e)
                     raise Exception(e)

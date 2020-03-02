@@ -6,9 +6,6 @@
 # Version : 1.0
 
 
-
-from method import *
-
 from tache import *
 
 from customs.tide.service.gather.log import *

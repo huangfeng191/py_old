@@ -7,6 +7,7 @@
 from customs.tide.service.utils import * 
 from customs.tide.service.gather.layer import *
 from customs.tide.service.gather.log import *
+from customs.tide.service.persistence import *
 class QueryParsed:
     '''
      一般理解是 table 的 查询
@@ -24,8 +25,7 @@ class QueryParsed:
                         fetchKey
                             take
                                 table  // 1条记录
-                        latch // 将 take 数据中 抽取符合的字段 
-                             "assist":""   // if null get field 
+                        "assist":""   // if null get field
 
                 value
                 operate
@@ -54,19 +54,17 @@ class QueryParsed:
             pass
         #     如果生成过 需要取历史 时间的 TODO:
         return  key
-    def parseTypeJump(self,hook,fetchKey,latch ={},**kwargs):
-
+    def parseTypeJump(self,hook,fetchKey,assist,**kwargs):
+        ret=None
         key=self.parseJumpFetchKey(fetchKey)
-
         layerLog = LayerLog(hook, key)
         take=layerLog.getTake()
         fetch={"key":take.get("key")}
         cellLog=CellLog(fetch)
         d=cellLog.getData()
-        pass
-    # 1. LayerLog  get take  
-    # 2. CellLog 通过 这个能力
-    # 3. getData
+        if d:
+             ret=d.get(assist)
+        return ret
 
     def parseTypeSlot(self,**kwargs):
         pass
@@ -94,7 +92,7 @@ class QueryParsed:
                     value=self.parseTypeDate(**v)
                 elif v.get("type")=="jump":
                     jump=v.get("jump",{})
-                    value = self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"))
+                    value = self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"),jump.get("assist",k))
                 condition["value"]=value
                 conditions.append(condition)
             else:
@@ -310,3 +308,6 @@ class TransformConfig:
             oneRegulate=TransformRegulate(r.get("type"),r[r.get("type")])
             data=oneRegulate.go(data)
         return data
+# todo:
+class DealDate:
+    pass

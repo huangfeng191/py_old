@@ -28,7 +28,7 @@ def rule_doing_table(table,rule={}):
                 arrange["size"]=rule.get("limits",{}).get("size")
 
             elif s=="sorts":
-                arrange["order"]=rule.get("sorts").get("order")
+                arrange["order"]=rule.get("sorts",{}).get("order")
     ret = None
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)
