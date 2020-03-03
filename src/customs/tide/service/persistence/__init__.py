@@ -41,4 +41,11 @@ class EmphasisTake:
 
 def doTideLog(hook, data):
     if hook != "cell":
+
+        fetchKey = tide_utils.compressObject({"fetch.key": data.get("fetch").get("key")})
+        bean=eval("tide_%s_log" % hook)
+        old=bean.get(fetchKey)
+        if old:
+            old.update(data)
+            data=old
         eval("tide_%s_log" % hook).upsert(**data)

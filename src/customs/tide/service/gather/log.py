@@ -33,6 +33,17 @@ class CellLog:
                 eval(config.get("nm")).delete(id, multi=True)
         pass
     def dataResolve(self,fetch,info,take,data):
+        '''
+        生成数据
+        Args:
+            fetch:
+            info:
+            take:
+            data:
+
+        Returns:
+
+        '''
         layer=self.layer
         compressedKey = tide_utils.compressObject({"fetch.key": fetch.get("key")})
         old = self.module.get(compressedKey)
@@ -57,6 +68,14 @@ class CellLog:
             self.bindLayer(fetch)
 
     def accrue(self,data):
+        '''
+            处理数据: 生成数据
+        Args:
+            data:
+
+        Returns:
+
+        '''
         fetch=self.layer.get("fetch")
         info=self.layer.get("info")
         take=self.layer.get("take")
