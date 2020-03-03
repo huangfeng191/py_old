@@ -82,36 +82,27 @@ class CellOutConfig:
         self.layer["take"][type]={
             "hook":"cell"
         }
-        self.layer["info"]={}
+
     def table(self):
         config = self.config["table"]
         take=self.layer["take"]
-        info=self.layer["info"]
+
         o = take["table"]
         o["nm"]=config.get("nm")
 
-        se = {"nm": "tide_cell", "query": take.get("key")}
-        if config.get("query"):
-            se["query"].update(config.get("query"))
-        objBindType("table",info,se)
+
 
 
     def log(self):
         config=self.config["log"]
         take = self.layer["take"]
-        info = self.layer["info"]
+
         o=take["log"]
         if config.get("field"):
             o["fields"]=[config.get("field")]
         else:
             o["fields"] = config.get("fields")
-        se={"nm": "tide_cell_log","fields":o["fields"]}
-        se["query"]={
-            "fetch":{
-                "key":take.get("key")
-            }
-        }
-        objBindType("table", info, se)
+
 
     def accrue(self):
         if self.type:
@@ -126,7 +117,7 @@ class CellOutConfig:
         if self.config.get("regulates"):
              T=TransformConfig(self.config.get("regulates"))
              data=T.go(data)
-        self.accrue() # 绑定 take and info
+        self.accrue() # 绑定 take
         return data
 
 

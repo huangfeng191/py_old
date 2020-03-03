@@ -9,6 +9,7 @@
 from method import *
 from  customs.tide.service import utils as tide_utils
 from customs.tide.service.bean.base import *
+from customs.tide.service.bean.out import *
 class EmphasisTake:
     '''
         take
@@ -49,3 +50,12 @@ def doTideLog(hook, data):
             old.update(data)
             data=old
         eval("tide_%s_log" % hook).upsert(**data)
+
+def deleteTideLog(hook,key):
+    fetchKey = tide_utils.compressObject({"fetch.key": key})
+    eval("tide_%s_log" % hook).delete(fetchKey,multi=True)
+
+
+def deleteTideTable(nm,key):
+    k = tide_utils.compressObject({"key": key})
+    eval(nm).delete( k, multi=True)

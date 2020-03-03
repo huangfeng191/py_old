@@ -14,7 +14,7 @@ class ContactVirus:
         self.nextChain= nextChain
         self.cell_layer = cell_layer
         self.RNA = {}
-        for s in ["take","info"]:
+        for s in ["take"]:
             self.RNA[s]=cell_layer.get(s)
 
 
