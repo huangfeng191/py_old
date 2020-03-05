@@ -71,6 +71,9 @@ class CellRuleConfig:
 
 
 class CellOutConfig:
+    '''
+    此处才生成take
+    '''
     def __init__(self, type, config,layer):
         self.type=type
         self.config=config

@@ -9,6 +9,7 @@ from  customs.tide.service.gather.chain import  *
 from  customs.tide.service.gather.layer import  *
 from customs.tide.service.dual.rule.doing import *
 from customs.tide.service.dual.virus import *
+
 class TaskRun:
     def __init__(self,hookId,hook):
         self.hook=hook
@@ -43,5 +44,11 @@ class TaskRun:
         for i in range(0,len(chains)):
             chain=chains[i]
             ret=self.doChain(chain,chains[i + 1]  if i+1<len(chains) else None )
-
-            print "OK"
+        refer=chains[0]
+        c={
+            "chains":chains,
+            "topHook":refer.get("topHook"),
+             "fetch":  refer.get(refer.get("topHook")).get("fetch")
+        }
+        tide_chains.upsert(**c)
+        print "OK"

@@ -1,0 +1,186 @@
+<!--<%inherit file="../layout.html" /> -->
+<!-- chains
+Author Wujj
+Date : 2020/3/5
+-->
+<style>
+	#chains {
+		height: 100%;
+		/*margin-left:190px;*/
+
+
+	}
+</style>
+<div style="width:100%;height: 100%;">
+
+	<div id='chains'>
+		&nbsp;
+	</div>
+</div>
+<script type="text/javascript">
+    var PCRUD;
+    var Divisions = [];
+
+
+    var Pf = null;
+    var btnNn = "";
+    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
+    var Title1 = "";
+
+    var cols = [
+        [
+            { "field": "_id","title": "_id", "width": 100, },
+{ "field": "fetch.key.sn","title": "编码", "width": 100, },
+{ "field": "fetch.key.nm","title": "名称", "width": 100, },
+{ "field": "fetch.key.level","title": "规则等级", "width": 100,binding:"cell_level" },
+{ "field": "fetch.key.cycle","title": "周期", "width": 100, },
+{ "field": "fetch.key.t","title": "t", "width": 100, },
+{ "field": "fetch.option.refresh","title": "刷新", "width": 100,binding:"refresh" },
+		]
+    ];
+
+
+    var inp1 = [
+        [{ "Field": "_id", "Name": "_id", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "fetch.key.sn", "Name": "编码", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "fetch.key.nm", "Name": "名称", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "fetch.key.level", "Name": "规则等级", ShowType: "combo",DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "fetch.key.cycle", "Name": "周期", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "fetch.key.t", "Name": "t", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "fetch.option.refresh", "Name": "刷新", ShowType: "combo",DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },],
+
+    ];
+    var props = [];
+
+    var quics = [];
+    var btnNm = "";
+
+    function init() {
+
+        PCRUD = jQuery.CRUD('#chains', {
+            View: {
+                AfterRender: function () {
+                    this.Button.Hide(["filter", "order"]);
+            var jDom = this.Container;
+            var view = this.Core.View;
+            var showName="redo";
+            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                tideService.chains.CRUD.post("redo", { "_id": selRow._id }).done(function(ret) {
+                  view.ShowMessage("OK");
+
+                })
+              }
+            })
+
+
+                },
+                Form: {
+                    AfterEnable: function () {
+
+                    },
+                    AfterDisable: function () {
+
+                    },
+                    AfterSet: function (Record, IsNew) { // 点击新建后
+                        //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+                        //PCRUD.View.Form.Enable([]);
+                        if (!IsNew) {
+                            //FormContainer.find(".button_container").css("display", "none");
+                        } else {
+
+                        }
+
+                        var FC = $(".my_dialog") || this.Container;
+                        Object.keys(PCRUD.View.Field).forEach(function (k) {
+                            var v = PCRUD.View.Field[k];
+                            if (v && v.ColSpan > 1) {
+                                var ele = FC.find("[field=" + v.Field + "]");
+                                ele.width(ele.closest("td").width() - 10);
+                                if (v.Field == "rule") {
+                                    ele.height("250px")
+                                }
+                                if (v.Field == "out") {
+                                    ele.height("200px")
+                                }
+                            }
+                        })
+
+                    },
+                    BeforeGet: function (Record, u, Valids) {
+                    },
+                    AfterGet: function (Record, u, Valids) {
+
+                    },
+                    BeforeSet: function (Record, IsNew) {
+
+                    }
+                }
+            },
+            Behavior: {
+                BeforeQuery: function (Filters, Orders) {
+
+                    Loading.Show();
+                    return true;
+
+                },
+                AfterQuery: function (Result) {
+                    Loading.Hide();
+                    return true;
+                },
+                BeforeSave: function (Record, Callback) {
+
+
+                    return true;
+                },
+                AfterSave: function (Result) {
+                    //  PCRUD.View.Grid.Query();
+                    return true;
+                },
+                Grid: {
+                    //   RowDblClick: function (Row) {
+
+                    // }
+                }
+            },
+            Service: {
+                Path: "base/",
+                Target: "chains",
+                Base: "../"
+            }
+        }, {
+
+            "Bindings": GBindings,
+            "FrozenColumns": [
+                []
+            ],
+            "Columns": cols,
+            "Form": [{
+                "Title": Title1,
+                "Inputs": inp1
+            }
+
+
+            ],
+            "Properties": props,
+            "Quicks": quics,
+            "Rights": "CUD",
+            "Target": "chains",
+            "Title": "",
+            "ExportFmt": true,
+            Layout: "POP" ? "POP" : "POP",
+            ExportName: ""
+
+        });
+
+
+    }
+
+    jQuery(document).ready(function () {
+
+        init();
+
+    });
+</script>

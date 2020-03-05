@@ -12,6 +12,10 @@ tide_base= render_mako(directories=["customs/tide/templates/", "templates"], inp
                        output_encoding="utf-8")
 from  customs.tide.service.bean.base  import *
 
+
+
+
+
 @path("/tide/base/cell.html")
 class TideBaseCell:
     def GET(self, _cid = None, *args, **kwargs):
@@ -57,3 +61,29 @@ class TideBaseMeasureCRUD(CRUD):
 class TideBasePlanCRUD(CRUD):
     def __init__(self):
         self.module = tide_plan
+
+
+
+
+@path("/tide/base/chains.html")
+class TideBaseChains:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_base["base/chains"]()
+
+
+@wildcard("/tide/base/chains/")
+class TideBaseChainsCRUD(CRUD):
+    def __init__(self):
+        self.module = tide_chains
+    def action(self, act, *args, **kwArgs):
+          if act == 'redo':
+              return self.redo(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def redo(self, _id=None, *args, **kwArgs):
+        one=self.module.get(_id)
+        if one:
+            pass 
+
+        return None
