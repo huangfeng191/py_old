@@ -31,10 +31,11 @@ function co(func) {
 
 var tideService={
 
-    "test":{
-        "CRUD":CRUD("tide/base/test"),
-   
-       
+    // "test":{
+    //     "CRUD":CRUD("tide/base/test"), 
+    // },
+    "link":{
+        "CRUD":CRUD("tide/base/link"),
     },
     "chains":{
         "CRUD":CRUD("tide/base/chains"),

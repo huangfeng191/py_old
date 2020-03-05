@@ -12,7 +12,7 @@ tide_base= render_mako(directories=["customs/tide/templates/", "templates"], inp
                        output_encoding="utf-8")
 from  customs.tide.service.bean.base  import *
 
-
+from customs.tide.service.expose.expose import *
 
 
 
@@ -33,14 +33,16 @@ class TideBaseLinkCRUD(CRUD):
     def __init__(self):
         self.module = tide_link
     def action(self, act, *args, **kwArgs):
-          if act == 'aduit':
-              return self.aduit(*args, **kwArgs)
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
-    def aduit(self, record=None, *args, **kwArgs):
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "link", None)
+        re = task.go()
+        return re
 
-            return {}
 
 
 
@@ -81,9 +83,7 @@ class TideBaseChainsCRUD(CRUD):
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
-    def redo(self, _id=None, *args, **kwArgs):
-        one=self.module.get(_id)
-        if one:
-            pass 
-
-        return None
+    def redo(self, record=None, *args, **kwArgs):
+        task=TaskRun(record.get("topHookId"),record.get("topHook"),record.get("_id"))
+        re=task.go()
+        return re

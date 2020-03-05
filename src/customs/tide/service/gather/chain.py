@@ -150,10 +150,15 @@ class Chains:
         hook 从那个级别开始 形成链路
         id  级别的_id
     '''
-    def __init__(self,_id,hook="plan" ):
-
+    def __init__(self,_id,hook="plan",logId=None ):
+       self.logId=logId
+       self.module=base.tide_chains
        layer=eval(("base.tide_%s") % hook).get(_id)
-       self.chains=gatherChains(layer,t=None, hook=hook ) or []
+       if logId:
+           log=self.module.get(logId)
+           self.chains=log.get("chains")
+       else:
+            self.chains=gatherChains(layer,t=None, hook=hook ) or []
        self.cellIds= [r["cell"]["hookId"] for r in self.chains]
 
     def getChainByCellId(self,_id=""):
@@ -182,6 +187,8 @@ class Chains:
     def get(self):
        chains=self.chains
        return chains
+    def getLogId(self):
+        return self.logId
 
 
     def recount(self,hook,_id):

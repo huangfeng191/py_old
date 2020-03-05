@@ -11,10 +11,10 @@ from customs.tide.service.dual.rule.doing import *
 from customs.tide.service.dual.virus import *
 
 class TaskRun:
-    def __init__(self,hookId,hook):
+    def __init__(self,hookId,hook,logId=None):
         self.hook=hook
         self.hookId=hookId
-        self.o_chains=Chains(hookId,hook )
+        self.o_chains=Chains(hookId,hook,logId)
     def doChain(self,chain,nextChain=None):
         o_chain = Chain(chain)
         o_nextChain=None
@@ -48,7 +48,11 @@ class TaskRun:
         c={
             "chains":chains,
             "topHook":refer.get("topHook"),
+            "topHookId":refer.get(refer.get("topHook")).get("hookId"),
              "fetch":  refer.get(refer.get("topHook")).get("fetch")
         }
+        logId=self.o_chains.getLogId()
+        if logId:
+            c["_id"]=logId
         tide_chains.upsert(**c)
         print "OK"
