@@ -51,6 +51,7 @@ def runtime_times_wrapper_reset(func):
     def wrap(self, *args, **kwArgs):
 
         kwArgs["resetCount"]={"valid":1}
+
         res=func(self, *args, **kwArgs)
         return res
     return wrap
@@ -61,17 +62,19 @@ def runtime_times_wrapper(text="loop_fun_wrapper ",times=100):
         import time
         a_count=[0]
         a_continue=[0]
+        a_all=["unknown"]
         def wrap(self, *args, **kwArgs):
 
             if kwArgs.get("resetCount") and kwArgs["resetCount"]["valid"]:
                 print "method %s  开始循环计数-------------------------"%(text)
                 a_count[0]=0
+                a_all[0]=kwArgs["resetCount"]["all"]  if kwArgs["resetCount"].get("all")  else "unknown"
                 kwArgs["resetCount"]["valid"]=0
             st=time.time()
             res=func(self, *args, **kwArgs)
             a_count[0] = a_count[0] + 1
             if a_count[0] %times==0:
-                print "method %s execute %d  times: continue:%f second"%(text,times,a_continue[0])
+                print "method %s execute ( %d / %s ) ---%s times continue:%f second"%(text ,a_count[0],a_all[0],times,a_continue[0])
                 a_continue[0]=0
             a_continue[0]=a_continue[0]+time.time()-st
             return res
