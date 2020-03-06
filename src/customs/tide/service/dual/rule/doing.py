@@ -39,7 +39,16 @@ class CellDoing:
         elif take.get("type")=="log":
             deleteTideLog(config.get("hook"),fetch.get("key", {}))
         pass
-    def newResolve(self,fetch,take,carousel,data):
+
+    @runtime_times_wrapper("cell.carousel ",1000)
+    def newResolve(self,basket, source,carousel, rule,Out,**kwargs):
+        fetch = self.layer.get("fetch")
+        take = self.layer.get("take")
+        data = self.method(basket, source, carousel, rule)
+        data = Out.go(data)  # 根据输出 处理数据
+        self.dealData(fetch, take, carousel, data)  # 保存数据
+
+    def dealData(self,fetch,take,carousel,data):
         '''
         生成数据
         Args:
@@ -69,19 +78,20 @@ class CellDoing:
                 eval(config.get("nm")).upsert(**r)
 
 
-
-    def go(self):
+    @runtime_wrapper("one cell execate")
+    @runtime_times_wrapper_reset
+    def go(self,**kwargs):
         pass
         fetch=self.layer.get("fetch")
         refresh=fetch.get("option").get("refresh")
         if refresh=="keep":
             pass
         else:
-            self.accrue()
+            self.accrue(**kwargs)
 
     # 生成数据
 
-    def accrue(self):
+    def accrue(self,**kwargs):
 
         basket=self.basket
         d_layer=self.cell_layer.getLayer()
@@ -111,9 +121,8 @@ class CellDoing:
             carousel={}
             for field in refer:
                 carousel[field]=r.get(field)
-            data = self.method(basket, source,carousel, rule)
-            data=Out.go(data) # 根据输出 处理数据
-            self.newResolve(fetch,take,carousel,data)  # 保存数据
+            self.newResolve(basket, source, carousel, rule, Out,**kwargs)
+            
         cellLog = CellLog(**{"layer": d_layer, "isNew": True})
         cellLog.save()
 
