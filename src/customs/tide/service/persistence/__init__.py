@@ -12,6 +12,7 @@ from customs.tide.service.bean.base import *
 from customs.tide.service.bean.out import *
 class EmphasisTake:
     '''
+    获取数据
         take
             type
             config

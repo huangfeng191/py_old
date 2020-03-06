@@ -31,9 +31,14 @@ function co(func) {
 
 var tideService={
 
-    // "test":{
-    //     "CRUD":CRUD("tide/base/test"), 
-    // },
+    "test":{
+        "CRUD":CRUD("tide/base/test"), 
+        "method":{
+            "CRUD":CRUD("tide/test/method")
+        }
+    },
+
+    
     "link":{
         "CRUD":CRUD("tide/base/link"),
     },

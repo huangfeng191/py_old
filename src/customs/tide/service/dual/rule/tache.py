@@ -15,9 +15,25 @@ class CellLoopConfig:
         self.type = basket.get("loopType")
         self.config = basket.get("loopConfig")
         self.origin = OriginConfig(self.type, self.config, self.layer)
+        self.layer["loop"]={
+            "fields":self.config.get(self.type ).get("fields")
+        }
 
-    def get(self):
-        return self.origin.get()
+    def getLoop(self):
+        return self.layer["loop"]
+    def getData(self):
+        source_config=self.origin.get()
+        data=None
+        if(source_config.get("type")=="table"):
+            source=source_config.get("table")
+            data = rule_doing_table(source)
+        if self.config.get("regulates"):
+            T = TransformConfig(self.config.get("regulates"))
+            data = T.go(data)
+        return data
+
+
+
 
 
 class CellSourceConfig:
@@ -85,6 +101,7 @@ class CellOutConfig:
         self.layer["take"][type]={
             "hook":"cell"
         }
+        self.accrue()  # 绑定 take
 
     def table(self):
         config = self.config["table"]
@@ -120,7 +137,6 @@ class CellOutConfig:
         if self.config.get("regulates"):
              T=TransformConfig(self.config.get("regulates"))
              data=T.go(data)
-        self.accrue() # 绑定 take
         return data
 
 

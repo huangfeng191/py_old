@@ -23,7 +23,8 @@ def rule_doing_table(table,rule={}):
     if rule:
         for s in ["query","sorts","limits"]:
             if s=="query":
-                arrange[s].update(**rule.get("query",{}))
+                q=compressObject(rule.get("query",{}))
+                arrange[s].update(q)
             elif s=="limits":
                 arrange["size"]=rule.get("limits",{}).get("size")
 

@@ -24,65 +24,14 @@ class CellLog:
     def bindLayer(self,fetch):
         self.layerLog=LayerLog("cell",fetch.get("key"))
         self.layer=self.layerLog.get()
-    def oldResolve(self,fetch,take):
-        refresh = fetch.get("option").get("refresh")
-        config=take.get(take.get("type"))
-        if refresh=="refresh":
-            if take.get("type")=="table":
-                deleteTideLog("cell", fetch.get("key", {}))
-                deleteTideTable(config.get("nm"),take.get("key"))
-            elif take.get("type")=="log":
-                deleteTideLog(config.get("hook"),fetch.get("key", {}))
-        pass
-    def dataResolve(self,fetch,take,data):
-        '''
-        生成数据
-        Args:
-            fetch:
-            take:
-            data:
 
-        Returns:
-
-        '''
+    def save(self):
         layer=self.layer
-        compressedKey = tide_utils.compressObject({"fetch.key": fetch.get("key")})
-        old = self.module.get(compressedKey)
-        if old:
-            pass
-        else:
-            config = take.get(take.get("type"))
-            if take.get("type")=="log":
-                for s in config.get("fields",[]):
-                    if "data" not in layer:
-                        layer["data"]={}
-                    layer["data"][s]=data.get(s)
-            elif take.get("type")=="table":
-                if type(data)==dict :
-                    data=[data]
-                k={"key":take.get("key")}
-                for r in data:
-                    r.update(k)
-                    eval(config.get("nm")).upsert(**r)
-            if "basket" in layer:
-                del layer["basket"]
-            self.module.upsert(**layer)
-            self.bindLayer(fetch)
+        if "basket" in layer:
+            del layer["basket"]
+        self.module.upsert(**layer)
+        self.bindLayer(layer.get("fetch"))
 
-    def accrue(self,data):
-        '''
-            处理数据: 生成数据
-        Args:
-            data:
-
-        Returns:
-
-        '''
-        fetch=self.layer.get("fetch")
-
-        take=self.layer.get("take")
-        self.oldResolve(fetch,take) # 处理历史记录
-        self.dataResolve(fetch,take,data) # 处理数据
 
     def getLayerLog(self):
         return self.layerLog
