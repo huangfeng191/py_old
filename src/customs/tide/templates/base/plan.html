@@ -78,15 +78,16 @@ Date : 2020/3/7
       [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ]
     ]
     initial.Properties = [
-      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String" },
-      { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String" },
-      { "Field": "level", "Name": "规则等级", ShowType: "combo", Ext: "cell_level", DataType: "String" },
-      { "Field": "cycle", "Name": "周期", ShowType: "combo", Ext: "cycle", DataType: "String" },
-      { "Field": "refresh", "Name": "刷新", ShowType: "combo", Ext: "refresh", DataType: "String" },
-      { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String" },
-      { "Field": "classify", "Name": "分类", ShowType: "text", Ext: "", DataType: "String" },
-      { "Field": "desc", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String" },
-      { "Field": "pid", "Name": "pid", ShowType: "text", Ext: "", DataType: "String" },
+
+      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "level", "Name": "规则等级", ShowType: "combo", Ext: "cell_level", DataType: "String", "FilterEnabled": true, },
+      { "Field": "cycle", "Name": "周期", ShowType: "combo", Ext: "cycle", DataType: "String", "FilterEnabled": true, },
+      { "Field": "refresh", "Name": "刷新", ShowType: "combo", Ext: "refresh", DataType: "String", "FilterEnabled": true, },
+      { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "classify", "Name": "分类", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "desc", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "pid", "Name": "pid", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
     ]
     return initial
   }
@@ -114,7 +115,9 @@ Date : 2020/3/7
 
   function getBehavior(type) {
     var initial = {
-
+      BeforeQuery: function(Filters, Orders) {
+        return true;
+      },
     }
     return initial
   }
@@ -147,9 +150,9 @@ Date : 2020/3/7
   jQuery(document).ready(function() {
 
     init("plan");
-    // init("measure");
-    // init("step");
-    // init("link");
+    init("measure");
+    init("step");
+    init("link");
 
   });
 </script>
