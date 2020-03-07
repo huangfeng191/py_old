@@ -1,0 +1,166 @@
+<!--<%inherit file="layout.html" /> -->
+<!-- plan
+Author Wujj
+Date : 2020/3/7
+-->
+<style>
+	#plan {
+		height: 100%;
+		/*margin-left:190px;*/
+
+
+	}
+</style>
+<div style="width:100%;height: 100%;">
+
+	<div id='plan'>
+		&nbsp;
+	</div>
+</div>
+<script type="text/javascript">
+    var PCRUD;
+    var Divisions = [];
+
+
+    var Pf = null;
+    var btnNn = "";
+    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
+    var Title1 = "";
+
+    var cols = [
+        []
+    ];
+
+
+    var inp1 = [
+        []
+
+    ];
+    var props = [];
+
+    var quics = [];
+    var btnNm = "";
+
+    function init() {
+
+        PCRUD = jQuery.CRUD('#plan', {
+            View: {
+                AfterRender: function () {
+                    this.Button.Hide(["filter", "order"]);
+                    //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
+                    //        jQuery("button[command=audit]").click(
+                    //           function () {
+
+
+                    //           }
+                    //        );
+
+
+                },
+                Form: {
+                    AfterEnable: function () {
+
+                    },
+                    AfterDisable: function () {
+
+                    },
+                    AfterSet: function (Record, IsNew) { // 点击新建后
+                        //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
+                        //PCRUD.View.Form.Enable([]);
+                        if (!IsNew) {
+                            //FormContainer.find(".button_container").css("display", "none");
+                        } else {
+
+                        }
+
+                        var FC = $(".my_dialog") || this.Container;
+                        Object.keys(PCRUD.View.Field).forEach(function (k) {
+                            var v = PCRUD.View.Field[k];
+                            if (v && v.ColSpan > 1) {
+                                var ele = FC.find("[field=" + v.Field + "]");
+                                ele.width(ele.closest("td").width() - 10);
+                                if (v.Field == "rule") {
+                                    ele.height("250px")
+                                }
+                                if (v.Field == "out") {
+                                    ele.height("200px")
+                                }
+                            }
+                        })
+
+                    },
+                    BeforeGet: function (Record, u, Valids) {
+                    },
+                    AfterGet: function (Record, u, Valids) {
+
+                    },
+                    BeforeSet: function (Record, IsNew) {
+
+                    }
+                }
+            },
+            Behavior: {
+                BeforeQuery: function (Filters, Orders) {
+
+                    Loading.Show();
+                    return true;
+
+                },
+                AfterQuery: function (Result) {
+                    Loading.Hide();
+                    return true;
+                },
+                BeforeSave: function (Record, Callback) {
+
+
+                    return true;
+                },
+                AfterSave: function (Result) {
+                    //  PCRUD.View.Grid.Query();
+                    return true;
+                },
+                Grid: {
+                    //   RowDblClick: function (Row) {
+
+                    // }
+                }
+            },
+            Service: {
+                Path: "base/",
+                Target: "plan",
+                Base: "../"
+            }
+        }, {
+
+            "Bindings": GBindings,
+            "FrozenColumns": [
+                []
+            ],
+            "Columns": cols,
+            "Form": [{
+                "Title": Title1,
+                "Inputs": inp1
+            }
+
+
+            ],
+            "Properties": props,
+            "Quicks": quics,
+            "Rights": "CUD",
+            "Target": "plan",
+            "Title": "",
+            "ExportFmt": true,
+            Layout: "POP" ? "POP" : "POP",
+            ExportName: ""
+
+        });
+
+
+    }
+
+    jQuery(document).ready(function () {
+
+        init();
+
+    });
+</script>
