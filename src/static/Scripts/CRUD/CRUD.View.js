@@ -83,8 +83,8 @@ jQuery.extend(jQuery.CRUD,
 	                {{else if Cell.DataType == "EMail"}} validator="{Valids:{regexp:['必须为有效的邮箱地址','^([\\w-]+@[\\w-]+\\.(com|net|org|edu|mil|tv|biz|info)){{if !Cell.Required}}?{{/if}}$']},Message:'{{Cell.Name}}'}"
 	                {{else if Cell.Required}} validator="{Valids:{regexp:['为必填项','\\S+']},Message:'{{Cell.Name}}'}"
 	                {{/if}}
-
-	                {{if Cell.MaxLength}} maxlength="{{Cell.MaxLength}}" {{/if}}
+                    {{if Cell.MaxLength}} maxlength="{{Cell.MaxLength}}" {{/if}}
+	                {{if Cell.Disabled}} disabled {{/if}}
 
 	                {{if Cell.ShowType == "combo" || Cell.ShowType == "combocheck" || Cell.ShowType == "combotree"}} source="{{Cell.Ext}}"
 	                {{else if Cell.ShowType == "datetime"}} onclick="new WdatePicker({skin:'default',readOnly:{{if Cell.ReadOnly === false}} false {{else}} true{{/if}},isShowToday:false,dateFmt:'{{Cell.Ext}}'})" format="{{Cell.Ext}}"

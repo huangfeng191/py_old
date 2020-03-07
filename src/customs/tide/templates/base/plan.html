@@ -75,7 +75,8 @@ Date : 2020/3/7
       ],
       [{ "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
       [{ "Field": "desc", "Name": "描述", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-      [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ]
+    //   [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": (type=="plan"?false:true), RowSpan: 1, ColSpan: "1","Disabled":true }, ]
+      [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1","Disabled":true }, ]
     ]
     initial.Properties = [
 
@@ -107,7 +108,12 @@ Date : 2020/3/7
 
             }
           })
-        }
+        },
+        AfterGet: function(Record, IsUpdate, Valid) {
+           
+           return Record 
+
+        },
       }
     }
     return initial
@@ -118,6 +124,26 @@ Date : 2020/3/7
       BeforeQuery: function(Filters, Orders) {
         return true;
       },
+      Grid: {
+            //   RowDblClick: function (Row) {
+
+            // },
+            AfterRowClick: function(row,i,view) {
+               var  level=view.Container.attr("id")
+               chain_level_down= ["plan","measure","step","link","cell"]
+               if (level!="link"){
+                chain_level_down.forEach(function(v,i){
+                    if (v==level){
+                        $("#"+chain_level_down[i+1]).data("component").View.Grid.Query()
+                    }
+                })
+                  
+                 
+               }
+
+            }
+          }
+      
     }
     return initial
   }

@@ -444,7 +444,7 @@
 
 				        if(B.Grid.AfterRowClick)
 				        {
-				            B.Grid.AfterRowClick(Row, Index);
+				            B.Grid.AfterRowClick(Row, Index,CRUD.View);
 				        }
 				    },
 				    RowDblClick: function(Row)
