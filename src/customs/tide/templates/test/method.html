@@ -22,6 +22,8 @@ Date : 2020/2/4
   var Divisions = [];
 
 
+
+
   var Pf = null;
   var btnNn = "";
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 2 });
@@ -109,7 +111,7 @@ Date : 2020/2/4
               var v = PCRUD.View.Field[k];
               if (v && v.ColSpan > 1) {
                 var $ele = FC.find("[field=" + v.Field + "]");
-                $ele.width($ele.closest("td").width() - 10);
+                $ele.width($ele.closest("td").width() - 6);
 
               }
             })

@@ -96,7 +96,7 @@ Date : 2018/07/29
               });
             }
             if(p_query){
-                debugger
+                
                 $.each(p_query,function(ai,av){
                     Filters.Merge([{ Field: ai, Operate: "=", Value: av, Relation: "and" }]);
                 })

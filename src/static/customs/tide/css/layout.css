@@ -1,3 +1,9 @@
 .group_container {
-    overflow: hidden !important;
+     overflow: hidden !important;  
+}
+
+.crud_framework .form_container > div.group_container > div.group > table {
+    width: 98%;
+    border-collapse: inherit;
+    margin: 2px 0px;
 }

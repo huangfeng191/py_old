@@ -15,7 +15,7 @@ function showDialogList(idx,table_nm,s_query,url="/prostock/dlginterfacedata.htm
 }
 
 function showDialogChart(idx,table_nm=null,s_query,url="/stock/onechart.html"){
-    debugger
+    
     var row=PCRUD.View.Grid.Element.datagrid("getRows")[idx];
     
     var query={}

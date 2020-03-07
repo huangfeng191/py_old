@@ -168,6 +168,7 @@ Date : 2020/2/4
 
                 }
               })
+              
 
 
             },
@@ -323,12 +324,12 @@ Date : 2020/2/4
               }
 
               var FC = $(".my_dialog") || this.Container;
-
+             
               Object.keys(PCRUD.View.Field).forEach(function(k) {
                 var v = PCRUD.View.Field[k];
                 if (v && v.ColSpan > 1) {
                   var $ele = FC.find("[field=" + v.Field + "]");
-                  $ele.width($ele.closest("td").width() - 10);
+                  $ele.width($ele.closest("td").width() - 6);
 
                   if (v.Field == "sourceConfig") {
                     $ele.height("180px")
@@ -346,6 +347,8 @@ Date : 2020/2/4
 
                 }
               })
+
+              FC.find(".group_container>.group").width( FC.find(".group_container>.group").width()+12)
 
             },
             BeforeGet: function(Record, u, Valids) {},
