@@ -347,8 +347,11 @@ Date : 2020/2/4
 
                 }
               })
-
-              FC.find(".group_container>.group").width( FC.find(".group_container>.group").width()+12)
+              var userAgent = navigator.userAgent;
+              if (userAgent.indexOf("Firefox") > -1) { //判断是否Firefox浏览器
+                FC.find(".group_container>.group").width( FC.find(".group_container>.group").width()+12)
+              }
+             
 
             },
             BeforeGet: function(Record, u, Valids) {},
