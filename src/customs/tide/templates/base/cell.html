@@ -134,7 +134,7 @@ Date : 2020/2/4
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
                 tideService.link.CRUD.post(showName,{"record":selRow}).done(function(ret) {
-                  view.ShowMessage("OK");
+                  view.ShowMessage("delighted");
                 })
               }else{
                 view.ShowMessage("Please select link row ");
@@ -244,22 +244,12 @@ Date : 2020/2/4
          
             var jDom = this.Container;
             var view = this.Core.View;
-            var showName="doing";
-            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
-            on('click', function(event) {
-              var selRow = view.Grid.CurrentRow;
-              if (selRow) {
-                tideService.cell.CRUD.post(showName,{"record":selRow}).done(function(ret) {
-                  view.ShowMessage("OK");
-                })
-              }else{
-                view.ShowMessage("Please select cell row ");
-                
-              }
-            })
 
 
-            showName="copy";
+
+
+            
+            var showName="copy";
             jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
             on("click", function(event) {
               var row = view.Grid.CurrentRow;
@@ -284,7 +274,7 @@ Date : 2020/2/4
                   $(event.target).html("copy");
                   if (json) {
                     view.ShowMessage("operate success ")
-                    debugger
+                    
                     view.Grid.Query();
                   }
                 })
@@ -294,6 +284,22 @@ Date : 2020/2/4
 
 
             })
+
+             showName="doing";
+            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                tideService.cell.CRUD.post("doing",{"record":selRow}).done(function(ret) {
+                  view.ShowMessage("delighted");
+                })
+              }else{
+                view.ShowMessage("Please select cell row ");
+                
+              }
+            })
+
+
 
 
 

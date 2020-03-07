@@ -36,7 +36,8 @@ class TideBaseCellCRUD(CRUD):
           # 将配置复制到 本选中的 link 下
 
     def copy(self, from_id=None,  toPid=None, **kwArgs):
-
+        if not toPid:
+            raise Exception("need toPid")
         record = self.module.get(from_id)
         if record:
             record["pid"]=toPid

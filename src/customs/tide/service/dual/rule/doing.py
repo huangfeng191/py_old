@@ -12,12 +12,13 @@ from customs.tide.service.utils.wrap import *
 from customs.tide.service.gather.log import *
 
 class CellDoing:
-    def __init__(self,cell_layer,chain):
+    def __init__(self,cell_layer,chain,chains=None):
         self.cell_layer=cell_layer
         self.layer=cell_layer.getLayer()
         self.basket=cell_layer.getBasket()
         self.chain=chain
-
+        self.chains=chains
+    #  调用实际的方法
     def method(self,basket,source,carousel,rule):
         data=None
         if basket.get("ruleType")=="table":
@@ -121,10 +122,10 @@ class CellDoing:
         loop_data=[None]
         refer=[]
         if basket.get("loopType"):
-            L = CellLoopConfig(d_layer)
+            L = CellLoopConfig(d_layer,self.chains)
             loop_data= L.getData()
             refer = L.getLoop().get("fields")
-        S = CellSourceConfig(d_layer)
+        S = CellSourceConfig(d_layer,self.chains)
         source = S.get()
 
         R = CellRuleConfig(basket.get("ruleType"),

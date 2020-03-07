@@ -41,6 +41,26 @@ def runtime_wrapper(text="no set "):
 
 
 
+"打印进入方法日志"
+def method_in_wrapper(text=" i m in "):
+    def decorator(func):
+        import time
+        def wrap(self, *args, **kwArgs):
+
+            print "method_in_wrapper : %s  ______in "%text
+            res=func(self, *args, **kwArgs)
+            print "method_in_wrapper : %s  ______out " % text
+            return res
+        return wrap
+    return decorator
+
+
+
+
+
+
+
+
 
 
 

@@ -9,12 +9,14 @@ from factor import *
 
 from  customs.tide.service import utils as tide_utils
 class CellLoopConfig:
-    def __init__(self, layer):
+    # chains 的 目的是解析 slot(上一步骤的结果)
+    def __init__(self, layer,chains=None):
         self.layer = layer
+        self.chains=chains
         basket = layer.get("basket")
         self.type = basket.get("loopType")
         self.config = basket.get("loopConfig")
-        self.origin = OriginConfig(self.type, self.config, self.layer)
+        self.origin = OriginConfig(self.type, self.config, self.layer,self.chains)
         self.layer["loop"]={
             "fields":self.config.get(self.type ).get("fields")
         }
@@ -37,12 +39,13 @@ class CellLoopConfig:
 
 
 class CellSourceConfig:
-    def __init__(self, layer):
+    def __init__(self, layer,chains=None):
         self.layer=layer
+        self.chains=chains
         basket=layer.get("basket")
         self.type=basket.get("sourceType")
         self.config=basket.get("sourceConfig")
-        self.origin= OriginConfig(self.type,self.config,self.layer)
+        self.origin= OriginConfig(self.type,self.config,self.layer,self.chains)
     def get(self):
         return self.origin.get()
 
@@ -70,17 +73,18 @@ class CellRuleConfig:
 
     '''
 
-    def __init__(self, type, config, layer):
+    def __init__(self, type, config, layer,chains=None):
         self.type = type
         self.config = config.get(type) or {}
         self.layer = layer
+        self.chains=chains
 
     def get(self):
         rule = None
         if self.type == "table":
             rule={}
             rule.update(self.config)
-            QP = QueryParsed(self.config.get("query"), self.layer)
+            QP = QueryParsed(self.config.get("query"), self.layer,self.chains)
             rule["query"] = QP.get()
         elif self.type == "aggregate":
             rule=self.config

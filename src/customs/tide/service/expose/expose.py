@@ -27,6 +27,7 @@ class TaskRun:
         kw={
             "chain":o_chain,
             "cell_layer":o_layer,
+            "chains":self.o_chains
         }
         task=CellDoing(**kw)
         # 保存cell 数据,返回获取输出的获取配置

@@ -5,6 +5,7 @@
 # Date    : 2020/2/17
 # Version : 1.0
 from customs.tide.service.utils import * 
+from customs.tide.service.utils.wrap import *
 from customs.tide.service.gather.layer import *
 from customs.tide.service.gather.log import *
 from customs.tide.service.persistence import *
@@ -25,17 +26,21 @@ class QueryParsed:
                         fetchKey
                             take
                                 table  // 1条记录
-                        "assist":""   // if null get field
 
-                value
+                    slot
+
+                 value
+                 assist:""   // if null get field
+                 regulates
                 operate
                     "lte" ...
 
     '''
-    def __init__(self,  config,layer,**kwargs):
+    def __init__(self,  config,layer,chains,**kwargs):
 
         self.config = config or {}
         self.layer=layer
+        self.chains=chains
     def parseTypeDate(self,restrain,**kwargs):
         t="";
         if restrain=="extend":
@@ -73,6 +78,8 @@ class QueryParsed:
 
     def praseOperate(self):
         pass
+
+    # @method_in_wrapper("queryParse.get ")
     def get(self):
         conditions=[]
         q={
@@ -89,14 +96,22 @@ class QueryParsed:
                 value=None
                 if v.get("type")=="date":
                     value=self.parseTypeDate(**v)
-                elif v.get("type")=="jump":
-                    jump=v.get("jump",{})
-                    jumpData= self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"))
+                else:
+                    d={}
+                    if v.get("type")=="jump":
+                        jump=v.get("jump",{})
+                        d= self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"))
+                    elif v.get("type")=="slot":
+                        hookId=self.layer.get("hookId")
+                        level="cell"
+                        front_chain=self.chains.getFrontChainByCellId(hookId)
+                        front_take=front_chain.get(level).get("take")
+                        d = self.parseTypeJump(level, front_take.get("key"))
                     if v.get("regulates"):
                         T = TransformConfig(v.get("regulates"))
-                        jumpData = T.go(jumpData)
-                    if jump.get("assist",k):
-                        value=jumpData.get(jump.get("assist",k))
+                        d = T.go(d)
+
+                    value=d.get(v.get("assist",k))
 
                 condition["value"]=value
                 conditions.append(condition)
@@ -123,17 +138,18 @@ class OriginParsed:
                     jump
 
     '''
-    def __init__(self,type,config,layer,**kwargs):
+    def __init__(self,type,config,layer,chains,**kwargs):
         self.type=type
         self.config=config[type]
         self.layer=layer
+        self.chains=chains
 
     def  get(self):
         source={"type":self.type}
         if self.type=="table":
             table={}
             table.update(self.config)
-            QP=QueryParsed(self.config.get("query"),self.layer)
+            QP=QueryParsed(self.config.get("query"),self.layer,self.chains)
             table["query"]=QP.get()
             source[self.type]=table
         return source
@@ -157,10 +173,11 @@ class OriginConfig:
                 }
     '''
 
-    def __init__(self, type, config, layer):
+    def __init__(self, type, config, layer,chains):
         self.type = type
         self.config = config.get(type) or None
         self.layer = layer
+        self.chains=chains
 
     def getJumpData(self):
         self.config
@@ -182,11 +199,11 @@ class OriginConfig:
         '''
         source = None
         if self.type == "fixed":
-            SP = OriginParsed(self.config["type"], self.config, self.layer)
+            SP = OriginParsed(self.config["type"], self.config, self.layer,self.chains)
             source = SP.get()
         elif self.type == "jump":
             out = self.getJumpData()
-            SP = OriginParsed(out["type"], out[out["type"]], self.layer)
+            SP = OriginParsed(out["type"], out[out["type"]], self.layer,self.chains)
             source = SP.get()
         elif self.type == "slot":
             pass
