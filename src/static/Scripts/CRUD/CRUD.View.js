@@ -1985,7 +1985,7 @@ jQuery.extend(jQuery.CRUD,
 
                         if (V.Form.AfterSet)
                         {
-                            V.Form.AfterSet(Record, ((Command == "insert" || Command == "upsert") ? true : false));
+                            V.Form.AfterSet(Record, ((Command == "insert" || Command == "upsert") ? true : false),V);
                         }
                     },
                     Validate: function (Record, Callback)

@@ -81,6 +81,13 @@ class TideBaseMeasureCRUD(CRUD):
         self.module = tide_measure
 
 
+@path("/tide/base/plan.html")
+class TidebasePlan:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_base["base/plan"]()
+
+
+
 @wildcard("/tide/base/plan/")
 class TideBasePlanCRUD(CRUD):
     def __init__(self):

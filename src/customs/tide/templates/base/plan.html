@@ -1,166 +1,155 @@
-<!--<%inherit file="layout.html" /> -->
+<!--<%inherit file="../layout.html" /> -->
 <!-- plan
 Author Wujj
 Date : 2020/3/7
 -->
 <style>
-	#plan {
-		height: 100%;
-		/*margin-left:190px;*/
+  #plan,
+  #measure,
+  #step,
+  #link {
+    height: 100%;
+    width: 20%;
+    display: inline-block
+  }
 
-
-	}
+  #link {
+    width: 39%;
+  }
 </style>
 <div style="width:100%;height: 100%;">
 
-	<div id='plan'>
-		&nbsp;
-	</div>
+  <div id='plan'>
+    &nbsp;
+  </div>
+  <div id='measure'>
+    &nbsp;
+  </div>
+  <div id='step'>
+    &nbsp;
+  </div>
+  <div id='link'>
+    &nbsp;
+  </div>
 </div>
 <script type="text/javascript">
-    var PCRUD;
-    var Divisions = [];
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
 
 
-    var Pf = null;
-    var btnNn = "";
-    var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
-    var Title1 = "";
-
-    var cols = [
-        []
-    ];
-
-
-    var inp1 = [
-        []
-
-    ];
-    var props = [];
-
-    var quics = [];
-    var btnNm = "";
-
-    function init() {
-
-        PCRUD = jQuery.CRUD('#plan', {
-            View: {
-                AfterRender: function () {
-                    this.Button.Hide(["filter", "order"]);
-                    //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-                    //        jQuery("button[command=audit]").click(
-                    //           function () {
-
-
-                    //           }
-                    //        );
-
-
-                },
-                Form: {
-                    AfterEnable: function () {
-
-                    },
-                    AfterDisable: function () {
-
-                    },
-                    AfterSet: function (Record, IsNew) { // 点击新建后
-                        //PCRUD.View.Form.Disable(["biguser.nm", 'biguser.tel', 'biguser.mobile', 'biguser.contact', 'biguser.unitecode']);
-                        //PCRUD.View.Form.Enable([]);
-                        if (!IsNew) {
-                            //FormContainer.find(".button_container").css("display", "none");
-                        } else {
-
-                        }
-
-                        var FC = $(".my_dialog") || this.Container;
-                        Object.keys(PCRUD.View.Field).forEach(function (k) {
-                            var v = PCRUD.View.Field[k];
-                            if (v && v.ColSpan > 1) {
-                                var ele = FC.find("[field=" + v.Field + "]");
-                                ele.width(ele.closest("td").width() - 10);
-                                if (v.Field == "rule") {
-                                    ele.height("250px")
-                                }
-                                if (v.Field == "out") {
-                                    ele.height("200px")
-                                }
-                            }
-                        })
-
-                    },
-                    BeforeGet: function (Record, u, Valids) {
-                    },
-                    AfterGet: function (Record, u, Valids) {
-
-                    },
-                    BeforeSet: function (Record, IsNew) {
-
-                    }
-                }
-            },
-            Behavior: {
-                BeforeQuery: function (Filters, Orders) {
-
-                    Loading.Show();
-                    return true;
-
-                },
-                AfterQuery: function (Result) {
-                    Loading.Hide();
-                    return true;
-                },
-                BeforeSave: function (Record, Callback) {
+  function getOption(type) {
+    var initial = {
+      "Bindings": GBindings,
+      "Columns": [],
+      "Form": [{
+        "Inputs": []
+      }],
+      "Properties": [],
+      "Quicks": [],
+      "Rights": "CUD",
+      "Target": type,
+      "Title": "",
+      "ExportFmt": true,
+      "Layout": "POP",
+      "ExportName": ""
+    }
+    initial.Columns[0] = [
+      { "field": "sn", "title": "编码", "width": 100, },
+      { "field": "nm", "title": "名称", "width": 100, },
+      { "field": "level", "title": "规则等级", "width": 100, binding: "cell_level" },
+      { "field": "cycle", "title": "周期", "width": 100, binding: "cycle" },
+      { "field": "refresh", "title": "刷新", "width": 100, binding: "refresh" },
+      { "field": "w", "title": "排序", "width": 100, },
+      { "field": "classify", "title": "分类", "width": 100, },
+      { "field": "desc", "title": "描述", "width": 100, },
+      { "field": "pid", "title": "pid", "width": 100, },
+    ]
+    initial.Form[0].Inputs = [
+      [
+        { "Field": "sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "nm", "Name": "名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "level", "Name": "规则等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "refresh", "Name": "刷新", ShowType: "combo", DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "w", "Name": "排序", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
+      [{ "Field": "desc", "Name": "描述", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+      [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ]
+    ]
+    initial.Properties = [
+      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String" },
+      { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String" },
+      { "Field": "level", "Name": "规则等级", ShowType: "combo", Ext: "cell_level", DataType: "String" },
+      { "Field": "cycle", "Name": "周期", ShowType: "combo", Ext: "cycle", DataType: "String" },
+      { "Field": "refresh", "Name": "刷新", ShowType: "combo", Ext: "refresh", DataType: "String" },
+      { "Field": "w", "Name": "排序", ShowType: "text", Ext: "", DataType: "String" },
+      { "Field": "classify", "Name": "分类", ShowType: "text", Ext: "", DataType: "String" },
+      { "Field": "desc", "Name": "描述", ShowType: "textarea", Ext: "", DataType: "String" },
+      { "Field": "pid", "Name": "pid", ShowType: "text", Ext: "", DataType: "String" },
+    ]
+    return initial
+  }
 
 
-                    return true;
-                },
-                AfterSave: function (Result) {
-                    //  PCRUD.View.Grid.Query();
-                    return true;
-                },
-                Grid: {
-                    //   RowDblClick: function (Row) {
+  function getView(type) {
+    var initial = {
+      AfterRender: function() {},
+      Form: {
+        AfterSet: function(Record, IsNew, V) {
+          var FC = V.FormContainer;
+          Object.keys(V.Field).forEach(function(k) {
+            var v = V.Field[k];
+            if (v && v.ColSpan > 1) {
+              var ele = FC.find("[field='" + v.Field + "']");
+              ele.width(ele.closest("td").width() - 10);
 
-                    // }
-                }
-            },
-            Service: {
-                Path: "base/",
-                Target: "plan",
-                Base: "../"
             }
-        }, {
+          })
+        }
+      }
+    }
+    return initial
+  }
 
-            "Bindings": GBindings,
-            "FrozenColumns": [
-                []
-            ],
-            "Columns": cols,
-            "Form": [{
-                "Title": Title1,
-                "Inputs": inp1
-            }
-
-
-            ],
-            "Properties": props,
-            "Quicks": quics,
-            "Rights": "CUD",
-            "Target": "plan",
-            "Title": "",
-            "ExportFmt": true,
-            Layout: "POP" ? "POP" : "POP",
-            ExportName: ""
-
-        });
-
+  function getBehavior(type) {
+    var initial = {
 
     }
+    return initial
+  }
 
-    jQuery(document).ready(function () {
 
-        init();
+  function getService(type) {
+    var initial = {
+      Path: "",
+      Target: type,
+      Base: "./"
+    }
+    return initial
+  }
 
-    });
+  function init(type) {
+    var view = getView(type)
+    var behavior = getBehavior(type)
+    var service = getService(type)
+    var option = getOption(type)
+
+    jQuery.CRUD('#' + type, {
+      View: view,
+      Behavior: behavior,
+      Service: service
+    }, option);
+
+
+  }
+
+  jQuery(document).ready(function() {
+
+    init("plan");
+    // init("measure");
+    // init("step");
+    // init("link");
+
+  });
 </script>
