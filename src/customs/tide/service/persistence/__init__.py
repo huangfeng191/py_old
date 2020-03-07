@@ -26,9 +26,14 @@ class EmphasisTake:
         take=self.take
         ret=None
         if self.type=="table":
-            data=rule_doing_table(config,None)
+            # 未了能正确取 jump 数据
+            c=queryTideTableParse(config,take)
+
+            ret=rule_doing_table(c,None)
             if config.get("fields"):
                 pass
+
+            return  ret
                 # config=config.get("fields")
         elif self.type=="log":
             bean=eval("tide_%s_log"%config.get("hook"))
@@ -59,4 +64,24 @@ def deleteTideLog(hook,key):
 
 def deleteTideTable(nm,key):
     k = tide_utils.compressObject({"key": key})
-    eval(nm).delete( k, multi=True)
+    level=key.get("level")
+    eval("%s_%s"%(nm,level)).delete( k, multi=True)
+
+def saveTideTable(nm,key,data,carousel):
+    data.update({"key":key})
+    if carousel:
+        data.update({"carousel":carousel})
+    level=key.get("level")
+    eval("%s_%s"%(nm,level)).upsert( **data)
+
+
+def queryTideTableParse (config,take):
+    c = {}
+    c.update(config)
+    if "query" not in c:
+        c["query"] = {}
+    fetchKey = tide_utils.compressObject({"key": take.get("key")})
+    c["query"].update(fetchKey)
+    c["nm"] = "%s_%s" % (c["nm"], take.get("key").get("level"))
+    return c
+

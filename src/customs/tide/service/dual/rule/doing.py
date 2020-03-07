@@ -27,6 +27,14 @@ class CellDoing:
                         rule["query"]={}
                     rule["query"].update(carousel)
                 data=rule_doing_table(source.get("table"),rule)
+        elif basket.get("ruleType")=="aggregate":
+            if source.get("type") == "table":
+                if carousel:
+                    if "query" not in source["table"]:
+                        source["table"]["query"] = {}
+                    source["table"]["query"].update(carousel)
+
+                data = rule_doing_aggregate(source.get("table"), rule)
         return data
 
 
@@ -42,6 +50,20 @@ class CellDoing:
 
     @runtime_times_wrapper("cell.carousel ",1000)
     def newResolve(self,basket, source,carousel, rule,Out,**kwargs):
+        '''
+            1. 获取规则数据
+            2. 保存数据
+        Args:
+            basket:
+            source:
+            carousel:
+            rule:
+            Out:
+            **kwargs:
+
+        Returns:
+
+        '''
         fetch = self.layer.get("fetch")
         take = self.layer.get("take")
         data = self.method(basket, source, carousel, rule)
@@ -63,19 +85,20 @@ class CellDoing:
         layer=self.layer
         config = take.get(take.get("type"))
         if take.get("type")=="log":
+            if not data:
+                data={}
             for s in config.get("fields",[]):
                 if "data" not in layer:
                     layer["data"]={}
                 layer["data"][s]=data.get(s)
         elif take.get("type")=="table":
+            if not data:
+                return
             if type(data)==dict :
                 data=[data]
-            k={"key":take.get("key")}
-            if carousel:
-                k.update(carousel)
             for r in data:
-                r.update(k)
-                eval(config.get("nm")).upsert(**r)
+
+                saveTideTable(config.get("nm"), take.get("key"),r,carousel)
 
 
     @runtime_wrapper("one cell execate")

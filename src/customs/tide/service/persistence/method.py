@@ -10,8 +10,9 @@
 from customs.stock.service.tushare_beans import *
 from customs.tide.service.utils import *
 from customs.tide.service.bean.base import *
+from customs.tide.service.bean.out import *
 
-rule_doing_methods=[("table",{}),("agg",{})]
+rule_doing_methods=[("table",{}),("aggregate",{})]
 
 
 # rule_doing_(ruleType)
@@ -37,21 +38,19 @@ def rule_doing_table(table,rule={}):
     return ret
 
 
-def rule_doing_aggregate(table,rule):
-    table={
-        "nm":"",
-        "query":""
-    }
-
+def rule_doing_aggregate(table,rule=[]):
+    ectype=[]+rule
     ret = None
     if (table and table.get("nm")):
         if (table and table.get("query")): # 合并查询条件
-            rule.insert(0, {"$match": table.get("query")})
-        d = eval(table.get("nm")).db.aggregate(rule)
+            ectype.insert(0, {"$match": table.get("query")})
+        d = eval(table.get("nm")).db.aggregate(ectype)
         ret = list(d)
         # 将 数据组成 同一级对象
-        for r in d:
-            r.update(r["_id"])
+        for r in ret:
+            if r["_id"]:
+                r.update(r["_id"])
+                del r["_id"]
     return ret
 
 

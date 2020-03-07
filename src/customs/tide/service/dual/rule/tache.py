@@ -63,7 +63,7 @@ class CellRuleConfig:
                     "order": [{"Field": "cal_date", "Type": true}]
                 }
           },
-          "agg":{
+          "aggregate":{
 
           }
         }
@@ -76,13 +76,14 @@ class CellRuleConfig:
         self.layer = layer
 
     def get(self):
-        rule = {}
+        rule = None
         if self.type == "table":
+            rule={}
             rule.update(self.config)
             QP = QueryParsed(self.config.get("query"), self.layer)
             rule["query"] = QP.get()
-        elif self.type == "agg":
-            pass
+        elif self.type == "aggregate":
+            rule=self.config
         return rule
 
 

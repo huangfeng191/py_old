@@ -37,8 +37,9 @@ var tideService={
             "CRUD":CRUD("tide/test/method")
         }
     },
-
-    
+    "cell":{
+        "CRUD":CRUD("tide/base/cell"),
+    },
     "link":{
         "CRUD":CRUD("tide/base/link"),
     },

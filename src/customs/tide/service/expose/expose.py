@@ -55,4 +55,4 @@ class TaskRun:
         if logId:
             c["_id"]=logId
         tide_chains.upsert(**c)
-        print "OK"
+        print "____expose.TaskRun.go____________  Hardships often prepare ordinary people for an extraordinary destiny."

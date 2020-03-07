@@ -54,16 +54,15 @@ class QueryParsed:
             pass
         #     如果生成过 需要取历史 时间的 TODO:
         return  key
-    def parseTypeJump(self,hook,fetchKey,assist,**kwargs):
-        ret=None
+    def parseTypeJump(self,hook,fetchKey,**kwargs):
+
         key=self.parseJumpFetchKey(fetchKey)
         layerLog = LayerLog(hook, key)
         take=layerLog.getTake()
         fetch={"key":take.get("key")}
         cellLog=CellLog(fetch)
-        d=cellLog.getData()
-        if d:
-             ret=d.get(assist)
+        ret=cellLog.getData()
+
         return ret
 
     def parseTypeSlot(self,**kwargs):
@@ -92,7 +91,13 @@ class QueryParsed:
                     value=self.parseTypeDate(**v)
                 elif v.get("type")=="jump":
                     jump=v.get("jump",{})
-                    value = self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"),jump.get("assist",k))
+                    jumpData= self.parseTypeJump(jump.get("hook"),jump.get("fetchKey"))
+                    if v.get("regulates"):
+                        T = TransformConfig(v.get("regulates"))
+                        jumpData = T.go(jumpData)
+                    if jump.get("assist",k):
+                        value=jumpData.get(jump.get("assist",k))
+
                 condition["value"]=value
                 conditions.append(condition)
             else:

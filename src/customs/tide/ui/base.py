@@ -25,7 +25,28 @@ class TideBaseCell:
 class TideBaseCellCRUD(CRUD):
     def __init__(self):
         self.module = tide_cell
+    def action(self, act, *args, **kwArgs):
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
 
+          # 将配置复制到 本选中的 link 下
+
+    def copy(self, from_id=None,  toPid=None, **kwArgs):
+
+        record = self.module.get(from_id)
+        if record:
+            record["pid"]=toPid
+            del record["_id"]
+        return self.action("insert", record=record)
+
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "cell", None)
+        re = task.go()
+        return re
 
 @wildcard("/tide/base/link/")
 class TideBaseLinkCRUD(CRUD):

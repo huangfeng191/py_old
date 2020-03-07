@@ -136,6 +136,8 @@ Date : 2020/2/4
                 tideService.link.CRUD.post(showName,{"record":selRow}).done(function(ret) {
                   view.ShowMessage("OK");
                 })
+              }else{
+                view.ShowMessage("Please select link row ");
               }
             })
 
@@ -239,13 +241,62 @@ Date : 2020/2/4
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-            //        jQuery('<button command="audit" id="audit" title="'+btnNm+'" class="" type="button">'+btnNm+'</button>').prependTo($(".crud_framework .top_container .right_container"));
-            //        jQuery("button[command=audit]").click(
-            //           function () {
+         
+            var jDom = this.Container;
+            var view = this.Core.View;
+            var showName="doing";
+            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                tideService.cell.CRUD.post(showName,{"record":selRow}).done(function(ret) {
+                  view.ShowMessage("OK");
+                })
+              }else{
+                view.ShowMessage("Please select cell row ");
+                
+              }
+            })
 
 
-            //           }
-            //        );
+            showName="copy";
+            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            on("click", function(event) {
+              var row = view.Grid.CurrentRow;
+
+              if ($(event.target).html() == "copy") {
+                if (!row) {
+                  view.ShowMessage("请先选择被复制cell");
+                };
+                $(event.target).data("copyInfo", {
+                  "from_id": row._id,
+                  "toPid": ""
+                })
+                $(event.target).html("please select link ");
+
+              } else {
+                if (!pid) {
+                  view.ShowMessage("please select link ");
+                }
+                var toData = $(event.target).data("copyInfo")
+                toData["toPid"] = pid
+                tideService.cell.CRUD.post("copy",toData).done(function(json) {
+                  $(event.target).html("copy");
+                  if (json) {
+                    view.ShowMessage("operate success ")
+                    debugger
+                    view.Grid.Query();
+                  }
+                })
+
+              }
+
+
+
+            })
+
+
+
 
 
           },
