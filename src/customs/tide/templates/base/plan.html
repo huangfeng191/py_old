@@ -34,6 +34,39 @@ Date : 2020/3/7
 </div>
 <script type="text/javascript">
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+  var personal = {
+    chain_level_down: ["plan", "measure", "step", "link", "cell"],
+    getParentGridRowById(id) {
+      var row={};
+      let self=this;
+      
+      if (id != "plan"&&id != "measure"&&id!="step") {
+        row=null
+        self.chain_level_down.forEach(function(v, i) {
+          if (v == id) {
+           row= $("#" + self.chain_level_down[i - 1]).data("component").View.Grid.CurrentRow
+          }
+        })
+
+
+      }
+      return row
+    },
+    queryChildGridById(id){
+      let self=this;
+      if (id != "link") {
+       
+        self.chain_level_down.forEach(function(v, i) {
+          if (v == id) {
+           row= $("#" + self.chain_level_down[i + 1]).data("component").View.Grid.Query();
+          }
+        })
+
+
+      }
+    }
+
+  }
 
 
   function getOption(type) {
@@ -62,6 +95,7 @@ Date : 2020/3/7
       { "field": "classify", "title": "分类", "width": 100, },
       { "field": "desc", "title": "描述", "width": 100, },
       { "field": "pid", "title": "pid", "width": 100, },
+      { "field": "_id", "title": "_id", "width": 100, },
     ]
     initial.Form[0].Inputs = [
       [
@@ -75,8 +109,11 @@ Date : 2020/3/7
       ],
       [{ "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
       [{ "Field": "desc", "Name": "描述", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-    //   [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": (type=="plan"?false:true), RowSpan: 1, ColSpan: "1","Disabled":true }, ]
-      [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1","Disabled":true }, ]
+      //   [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": (type=="plan"?false:true), RowSpan: 1, ColSpan: "1","Disabled":true }, ]
+      [
+        { "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "_id", "Name": "_id", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+     ],
     ]
     initial.Properties = [
 
@@ -99,6 +136,14 @@ Date : 2020/3/7
       AfterRender: function() {},
       Form: {
         AfterSet: function(Record, IsNew, V) {
+          if(IsNew){
+          var   pRow=personal.getParentGridRowById(V.Container.attr("id"))
+            if(!pRow){
+              V.ShowMessage("请选择父对象")
+              return false
+            }
+          }
+
           var FC = V.FormContainer;
           Object.keys(V.Field).forEach(function(k) {
             var v = V.Field[k];
@@ -109,9 +154,15 @@ Date : 2020/3/7
             }
           })
         },
-        AfterGet: function(Record, IsUpdate, Valid) {
-           
-           return Record 
+        AfterGet: function(Record, IsNew, Valid,view) {
+           if(IsNew){
+            pRow=personal.getParentGridRowById(view.Container.attr("id"))
+            if(!pRow){
+              Record.pid=pRow._id
+             }
+            
+           }   
+          return Record
 
         },
       }
@@ -122,28 +173,29 @@ Date : 2020/3/7
   function getBehavior(type) {
     var initial = {
       BeforeQuery: function(Filters, Orders) {
+        let self=this;
+        if(self.Core.View.Container){
+          var pRow=personal.getParentGridRowById( self.Core.View.Container.attr("id"))
+            if(pRow &&pRow._id){
+              Filters.Merge([{ Field: "pid", Operate: "=", Value: pRow._id, Relation: "and" }]);
+            }else{
+              Filters.Clear(["pid"])
+            }
+        }
+ 
+           
         return true;
       },
       Grid: {
-            //   RowDblClick: function (Row) {
+        //   RowDblClick: function (Row) {
 
-            // },
-            AfterRowClick: function(row,i,view) {
-               var  level=view.Container.attr("id")
-               chain_level_down= ["plan","measure","step","link","cell"]
-               if (level!="link"){
-                chain_level_down.forEach(function(v,i){
-                    if (v==level){
-                        $("#"+chain_level_down[i+1]).data("component").View.Grid.Query()
-                    }
-                })
-                  
-                 
-               }
+        // },
+        AfterRowClick: function(row, i, view) {
+          personal.queryChildGridById( view.Container.attr("id"))
 
-            }
-          }
-      
+        }
+      }
+
     }
     return initial
   }

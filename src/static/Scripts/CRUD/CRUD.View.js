@@ -1784,7 +1784,7 @@ jQuery.extend(jQuery.CRUD,
 
                         if (V.Form.AfterGet)
                         {
-                            var Records = V.Form.AfterGet(Record, !IsUpdate, Validators.Result);
+                            var Records = V.Form.AfterGet(Record, !IsUpdate, Validators.Result,V);
                             if (Records)
                             {
                                 Record = Records;
