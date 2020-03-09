@@ -36,15 +36,21 @@ Date : 2020/3/7
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
   var personal = {
     chain_level_down: ["plan", "measure", "step", "link", "cell"],
+    getChildLevels(id) {
+      let self = this;
+      var idx = this.chain_level_down.indexOf(id);
+
+      return self.chain_level_down.slice(0, idx + 1)
+    },
     getParentGridRowById(id) {
-      var row={};
-      let self=this;
-      
-      if (id != "plan"&&id != "measure"&&id!="step") {
-        row=null
+      var row = {};
+      let self = this;
+
+      if (id != "plan" && id != "measure" && id != "step") {
+        row = null
         self.chain_level_down.forEach(function(v, i) {
           if (v == id) {
-           row= $("#" + self.chain_level_down[i - 1]).data("component").View.Grid.CurrentRow
+            row = $("#" + self.chain_level_down[i - 1]).data("component").View.Grid.CurrentRow
           }
         })
 
@@ -52,13 +58,13 @@ Date : 2020/3/7
       }
       return row
     },
-    queryChildGridById(id){
-      let self=this;
+    queryChildGridById(id) {
+      let self = this;
       if (id != "link") {
-       
+
         self.chain_level_down.forEach(function(v, i) {
           if (v == id) {
-           row= $("#" + self.chain_level_down[i + 1]).data("component").View.Grid.Query();
+            row = $("#" + self.chain_level_down[i + 1]).data("component").View.Grid.Query();
           }
         })
 
@@ -113,7 +119,7 @@ Date : 2020/3/7
       [
         { "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
         { "Field": "_id", "Name": "_id", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-     ],
+      ],
     ]
     initial.Properties = [
 
@@ -134,30 +140,33 @@ Date : 2020/3/7
   function getView(type) {
     var initial = {
       AfterRender: function() {
-            var jDom = this.Container;
-            var view = this.Core.View;
-            var showName="doing";
-            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
-            on('click', function(event) {
-              var selRow = view.Grid.CurrentRow;
-              if (selRow) {
-                tideService[view.Container.attr("id")].CRUD.post(showName,{"record":selRow}).done(function(ret) {
-            var view = this.Core.View;
-                  view.ShowMessage("delighted");
-                })
-              }else{
-                view.ShowMessage("Please select  row ");
-              }
+        var jDom = this.Container;
+        var view = this.Core.View;
+        var showName = "doing";
+        jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
+        on('click', function(event) {
+          var selRow = view.Grid.CurrentRow;
+          if (selRow) {
+            tideService[view.Container.attr("id")].CRUD.post(showName, { "record": selRow }).done(function(ret) {
+
+              view.ShowMessage("delighted");
             })
+          } else {
+            view.ShowMessage("Please select  row ");
+          }
+        })
 
 
       },
       Form: {
         AfterSet: function(Record, IsNew, V) {
-          if(IsNew){
-          var   pRow=personal.getParentGridRowById(V.Container.attr("id"))
-            if(!pRow){
-              V.ShowMessage("请选择父对象")
+          var grid_id = V.Container.attr("id")
+          if (IsNew) {
+            var pRow = personal.getParentGridRowById(grid_id)
+            if (!pRow) {
+             
+              V.ShowMessage("请选择父对象");
+              V.FormContainer.closest(".my_dialog").css("display","none")
               return false
             }
           }
@@ -171,15 +180,28 @@ Date : 2020/3/7
 
             }
           })
+          var values = personal.getChildLevels(grid_id);
+          var data = GBindings.filter(function(v) { return v.Code == "cell_level" })[0].Records;
+          data = data.filter(function(v) {
+            return values.indexOf(v.value) >= 0
+          })
+
+
+          FC.find("[field=level]").combobox({
+            textField: "name",
+            valueField: "value",
+            value: Record.level || data[0].value,
+            data: data
+          });
         },
-        AfterGet: function(Record, IsNew, Valid,view) {
-           if(IsNew){
-            pRow=personal.getParentGridRowById(view.Container.attr("id"))
-            if(!pRow){
-              Record.pid=pRow._id
-             }
-            
-           }   
+        AfterGet: function(Record, IsNew, Valid, view) {
+          if (IsNew) {
+            pRow = personal.getParentGridRowById(view.Container.attr("id"))
+            if (!pRow) {
+              Record.pid = pRow._id
+            }
+
+          }
           return Record
 
         },
@@ -191,17 +213,17 @@ Date : 2020/3/7
   function getBehavior(type) {
     var initial = {
       BeforeQuery: function(Filters, Orders) {
-        let self=this;
-        if(self.Core.View.Container){
-          var pRow=personal.getParentGridRowById( self.Core.View.Container.attr("id"))
-            if(pRow &&pRow._id){
-              Filters.Merge([{ Field: "pid", Operate: "=", Value: pRow._id, Relation: "and" }]);
-            }else{
-              Filters.Clear(["pid"])
-            }
+        let self = this;
+        if (self.Core.View.Container) {
+          var pRow = personal.getParentGridRowById(self.Core.View.Container.attr("id"))
+          if (pRow && pRow._id) {
+            Filters.Merge([{ Field: "pid", Operate: "=", Value: pRow._id, Relation: "and" }]);
+          } else {
+            Filters.Clear(["pid"])
+          }
         }
- 
-           
+
+
         return true;
       },
       Grid: {
@@ -209,7 +231,7 @@ Date : 2020/3/7
 
         // },
         AfterRowClick: function(row, i, view) {
-          personal.queryChildGridById( view.Container.attr("id"))
+          personal.queryChildGridById(view.Container.attr("id"))
 
         }
       }
