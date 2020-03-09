@@ -147,7 +147,7 @@ Date : 2020/3/7
         on('click', function(event) {
           var selRow = view.Grid.CurrentRow;
           if (selRow) {
-            tideService[view.Container.attr("id")].CRUD.post(showName, { "record": selRow }).done(function(ret) {
+            tideService.base[view.Container.attr("id")].CRUD.post(showName, { "record": selRow }).done(function(ret) {
 
               view.ShowMessage("delighted");
             })

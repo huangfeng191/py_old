@@ -61,7 +61,7 @@ def test_Class_Chain():
     chain = c_chains.getChainByCellId("5e391f623a065b4658e885e8")
     c_chain =Chain(chain)
     link=c_chain.getLayer("link")
-    base.tide_log.upsert(**{"chains": chains})
+
     print 1
 
 def test_Class_Layer():

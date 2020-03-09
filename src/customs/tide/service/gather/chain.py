@@ -76,7 +76,7 @@ def gatherChains(layer,t=None,hook="plan",**kwargs):
        # 获取配置
         fetch_template=[
             ("key",["sn", "level","cycle"]),
-            ( "option",["refresh"])
+            ( "option",["refresh","nm","pid"])
         ]
         for tK,tA in fetch_template:
             for s in tA:

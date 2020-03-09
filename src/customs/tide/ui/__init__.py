@@ -15,4 +15,5 @@ render_tide= render_mako(directories=["customs/tide/templates/", "templates"], i
 
 import customs.tide.ui.base
 import customs.tide.ui.comm
+import  customs.tide.ui.log
 import  customs.tide.ui.test
