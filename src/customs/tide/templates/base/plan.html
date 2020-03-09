@@ -133,7 +133,25 @@ Date : 2020/3/7
 
   function getView(type) {
     var initial = {
-      AfterRender: function() {},
+      AfterRender: function() {
+            var jDom = this.Container;
+            var view = this.Core.View;
+            var showName="doing";
+            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            on('click', function(event) {
+              var selRow = view.Grid.CurrentRow;
+              if (selRow) {
+                tideService[view.Container.attr("id")].CRUD.post(showName,{"record":selRow}).done(function(ret) {
+            var view = this.Core.View;
+                  view.ShowMessage("delighted");
+                })
+              }else{
+                view.ShowMessage("Please select  row ");
+              }
+            })
+
+
+      },
       Form: {
         AfterSet: function(Record, IsNew, V) {
           if(IsNew){

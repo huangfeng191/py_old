@@ -73,19 +73,46 @@ class TideBaseLinkCRUD(CRUD):
 class TideBaseStepCRUD(CRUD):
     def __init__(self):
         self.module = tide_step
+    def action(self, act, *args, **kwArgs):
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
 
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "step", None)
+        re = task.go()
+        return re
 
 @wildcard("/tide/base/measure/")
 class TideBaseMeasureCRUD(CRUD):
     def __init__(self):
         self.module = tide_measure
+    def action(self, act, *args, **kwArgs):
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
 
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "measure", None)
+        re = task.go()
+        return re
 
 @path("/tide/base/plan.html")
 class TidebasePlan:
     def GET(self, _cid = None, *args, **kwargs):
         return tide_base["base/plan"]()
+    def action(self, act, *args, **kwArgs):
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
 
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "plan", None)
+        re = task.go()
+        return re
 
 
 @wildcard("/tide/base/plan/")

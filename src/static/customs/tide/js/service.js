@@ -43,6 +43,15 @@ var tideService={
     "link":{
         "CRUD":CRUD("tide/base/link"),
     },
+    "step":{
+        "CRUD":CRUD("tide/base/step"),
+    },
+    "measure":{
+        "CRUD":CRUD("tide/base/measure"),
+    },
+    "plan":{
+        "CRUD":CRUD("tide/base/plan"),
+    },
     "chains":{
         "CRUD":CRUD("tide/base/chains"),
     }
