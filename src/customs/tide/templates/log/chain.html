@@ -1,0 +1,282 @@
+<!--<%inherit file="../layout.html" /> -->
+<!-- plan
+Author Wujj
+Date : 2020/3/7
+-->
+<style>
+  #plan,
+  #measure,
+  #step,
+  #link,
+  #cell {
+    height: 100%;
+    width: 20%;
+    display: inline-block
+  }
+
+  #plan {
+    width: 19%;
+  }
+</style>
+<div style="width:100%;height: 100%;">
+
+  <div id='plan'>
+    &nbsp;
+  </div>
+  <div id='measure'>
+    &nbsp;
+  </div>
+  <div id='step'>
+    &nbsp;
+  </div>
+  <div id='link'>
+    &nbsp;
+  </div>
+  <div id='cell'>
+    &nbsp;
+  </div>
+</div>
+<script type="text/javascript">
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+
+  var personal = {
+    "topHook": Proxy.GetUrlParam("topHook"),
+    "logId": Proxy.GetUrlParam("logId"),
+    chain_level_down: ["plan", "measure", "step", "link", "cell"],
+    getChildLevels(id) {
+      let self = this;
+      var idx = this.chain_level_down.indexOf(id);
+
+      return self.chain_level_down.slice(0, idx + 1)
+    },
+    getParentGridRowById(id) {
+      var row = {};
+      let self = this;
+
+      if (id != "plan" && id != "measure" && id != "step") {
+        row = null
+        self.chain_level_down.forEach(function(v, i) {
+          if (v == id) {
+            row = $("#" + self.chain_level_down[i - 1]).data("component").View.Grid.CurrentRow
+          }
+        })
+
+
+      }
+      return row
+    },
+    queryChildGridById(id) {
+      let self = this;
+      if (id != "cell") {
+
+        self.chain_level_down.forEach(function(v, i) {
+          if (v == id) {
+            row = $("#" + self.chain_level_down[i + 1]).data("component").View.Grid.Query();
+          }
+        })
+
+
+      }
+    }
+
+  }
+
+
+  function getOption(type) {
+    var initial = {
+      "Bindings": GBindings,
+      "Columns": [],
+      "Form": [{
+        "Inputs": []
+      },{
+        "Title":"take",
+        "Inputs": []
+      }],
+      "Properties": [],
+      "Quicks": [],
+      "Rights": "CUD",
+      "Target": type,
+      "Title": "",
+      "ExportFmt": true,
+      "Layout": "POP",
+      "ExportName": ""
+    }
+    initial.Columns[0] = [
+      { "field": "fetch.option.nm", "title": "名称", "width": 100, },
+      { "field": "fetch.option.refresh", "title": "刷新", "width": 100, binding: "refresh" },
+      { "field": "fetch.key.sn", "title": "编码", "width": 100, },
+      { "field": "fetch.option.pid", "title": "pid", "width": 100, },
+      { "field": "fetch.key.cycle", "title": "周期", "width": 100, binding: "cycle" },
+      { "field": "fetch.key.t", "title": "时间", "width": 100, formatter: DateFormatter, },
+      { "field": "fetch.key.level", "title": "等级", "width": 100, binding: "cell_level" },
+      { "field": "fetch.key.levelSn", "title": "等级编码", "width": 100, },
+      { "field": "hookId", "title": "hookId", "width": 100, },
+    ]
+    initial.Form[0].Inputs = [
+      [{ "Field": "fetch.option.nm", "Name": "名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "fetch.option.refresh", "Name": "刷新", ShowType: "combo", DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "fetch.option.pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "fetch.key.sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "fetch.key.cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "fetch.key.t", "Name": "时间", ShowType: "datetime", DataType: "String", Ext: "yyyyMMdd", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "fetch.key.level", "Name": "等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "fetch.key.levelSn", "Name": "等级编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "hookId", "Name": "hookId", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+    ]
+
+
+    initial.Form[1].Inputs = [
+      [{ "Field": "take.key.sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "take.key.cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "take.key.t", "Name": "时间", ShowType: "datetime", DataType: "String", Ext: "yyyyMMdd", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "take.key.level", "Name": "等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "take.key.levelSn", "Name": "等级编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "take.type", "Name": "type", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+    ]
+
+
+    initial.Properties = [
+
+      { "Field": "fetch.option.nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.option.refresh", "Name": "刷新", ShowType: "combo", Ext: "refresh", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.option.pid", "Name": "pid", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.key.sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.key.cycle", "Name": "周期", ShowType: "combo", Ext: "cycle", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.key.t", "Name": "时间", ShowType: "datetime", Ext: "yyyyMMdd", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.key.level", "Name": "等级", ShowType: "combo", Ext: "cell_level", DataType: "String", "FilterEnabled": true, },
+      { "Field": "fetch.key.levelSn", "Name": "等级编码", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "hookId", "Name": "hookId", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+    ]
+    return initial
+  }
+
+
+  function getView(type) {
+    var initial = {
+      AfterRender: function() {
+
+
+
+      },
+      Form: {
+        AfterSet: function(Record, IsNew, V) {
+          var grid_id = V.Container.attr("id")
+
+
+          var FC = V.FormContainer;
+          Object.keys(V.Field).forEach(function(k) {
+            var v = V.Field[k];
+            if (v && v.ColSpan > 1) {
+              var ele = FC.find("[field='" + v.Field + "']");
+              ele.width(ele.closest("td").width() - 10);
+
+            }
+          })
+          var values = personal.getChildLevels(grid_id);
+          var data = GBindings.filter(function(v) { return v.Code == "cell_level" })[0].Records;
+          data = data.filter(function(v) {
+            return values.indexOf(v.value) >= 0
+          })
+
+
+          FC.find("[field=level]").combobox({
+            textField: "name",
+            valueField: "value",
+            value: Record.level || data[0].value,
+            data: data
+          });
+        },
+        AfterGet: function(Record, IsNew, Valid, view) {
+
+          return Record
+
+        },
+      }
+    }
+    return initial
+  }
+
+  function getBehavior(type) {
+    var initial = {
+      BeforeQuery: function(Filters, Orders) {
+        let self = this;
+        if (self.Core.View.Container) {
+          var gridId = self.Core.View.Container.attr("id")
+          if (gridId == personal.topHook) {
+            Filters.Merge([{ Field: "_id", Operate: "=", Value: personal.logId, Relation: "and" }]);
+          }
+
+
+          Filters.Merge([{ Field: "hook", Operate: "=", Value: gridId, Relation: "and" }]);
+          var pRow = personal.getParentGridRowById(gridId)
+          if (pRow && pRow.hookId) {
+            Filters.Merge([{ Field: "pid", Operate: "=", Value: pRow.hookId, Relation: "and" }]);
+          } else {
+            Filters.Clear(["pid"])
+          }
+
+
+        }
+
+
+        return true;
+      },
+      Grid: {
+        //   RowDblClick: function (Row) {
+
+        // },
+        AfterRowClick: function(row, i, view) {
+          personal.queryChildGridById(view.Container.attr("id"))
+
+        }
+      }
+
+    }
+    return initial
+  }
+
+
+  function getService(type) {
+    var initial = {
+      Path: "",
+      Target: type,
+      Base: "./"
+    }
+    return initial
+  }
+
+  function init(type) {
+    var view = getView(type)
+    var behavior = getBehavior(type)
+    var service = getService("chain")
+    var option = getOption(type)
+
+    jQuery.CRUD('#' + type, {
+      View: view,
+      Behavior: behavior,
+      Service: service,
+      FirstQuery: false
+
+    }, option);
+
+
+  }
+
+  jQuery(document).ready(function() {
+
+    init("plan");
+    init("measure");
+    init("step");
+    init("link");
+    init("cell");
+
+    $("#" + personal.topHook).data("component").View.Grid.Query()
+
+
+  });
+</script>
