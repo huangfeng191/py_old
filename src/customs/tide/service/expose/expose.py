@@ -75,14 +75,11 @@ class TaskRun:
 
 
 class Tide_log_info:
-    def __init__(self):
-        pass
+    def __init__(self,hookId,hook,logId):
+        self.hookId=hookId
+        self.hook=hook
+        self.logId=logId
+        self.chains=Chains(self.hookId,self.hook,self.logId)
 
-    def getOne(self,hookId,hook,logId):
-        C=Chains(hookId,hook,logId)
-        return C.getObj()
-
-    def query(self,query=None):
-        ret=self.getOne("5e64c9503a065b2fccc2ad0f","step","5e6786523a065b544cbccadc")
-
-        return ret
+    def getLayers(self,hook,pid):
+        return self.chains.getLayersByHook(hook,pid)

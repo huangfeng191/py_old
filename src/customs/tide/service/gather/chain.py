@@ -254,24 +254,21 @@ class Chains:
 
         return o
 
-    def getLayersByHook(self,hook):
-         o=self.getObj()
-         ret =None
-         if o.get("hook")==hook:
-             ret=[o]
-         else:
-            while o:
-                if o and o.get("children") and len(o.get("children"))>0:
-
-                    dim = o.get("children")[0]
-                    if dim.get("hook") == hook:
-                        o=None
-                        ret=o.get("children")
-                    else:
-                        o=dim.get("children")[0]
-                else:
-                    o=None
-         return ret
+    def getLayersByHook(self,hook,pid=""):
+        pass
+        chains=self.chains
+        ret=[]
+        for r in chains:
+            layer=r.get(hook)
+            if layer.get("fetch").get("option").get("pid")==pid:
+                exists=False
+                for r1 in ret:
+                    if tide_utils.equalObj(layer.get("fetch").get("key"),r1.get("fetch").get("key")):
+                        exists=True
+                        break
+                if not exists:
+                    ret.append(layer)
+        return ret
 
 
 

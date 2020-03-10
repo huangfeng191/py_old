@@ -50,12 +50,39 @@ class TideLogCellCRUD(CRUD):
 
 
 
+@path("/tide/log/chain.html")
+class TideLogChain:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_log["log/chain"]()
+
+@wildcard("/tide/log/chain/")
+class TideLogCRUD(CRUD):
+    def __init__(self):
+        self.module = tide_chains_log
+    def action(self, act, *args, **kwArgs):
+          if act == 'query':
+              return self.query(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def query(self, record=None, *args, **kwArgs):
+
+            conditions = kwArgs.get('conditions', [])
+            query = tide_utils.parse_conditions_CRUD(conditions).get('$and', {})
+            log=self.module.get(query.get("_id"))
+            Log=Tide_log_info(log.get("topHookId"),log.get("topHook"),log.get("_id"))
+
+            res=Log.getLayers(query.get("hook"),query.get("pid","")) or []
 
 
-@path("/tide/log/chains_log.html")
+            return {'total': len(res), 'rows': res}
+
+@path("/tide/log/chains.html")
 class TideLogChains:
     def GET(self, _cid = None, *args, **kwargs):
         return tide_log["log/chains"]()
+
+
 
 
 @wildcard("/tide/log/chains/")
@@ -68,8 +95,10 @@ class TideLogChainsCRUD(CRUD):
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
-    def query(self, record=None, *args, **kwArgs):
-        log=Tide_log_info()
-        ret=log.query()
 
-        return ret
+
+    def query(self, count=True, *args, **kwArgs):
+
+        res = CRUD.query(self, count=count, *args, **kwArgs)
+
+        return res
