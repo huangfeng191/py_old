@@ -39,6 +39,17 @@ class TaskRun:
         C.spread()
         return layer
 
+    def wave(self,hook,chains):
+        chains.reverse()
+        while hook :
+            for i in range(0,len(chains)-1):
+                C=Chain(chains[i])
+                C_after=Chain(chains[i+1])
+                if tide_utils.equalObj(C.getLayer(hook).get("fetch").get("key"),
+                                          C_after.getLayer(hook).get("fetch").get("key")):
+                    chains[i + 1][hook]["take"]=chains[i][hook]["take"]
+            hook=getChildLevel(hook)
+        chains.reverse()
 
     def go(self):
         chains = self.o_chains.get()
@@ -46,6 +57,7 @@ class TaskRun:
             chain=chains[i]
             ret=self.doChain(chain,chains[i + 1]  if i+1<len(chains) else None )
         refer=chains[0]
+        self.wave(refer.get("topHook"),chains)
         c={
             "chains":chains,
             "topHook":refer.get("topHook"),
@@ -53,7 +65,24 @@ class TaskRun:
              "fetch":  refer.get(refer.get("topHook")).get("fetch")
         }
         logId=self.o_chains.getLogId()
+
+
         if logId:
             c["_id"]=logId
-        tide_chains.upsert(**c)
+        tide_chains_log.upsert(**c)
         print "____expose.TaskRun.go____________  Hardships often prepare ordinary people for an extraordinary destiny."
+
+
+
+class Tide_log_info:
+    def __init__(self):
+        pass
+
+    def getOne(self,hookId,hook,logId):
+        C=Chains(hookId,hook,logId)
+        return C.getObj()
+
+    def query(self,query=None):
+        ret=self.getOne("5e64c9503a065b2fccc2ad0f","step","5e6786523a065b544cbccadc")
+
+        return ret

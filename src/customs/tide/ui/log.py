@@ -20,7 +20,6 @@ class TideLogPlan:
         return tide_log["log/plan"]()
 
 
-
 @wildcard("/tide/log/plan/")
 class TideLogPlanCRUD(CRUD):
 
@@ -47,3 +46,30 @@ class TideLogLinkCRUD(CRUD):
 class TideLogCellCRUD(CRUD):
     def __init__(self):
         self.module = tide_cell_log
+
+
+
+
+
+
+@path("/tide/log/chains_log.html")
+class TideLogChains:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_log["log/chains"]()
+
+
+@wildcard("/tide/log/chains/")
+class TideLogChainsCRUD(CRUD):
+    def __init__(self):
+        self.module = tide_chains_log
+        def action(self, act, *args, **kwArgs):
+          if act == 'query':
+              return self.query(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def query(self, record=None, *args, **kwArgs):
+        log=Tide_log_info()
+        ret=log.query()
+
+        return ret

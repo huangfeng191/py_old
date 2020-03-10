@@ -152,7 +152,7 @@ class Chains:
     '''
     def __init__(self,_id,hook="plan",logId=None ):
        self.logId=logId
-       self.module=base.tide_chains
+       self.module=base.tide_chains_log
        layer=eval(("base.tide_%s") % hook).get(_id)
        if logId:
            log=self.module.get(logId)
@@ -196,6 +196,106 @@ class Chains:
         for r in chains:
             o=r[hook]
             o["option"]["refresh"]="refresh"
+
+
+
+
+    def getInfectHook(self,chain,before_chain):
+        '''
+
+        '''
+        C=Chain(chain)
+        infect=chain.get("topHook")
+        while infect:
+            layer_chain= chain[infect]
+            layer_before= before_chain[infect]
+            if tide_utils.equalObj(layer_chain.get("fetch").get("key"),layer_before.get("fetch").get("key")):
+                layer=C.getChildLayer(infect)
+                if layer:
+                    infect= layer.get("hook")
+            else:
+                infect=layer_chain.get("hook")
+                break
+        return infect
+
+    def getObj(self):
+        '''
+        获取Ojbect 类型的 chains
+        Returns:
+
+        '''
+        chains=self.chains
+        o=None
+        for i in range(0,len(chains)):
+            chain=chains[i]
+            o_chain=Chain(chain)
+            if i==0:
+                topHook = chain.get("topHook")
+                o = chain.get(topHook)
+                self.getChildren(o_chain, o)
+            else:
+                before_chain= chains[i-1]
+                hook=self.getInfectHook(chain,before_chain)
+                layer=chain[hook]
+
+                #  if  layer.hook == o.hook  不可能 因为 这种情况 只有指定 cell 不可能存在层级
+
+                data=o.get("children") or []
+                while len(data)>0:
+                        dim=data[-1]
+                        if dim.get("hook")==hook:
+                            data.append(layer)
+                            # 再相应级别上添加数据
+                            self.getChildren(o_chain,layer)
+                            data=[]
+                        else:
+                            data = dim.get("children") or []
+
+
+        return o
+
+    def getLayersByHook(self,hook):
+         o=self.getObj()
+         ret =None
+         if o.get("hook")==hook:
+             ret=[o]
+         else:
+            while o:
+                if o and o.get("children") and len(o.get("children"))>0:
+
+                    dim = o.get("children")[0]
+                    if dim.get("hook") == hook:
+                        o=None
+                        ret=o.get("children")
+                    else:
+                        o=dim.get("children")[0]
+                else:
+                    o=None
+         return ret
+
+
+
+
+    def getChildren(self,chain,o):
+        hook=o.get("hook")
+        if "children" not in o:
+            o["children"]=[]
+        children=o.get("children")
+        layer=chain.getChildLayer(hook)
+        if layer:
+            if "children" not in layer:
+                layer["children"]=[]
+            children.append(layer)
+            self.getChildren(chain,layer)
+
+
+
+
+
+# 上下级比较 如果 不同 或最后一个 保存数据，获取下一级 直至循环结束，组成的对象就是需要的结果用 children 组装
+# 需要获取那一级 指定
+
+
 
 
 

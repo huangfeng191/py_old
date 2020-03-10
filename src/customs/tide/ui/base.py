@@ -132,8 +132,8 @@ class TideBaseChains:
 @wildcard("/tide/base/chains/")
 class TideBaseChainsCRUD(CRUD):
     def __init__(self):
-        self.module = tide_chains
-    def action(self, act, *args, **kwArgs):
+        self.module = tide_chains_log
+        def action(self, act, *args, **kwArgs):
           if act == 'redo':
               return self.redo(*args, **kwArgs)
           else:
