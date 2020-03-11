@@ -25,3 +25,4 @@ tide_measure_log = comm.CRUD(ctx.tide_baseDb, "measure_log" )
 tide_plan_log = comm.CRUD(ctx.tide_baseDb, "plan_log" )
 
 
+tide_journal_log= comm.CRUD(ctx.tide_baseDb, "journal_log" )

@@ -1,0 +1,156 @@
+<!--<%inherit file="../layout.html" /> -->
+<!-- 
+Author Wujj
+Date : 2020/3/11
+-->
+<style>
+  #journal {
+    height: 100%;
+
+  }
+</style>
+<div style="width:100%;height: 100%;">
+
+  <div id='journal'>
+    &nbsp;
+  </div>
+</div>
+<script type="text/javascript">
+  var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
+
+
+  function getOption(type) {
+    var initial = {
+      "Bindings": GBindings,
+      "Columns": [
+
+      ],
+      "Form": [{
+        "Inputs": []
+      }],
+      "Properties": [],
+      "Quicks": [],
+      "Rights": "CUD",
+      "Target": type,
+      "Title": "",
+      "ExportFmt": true,
+      "Layout": "POP" ? "POP" : "POP",
+      "ExportName": ""
+    }
+    initial.Columns[0] = [
+      { "field": "sn", "title": "编码", "width": 100, },
+      { "field": "nm", "title": "名称", "width": 100, },
+      { "field": "t", "title": "时间", "width": 100, formatter: DateFormatter, },
+      { "field": "star", "title": "星", "width": 100, },
+      { "field": "desc", "title": "desc", "width": 100, },
+    ]
+    initial.Form[0].Inputs = [
+      [{ "Field": "sn", "Name": "编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "nm", "Name": "名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+        { "Field": "t", "Name": "时间", ShowType: "datetime", DataType: "String", Ext: "yyyyMMdd", "Required": false, RowSpan: 1, ColSpan: "1" },
+      ],
+      [{ "Field": "star", "Name": "星", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
+      [{ "Field": "desc", "Name": "desc", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
+    ]
+    initial.Properties = [
+      { "Field": "sn", "Name": "编码", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "nm", "Name": "名称", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "t", "Name": "时间", ShowType: "datetime", Ext: "yyyyMMdd", DataType: "String", "FilterEnabled": true, },
+      { "Field": "star", "Name": "星", ShowType: "text", Ext: "", DataType: "String", "FilterEnabled": true, },
+      { "Field": "desc", "Name": "desc", ShowType: "textarea", Ext: "", DataType: "String", "FilterEnabled": true, },
+    ]
+    return initial
+  }
+
+
+  function getView(type) {
+    var initial = {
+      AfterRender: function() {},
+      Form: {
+        AfterSet: function(Record, IsNew, view) {
+          var FC = view.FormContainer;
+          Object.keys(view.Field).forEach(function(k) {
+            var v = view.Field[k];
+            if (v.Field == "t" && IsNew) {
+              FC.find("[field='" + v.Field + "']").val(new Date().FormatString("yyyyMMdd"))
+            }
+            if (v && v.ColSpan > 1) {
+              var ele = FC.find("[field='" + v.Field + "']");
+              ele.width(ele.closest("td").width() - 10);
+
+              if (v.Field == "desc") {
+                ele.height("380px")
+              }
+
+
+
+            }
+          })
+        },
+        AfterGet: function(Record, IsNew, Valid, view) {
+          if (IsNew) {
+            //    pRow=personal.getParentGridRowById(view.Container.attr("id"))
+            //     if(!pRow){
+            //     Record.pid=pRow._id
+            //    }
+
+          }
+          return Record
+
+        },
+      }
+    }
+    return initial
+  }
+
+  function getBehavior(type) {
+    var initial = {
+      BeforeQuery: function(Filters, Orders) {
+        Orders.Merge([{"Field": "t", "Relation": "and" , "Type": true }])
+        return true;
+      },
+      Grid: {
+        //   RowDblClick: function (Row) {
+
+        // },
+        AfterRowClick: function(row, i, view) {
+
+
+        }
+      }
+    }
+    return initial
+  }
+
+
+  function getService(type) {
+    var initial = {
+      Path: "",
+      Target: type,
+      Base: "./"
+    }
+    return initial
+  }
+
+  function init(type) {
+    var view = getView(type)
+    var behavior = getBehavior(type)
+    var service = getService(type)
+    var option = getOption(type)
+
+    jQuery.CRUD('#' + type, {
+      View: view,
+      Behavior: behavior,
+      Service: service
+    }, option);
+
+
+  }
+
+  jQuery(document).ready(function() {
+
+    init("journal");
+
+
+  });
+</script>

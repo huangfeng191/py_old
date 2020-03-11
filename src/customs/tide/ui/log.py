@@ -102,3 +102,22 @@ class TideLogChainsCRUD(CRUD):
         res = CRUD.query(self, count=count, *args, **kwArgs)
 
         return res
+
+
+@path("/tide/log/record.html")
+class TideLogRecord:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_log["log/record"]()
+
+
+@path("/tide/log/journal.html")
+class TideLogJournal:
+    def GET(self, _cid = None, *args, **kwargs):
+        return tide_log["log/journal"]()
+
+@wildcard("/tide/log/journal/")
+class TideLogJournalCRUD(CRUD):
+    def __init__(self):
+        self.module = tide_journal_log
+
+

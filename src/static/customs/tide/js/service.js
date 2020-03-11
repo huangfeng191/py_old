@@ -77,6 +77,11 @@ var tideService = {
 
 
 }
+var pro_stockServer={
+    "interfaceConfig":{
+        "CRUD": CRUD("prostock/interfaceconfig"),
+    }
+}
 
 
 function CRUD(model, _prefix) {

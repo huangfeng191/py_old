@@ -1,105 +1,188 @@
-
-
-function getBindConfig(){
-    let p=co($.po("/stock/interfaceconfig/query.json",{ query: {},order:[{"Field":"w", "Type": false}] },{"async":false})).done(function(json){
-        if(json.rows&&json.rows.length>0){
-            let records=[];  
-            json.rows.forEach(element => {
-                records.push({"name":element.nm,"value":element.table_nm})
-            });
-            GBindings.push({
-                Code: 'StockConfig',
-                Records: records
-               });
+function CRUDSetting(text, option) {
+    this.maxSpan = 3;
+    if (typeof option == "object") {
+        if (option.colSpan) {
+            this.colSpan = option.colSpan;
         }
-    });
-  
-}
+    }
+    this.text_old = text;
+    this.parseText = () => {
+            var defaults = {
+                "sn": "",
+                "nm": "",
+                "showType": "text",
+                "dataType": "String",
+                "colSpan": 1,
+                "width": 100,
+                "fmt": "",
+                "hidden": false
+            }
+            var types = {
+                "c": {
+                    "showType": "combo",
+                    "fmt": "",
+                    "dataType": "String",
+                },
+                "d": {
+                    "showType": "datetime",
+                    "fmt": "yyyyMMdd",
+                    "dataType": "String"
+                },
+                "a": {
+                    "showType": "textarea",
+                    "colSpan": 3,
+                    "dataType": "String"
+                },
+                "t": {
+                    "showType": "text",
+                    "dataType": "String"
 
+                }
+            }
+            var rows = []
+            text.split("\n").forEach(function(r) {
+                var row = Object.assign({}, defaults)
+                var [sn, dataType, nm, showType, ...optional] = r.split(" ");
+                row.sn = sn;
+                row.nm = nm;
+                if (!nm) {
+                    row.nm = row.sn
+                }
+                row.dataType = dataType || "String";
+                row.showType = showType || "t";
+                if (["str", "String", "string"].includes(dataType)) {
+                    row.dataType = "String";
+                }
 
-
-function getInterfaceConfig({table_nm}){
-        var retO={
-            nm:"",
-            oOne:{},
-            columns:[],
-            inputs:[],
-            orders:[],
-            quicks:[],
-            inputsRet:[[]]
-        };
-
-      var p= co($.po("/stock/interfaceconfig/query.json",{ query: {'table_nm':table_nm} },{"async":false})).done(function(json)
-      {
-          if(json.rows&&json.rows.length>0){
-            if(json.rows[0].colInp){
-                let tempStr=json.rows[0].colInp;
-                temp2a=tempStr.split("\n");
-                retO.nm=json.rows[0].nm
-                temp2a=temp2a.map(function(v){
-                    if(v.split(",").length>1){
-                        return v.split(",")
-                    }else{
-                        return v.split("：")
+                Object.keys(types).forEach(function(k) {
+                    if (k == row.showType) {
+                        Object.assign(row, types[k])
                     }
                 })
-                temp2a.forEach(element => {
-                    var sn=element[0]||""
-                    var nm=element[1]||""
-                    retO["oOne"][sn]={sn,nm}
-                    var templateCols=`
-                        { "field": "${sn}","title":"${nm}","width": 100, "halign": "center"}
-                    `
-                    var templateInputs=`
-                    { "Field": "${sn}", "Name": "${nm}" }
-                    `
-                    retO.columns.push(JSON.parse(templateCols))
-                    retO.inputs.push(JSON.parse(templateInputs))
-                });
+                // 最后一个字段复制
+                if (optional && optional.length > 0) {
+                    lastOptional = {};
+                    lastA = optional.pop().split(",")
+                    lastA.forEach(function(s) {
+                        if (s) {
+                            var [k, v] = s.split(":")
+                            if (k && v) {
+                                lastOptional[k] = v
+                            }
+                        }
+                    })
+                    Object.assign(row, lastOptional)
+
+                }
+                rows.push(row)
+
+
+            })
+            return rows;
+        },
+        this.transformColumns = () => {
+            var cols = []
+            this.rows.forEach(function(row) {
+
+                column = `{ "field": "${row.sn}","title": "${row.nm}", "width": ${row.width} }`;
+                column = JSON.parse(column);
+                if (row.dataType == "combo") {
+                    column["binding"] = row.fmt
+                } else if (row.dataType == "datetime") {
+                    if (row.fmt == "yyyyMMdd" || row.fmt == "yyyy-MM-dd") {
+                        column["formatter"] = "DateFormatter"
+                    } else if (row.fmt == "yyyyMM" || row.fmt == "yyyy-MM") {
+                        column["formatter"] = "MonthFormatter"
+                    }
+
+                }
+                cols.push(column);
+            })
+            return cols;
+        },
+        this.transformInputs = () => {
+            var inputs = []
+            this.rows.forEach(function(row) {
+
+                var input =
+                    `{ "Field": "${row.sn}", "Name": "${row.nm}", "ShowType": "${row.showType}","DataType": "${row.dataType}", "ColSpan": "${row.colSpan}" }`;
+                input = JSON.parse(input);
+                if (row.dataType == "combo" || row.dataType == "datetime") {
+                    input["Ext"] = row.fmt
+                }
+                inputs.push(input);
+            })
+            inputs= this.folding(inputs,this.maxSpan)
+            return inputs
+        },
+        this.folding=(a,maxSpan)=>{
+            var inputs=[]
+            var unitCount=0
+            var unit=[]
+            a.forEach(function(r){
+                unitCount+=(Number(r["ColSpan"]||1))
+                if(unitCount<=maxSpan){
+                    unit.push(r);
+                }else{
+                    inputs.push(unit);
+                    unitCount=1
+                    unit=[r]
+                }
+            })
+            if(unit.length>0){
+                inputs.push(unit);
             }
-            if(json.rows[0].orders){
-                let ordersStr=json.rows[0].orders;
-                aOrdersStr=ordersStr.split(",")
-                aOrdersStr.forEach(element => {
-                    let sn=element||""
-                    var templateOrder=`
-                    { "Field": "${sn}", "Type": false }
-                   `
-                   retO.orders.push(JSON.parse(templateOrder))
-                });
-               
-            };
-            if(json.rows[0].quicks){
-                let quicksStr=json.rows[0].quicks;
-                aQuicksStr=quicksStr.split(",")
-                aQuicksStr.forEach(element => {
-                    let sn=element||""
-                    
-                 
-                   if(retO["oOne"][sn]){
-                       let nm=retO["oOne"][sn].nm
-                       var templateQuicks=`
-                       { "Field": "${sn}", "Label": "${nm}",  "Type"   : "QText", "Width": 70 }
-                      `
-                    retO.quicks.push(JSON.parse(templateQuicks))
-                   }
-                   
-                });
-               
-            }
-          }
-      })
-      let oneRow=[]
-      retO.inputs.forEach(function(v,i){
-        oneRow.push(v);
-        if( oneRow.length>0&&oneRow.length%3==0){
-            retO.inputsRet.push(oneRow)
-            oneRow=[]
-        }  
-      })
-      if(oneRow.length>0){
-        retO.inputsRet.push(oneRow)
-      }
-      
-      return retO
-}
+
+            return inputs 
+
+        }
+        this.transformProperties = () => {
+            var properties = []
+            this.rows.forEach(function(row) {
+
+                var property = `{ "Field": "${row.sn}", "Name": "${row.nm}", "ShowType": "${row.showType}","DataType": "${row.dataType}" }`;
+                property = JSON.parse(property);
+                if (row.dataType == "combo" || row.dataType == "datetime") {
+                    property["Ext"] = row.fmt
+                }
+                properties.push(property);
+            })
+            return properties
+        },
+        this.transformQueries = () => {
+            var queries = []
+            this.rows.forEach(function(row) {
+                if (row.q) {
+
+                    var query = `{ "Field": "${row.sn}", "Label": "${row.nm}", "Type":  "QText"},`
+                    query = JSON.parse(query);
+                    if (row.dataType == "combo") {
+                        row["Type"] = "QCombox";
+                        query["Ext"] = row.fmt
+                        query["Source"] = row.fmt
+                    } else if (row.dataType == "datetime") {
+                        row["Type"] = "QDatetime"
+                        row["Ext"] = {
+                            "Format": row.fmt
+                        };
+                    }
+                    queries.push(query);
+
+                }
+            })
+            return queries
+        },
+
+        this.rows = this.parseText()
+
+    this.get = () => {
+        o = {}
+        o.columns = this.transformColumns()
+        o.inputs = this.transformInputs();
+        o.properties = this.transformProperties()
+        o.queries = this.transformQueries();
+        return o;
+
+
+    }
+};
