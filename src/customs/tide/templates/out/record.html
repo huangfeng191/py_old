@@ -16,6 +16,7 @@ Date : 2020/3/11
 	</div>
 </div>
 <script type="text/javascript">
+var logRow={};
     var Loading = jQuery.Loading({Message: "数据加载中……", Timeout: 1200});
 
 
@@ -87,6 +88,9 @@ Date : 2020/3/11
     function getBehavior(type) {
         var initial = {
             BeforeQuery: function (Filters, Orders) {
+                Filters.Merge([{ Field: "hook", Operate: "=", Value: logRow.hook, Relation: "and" }]);
+                Filters.Merge([{ Field: "hookId", Operate: "=", Value: logRow.hookId, Relation: "and" }]);
+                Filters.Merge([{ Field: "logId", Operate: "=", Value: logRow.logId, Relation: "and" }]);
                 return true;
             },
             Grid: {
@@ -115,12 +119,13 @@ Date : 2020/3/11
     function init(type) {
 
         
-    var setting=pro_stockServer.interfaceConfig.CRUD.query({ query: {'table_nm':"stock_basic"}}).done(function(v){
+    // var setting=pro_stockServer.interfaceConfig.CRUD.query({ query: {'table_nm':"stock_basic"}}).done(function(v){
+        var setting= tideService.out.record.CRUD.post("getOpts",{"record":logRow}).done(function(v){
         var opts=v.rows[0].colInp;
             opts=opts.replace(/,/g," ");
         var view = getView(type)
         var behavior = getBehavior(type)
-        var service = getService("cell"||type)
+        var service = getService(type)
         var option = getOption(type,opts)
 
         jQuery.CRUD('#' + type, {
@@ -139,10 +144,9 @@ Date : 2020/3/11
 
     }
 
-    jQuery(document).ready(function () {
-
-        init("record");
-
-
-    });
+function Load(row){
+    logRow=row.row;
+    init("record");
+   
+}
 </script>

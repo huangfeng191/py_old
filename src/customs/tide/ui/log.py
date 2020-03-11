@@ -104,11 +104,6 @@ class TideLogChainsCRUD(CRUD):
         return res
 
 
-@path("/tide/log/record.html")
-class TideLogRecord:
-    def GET(self, _cid = None, *args, **kwargs):
-        return tide_log["log/record"]()
-
 
 @path("/tide/log/journal.html")
 class TideLogJournal:

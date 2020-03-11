@@ -330,6 +330,29 @@ class TransformConfig:
             oneRegulate=TransformRegulate(r.get("type"),r[r.get("type")])
             data=oneRegulate.go(data)
         return data
-# todo:
-class DealDate:
-    pass
+
+
+
+
+class TideCellOthers:
+    def __init__(self, hook,hookId):
+        self.hook=hook
+        self.hookId=hookId
+
+    def geTabletOpts(self,tableNm,key,query={}):
+        T=TileOut(tableNm,self.hook)
+        query["key"]=key
+        o=T.one(compressObject(query))
+        a=[]
+        for s in o.keys():
+            if type (o.get(s))!=dict :
+                a.append("%s %s"%(s,s))
+
+        return {
+            "sn":key.get("sn"),
+            "hook": key.get("hook"),
+            "opts":("\n").join(a),
+            "colInp": ("\n").join(a),
+
+        }
+

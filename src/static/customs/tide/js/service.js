@@ -73,6 +73,11 @@ var tideService = {
             "CRUD": CRUD("tide/log/plan"),
         },
   
+    },
+    "out": {
+        "record": {
+            "CRUD": CRUD("tide/out/record"),
+        }
     }
 
 

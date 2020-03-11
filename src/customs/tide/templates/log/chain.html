@@ -39,6 +39,32 @@ Date : 2020/3/7
 <script type="text/javascript">
   var Loading = jQuery.Loading({ Message: "数据加载中……", Timeout: 1200 });
 
+
+
+  function showDialogList(idx, hook) {
+    var row = $("#" + hook).data("component").View.Grid.Element.datagrid("getRows")[idx];
+    row["logId"] = personal.logId;
+    var query = {}
+    if (row.take.type == "table") {
+
+      var config = {
+        Title: "详细 " ,
+        Url: "/tide/out/record.html",
+        Width: "1200",
+        Height: "700",
+        CloseButton: true
+      };
+      Dialog(config, { row }, function(res) {
+
+      });
+
+    }
+
+
+  }
+
+
+
   var personal = {
     "topHook": Proxy.GetUrlParam("topHook"),
     "logId": Proxy.GetUrlParam("logId"),
@@ -88,8 +114,8 @@ Date : 2020/3/7
       "Columns": [],
       "Form": [{
         "Inputs": []
-      },{
-        "Title":"take",
+      }, {
+        "Title": "take",
         "Inputs": []
       }],
       "Properties": [],
@@ -103,11 +129,22 @@ Date : 2020/3/7
     }
     initial.Columns[0] = [
       { "field": "fetch.option.nm", "title": "名称", "width": 100, },
-      { "field": "fetch.option.refresh", "title": "刷新", "width": 100, binding: "refresh" },
       { "field": "fetch.key.sn", "title": "编码", "width": 100, },
+      { "field": "fetch.key.t", "title": "时间", "width": 60, formatter: DateFormatter, },
+      {
+        "field": "detail",
+        "title": "详细",
+        "width": 100,
+        formatter: function(v, r, i) {
+          if (r.take && r.take.type != "table") {
+            return ""
+          }
+          return "<a onclick=showDialogList(" + i + ",'" + r.hook + "')>" + "detail" + "</a>";
+        }
+      },
+      { "field": "fetch.option.refresh", "title": "刷新", "width": 100, binding: "refresh" },
       { "field": "fetch.option.pid", "title": "pid", "width": 100, },
       { "field": "fetch.key.cycle", "title": "周期", "width": 100, binding: "cycle" },
-      { "field": "fetch.key.t", "title": "时间", "width": 100, formatter: DateFormatter, },
       { "field": "fetch.key.level", "title": "等级", "width": 100, binding: "cell_level" },
       { "field": "fetch.key.levelSn", "title": "等级编码", "width": 100, },
       { "field": "hookId", "title": "hookId", "width": 100, },

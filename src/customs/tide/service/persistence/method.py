@@ -65,3 +65,12 @@ def save_data(table,data,key):
         for r in l:
             r["key"]=key
             eval(table.get("nm")).upsert(**r)
+
+
+class TileOut:
+    def __init__(self,tableNm,hook):
+
+        self.module = eval("%s_%s" % (tableNm, hook))
+
+    def one(self,query):
+        return self.module.one(query=query)
