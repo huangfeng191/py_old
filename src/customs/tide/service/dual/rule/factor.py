@@ -344,9 +344,13 @@ class TideCellOthers:
         query["key"]=key
         o=T.one(compressObject(query))
         a=[]
+
         for s in o.keys():
             if type (o.get(s))!=dict :
-                a.append("%s %s"%(s,s))
+                if type (o.get(s)) == int :
+                   a.append("%s %s"%(s,"float"))
+                else:
+                    a.append("%s %s" % (s, s))
 
         return {
             "sn":key.get("sn"),

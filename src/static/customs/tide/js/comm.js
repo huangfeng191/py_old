@@ -50,15 +50,20 @@ function CRUDSetting(text, option) {
                 }
                 row.dataType = dataType || "String";
                 row.showType = showType || "t";
-                if (["str", "String", "string"].includes(dataType)) {
-                    row.dataType = "String";
-                }
-
+  
                 Object.keys(types).forEach(function(k) {
                     if (k == row.showType) {
                         Object.assign(row, types[k])
                     }
                 })
+                if (["str", "String", "string"].includes(dataType)) {
+                    row.dataType = "String";
+                }
+                if (["float"].includes(dataType)) {
+                    row.dataType = "Number";
+                }
+
+
                 // 最后一个字段复制
                 if (optional && optional.length > 0) {
                     lastOptional = {};
