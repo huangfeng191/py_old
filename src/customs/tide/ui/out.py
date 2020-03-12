@@ -66,11 +66,12 @@ class TideOutRecordCRUD(CRUD):
         for c in log.get("chains"):
             Hook=c.get(o["hook"])
             if Hook.get("hookId")==o["hookId"]:
+                key=Hook.get("take").get("key")
                 kwArgs["query"]=query
-                kwArgs["query"]["key"]=Hook.get("take").get("key")
+                kwArgs["query"]["key"]=key
                 kwArgs["query"]=compressObject(kwArgs["query"])
                 table=Hook["take"].get("table")
-                cs = eval("%s_%s"%(table["nm"],table["hook"])).items(*args, **kwArgs)
+                cs = eval("%s_%s"%(table["nm"],key.get("level"))).items(*args, **kwArgs)
                 total=cs.count()
                 break
         return {

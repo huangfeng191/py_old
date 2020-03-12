@@ -244,9 +244,9 @@ Date : 2020/3/7
         let self = this;
         if (self.Core.View.Container) {
           var gridId = self.Core.View.Container.attr("id")
-          if (gridId == personal.topHook) {
-            Filters.Merge([{ Field: "_id", Operate: "=", Value: personal.logId, Relation: "and" }]);
-          }
+          
+          
+          Filters.Merge([{ Field: "logId", Operate: "=", Value: personal.logId, Relation: "and" }]);
 
 
           Filters.Merge([{ Field: "hook", Operate: "=", Value: gridId, Relation: "and" }]);

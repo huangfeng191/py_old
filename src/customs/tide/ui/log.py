@@ -69,7 +69,7 @@ class TideLogCRUD(CRUD):
 
             conditions = kwArgs.get('conditions', [])
             query = tide_utils.parse_conditions_CRUD(conditions).get('$and', {})
-            log=self.module.get(query.get("_id"))
+            log=self.module.get(query.get("logId"))
             Log=Tide_log_info(log.get("topHookId"),log.get("topHook"),log.get("_id"))
 
             res=Log.getLayers(query.get("hook"),query.get("pid","")) or []

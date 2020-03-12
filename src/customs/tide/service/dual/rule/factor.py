@@ -340,7 +340,7 @@ class TideCellOthers:
         self.hookId=hookId
 
     def geTabletOpts(self,tableNm,key,query={}):
-        T=TileOut(tableNm,self.hook)
+        T=TileOut(tableNm,key.get("level"))
         query["key"]=key
         o=T.one(compressObject(query))
         a=[]

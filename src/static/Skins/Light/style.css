@@ -3022,3 +3022,12 @@ div.my_dialog > div > div div.body > div > div > div > div iframe
    
     
 .area_divs .hasConfig{color: #666666;}
+
+
+.crud_framework .form_container > .button_container {
+  margin: 0;
+  height: 28px;
+  padding: 4px 8px 4px 0px;
+  border-top: 1px solid #bfcfdc;
+  text-align: right;
+}
