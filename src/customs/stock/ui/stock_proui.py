@@ -24,6 +24,18 @@ class ProStockInterfaceconfig:
 class ProStockInterfaceconfigCRUD(CRUD):
     def __init__(self):
         self.module = basic.pro_interface_config
+    def action(self, act, *args, **kwArgs):
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+
+    def copy(self, record=None, *args, **kwArgs):
+           one=self.module.get(record.get("_id"))
+           del one["_id"]
+           self.module.upsert(**one)
+
+           return "OK"
     def query(self, count=True, *args, **kwArgs):
 
        res = CRUD.query(self, count=count, *args, **kwArgs)

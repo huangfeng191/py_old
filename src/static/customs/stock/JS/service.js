@@ -44,6 +44,9 @@ var stockService={
             "linkCell":CRUD("dynamic/link/cell")
         }
        
+    },
+    "basic":{
+        "interfaceconfig":CRUD("prostock/interfaceconfig")
     }
 
   

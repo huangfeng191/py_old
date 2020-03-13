@@ -11,7 +11,8 @@
    var myChart = echarts.init(document.getElementById('myChart'));
 
     var oo = 
-        {"method_tp":"getStockHistory_tochart","query_data":{"s":"20180901","codes":["300097.SZ"],"items":{"daily":1,"index_daily":{"ts_code":"000008.SH"}}},
+        {"method_tp":"getStockHistory_tochart","query_data":{"s":"20200101","codes":["300097.SZ"],"items":{"daily":1,"index_daily":{"ts_code":"000008.SH"}}},
+        // {"method_tp":"getStockHistory_tochart","query_data":{"s":"20200101","codes":["300097.SZ"],"items":{"daily":1}},
         "query_chart":{
         "in_xAxis":{"k":"trade_date","from":"daily"} , 
         // "in_yAxis":{"1":{"name":"涨跌幅","max":10,"min":-10}   },
@@ -26,8 +27,15 @@
             
             ]  }
         };
-    if(getUrlParam("code")){
-        oo["query_data"]["codes"]=[getUrlParam("code")]
+        var p_code=getUrlParam("code")
+    if(p_code){
+        oo["query_data"]["codes"]=[p_code]
+        if(p_code.indexOf(".SZ")>=0){
+            if(oo.query_data.items.index_daily){
+                oo.query_data.items.index_daily.ts_code="399001.SZ"
+                oo["in_yAxis"]={"1":{"name":"深圳指数","min":8000}   };
+            }
+        }
     }    
     var url = "/stock/report/test.json";
     jQuery.ajax({
@@ -41,7 +49,7 @@
             myChart.setOption(option);
             
         }else{
-        Msg(json.Message);
+        Dialog({ Title: "提示", Type: window.top.MyDialog.Types.Message, Icon: window.top.MyDialog.Icons.Info, Message: json.Message, AutoClose: 3 }, null, null);            
         }
     })     
 

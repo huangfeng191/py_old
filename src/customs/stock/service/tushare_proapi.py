@@ -139,7 +139,7 @@ def ruleCombine(variable=[],normal=[],must={},ret=[]):
        ret.append(must)
     for r_c in variable:    
         if r_c.get("type") == "loop":
-            l = eval(r_c.get("from")).items(fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
+            l = eval(r_c.get("from")).items(query=r_c.get("from_q"), fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
         for r_l in l:
             must[r_c.get("basic")] = r_l.get(r_c.get("from_k"))
             ret.append(deepcopy(must))
