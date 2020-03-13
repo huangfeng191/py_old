@@ -17,6 +17,8 @@ tide_plan = comm.CRUD(ctx.tide_baseDb, "plan" )
 
 tide_chains_log = comm.CRUD(ctx.tide_baseDb, "chains_log" )
 
+tide_chains_history = comm.CRUD(ctx.tide_baseDb, "chains_history" )
+
 
 tide_cell_log = comm.CRUD(ctx.tide_baseDb, "cell_log" )
 tide_link_log = comm.CRUD(ctx.tide_baseDb, "link_log" )

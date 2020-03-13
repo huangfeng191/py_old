@@ -69,7 +69,9 @@ class TaskRun:
 
         if logId:
             c["_id"]=logId
-        tide_chains_log.upsert(**c)
+
+        doTideLog("chains", c)
+        tide_chains_history.upsert(**c)
         print "____expose.TaskRun.go____________  Hardships often prepare ordinary people for an extraordinary destiny."
 
 
