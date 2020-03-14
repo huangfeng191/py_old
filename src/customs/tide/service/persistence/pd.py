@@ -15,13 +15,42 @@ from customs.tide.service.bean.out import *
 
 
 class PandasDo:
-    def __init__(self, source,carousel,rule):
-        self.source=source
+    def __init__(self,carousel,rule ,data=None):
+        self.data=data
         self.carousel=carousel
         self.rule=rule
+        self.df=None
     def tableToDataFrame(self):
-        l=index_basic.items()
-        df = pd.DataFrame(list(l))
+
+        df = pd.DataFrame(list(self.data or []))
+        self.df=df
         pass
+    def do_subjoin(self,df):
+        if df.empty:
+            return None
+        commands=self.rule.get("subjoin")
+        out={}
+        for r in self.rule.get("out").get("fields"):
+            out[r]=0
+        df['temp'] = df['change']
+        df['pct_chg_5'] = df['pct_chg']
+        out['up_percent_gt5'] =int( df.loc[df.loc[:, 'pct_chg'] >= 5, 'pct_chg'].count())
+        out['down_percent_gt5'] = int(df.loc[df.loc[:, 'pct_chg'] <= -5, 'pct_chg'].count())
+        df.loc[df.loc[:, 'temp'] >= 0, 'temp'] = 1
+        df.loc[df.loc[:, 'temp'] < 0, 'temp'] = 0
+        df['c'] =((df['temp'].shift(1).fillna(0)) != df['temp']).cumsum()
+
+        if not df[df.loc[:,"temp"]==1].empty:
+           out['continue_up'] = int(df[df['temp'] == 1]['c'].value_counts().max())
+        if not df[df.loc[:, "temp"] == 0].empty:
+            out['continue_down'] = int(df[df['temp'] == 0]['c'].value_counts().max())
+        out['ups'] = int(df[df['temp'] == 1]['c'].value_counts().sum())
+        out['downs'] = int(df[df['temp'] == 0]['c'].value_counts().sum())
+        out['chain_ratio'] = float((df['close'].iloc[-1] - df['close'].iloc[0]) / df['close'].iloc[0])
+
+
+        return out
+
     def go(self):
         self.tableToDataFrame()
+        return self.do_subjoin(self.df)

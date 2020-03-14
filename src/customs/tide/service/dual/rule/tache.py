@@ -78,6 +78,7 @@ class CellRuleConfig:
         self.config = config.get(type) or {}
         self.layer = layer
         self.chains=chains
+        self.basket=layer.get("basket")
 
     def get(self):
         rule = None
@@ -88,6 +89,9 @@ class CellRuleConfig:
             rule["query"] = QP.get()
         elif self.type == "aggregate":
             rule=self.config
+        elif self.type =="pandas":
+            rule = self.config
+            rule["subjoin"]=self.basket.get("subjoin",[])
         return rule
 
 

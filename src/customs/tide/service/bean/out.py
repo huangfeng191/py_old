@@ -24,11 +24,11 @@ tide_basic_measure= comm.CRUD(ctx.tide_outDb, "basic_measure", [("ts_code", 1)])
 tide_basic_plan= comm.CRUD(ctx.tide_outDb, "basic_plan", [("ts_code", 1)])
 
 
-tide_statistic_cell= comm.CRUD(ctx.tide_outDb, "statistic_cell", [("ts_code", 1)]) # 明细
-tide_statistic_link= comm.CRUD(ctx.tide_outDb, "statistic_link", [("ts_code", 1)])
-tide_statistic_step= comm.CRUD(ctx.tide_outDb, "statistic_step", [("ts_code", 1)])
-tide_statistic_measure= comm.CRUD(ctx.tide_outDb, "statistic_measure", [("ts_code", 1)])
-tide_statistic_plan= comm.CRUD(ctx.tide_outDb, "statistic_plan", [("ts_code", 1)])
+tide_statistic_cell= comm.CRUD(ctx.tide_outDb, "statistic_cell", [("ts_code", 1)],[("carousel.ts_code", 1)]) # 明细
+tide_statistic_link= comm.CRUD(ctx.tide_outDb, "statistic_link", [("ts_code", 1)],[("carousel.ts_code", 1)])
+tide_statistic_step= comm.CRUD(ctx.tide_outDb, "statistic_step", [("ts_code", 1)],[("carousel.ts_code", 1)])
+tide_statistic_measure= comm.CRUD(ctx.tide_outDb, "statistic_measure", [("ts_code", 1)],[("carousel.ts_code", 1)])
+tide_statistic_plan= comm.CRUD(ctx.tide_outDb, "statistic_plan", [("ts_code", 1)],[("carousel.ts_code", 1)])
 
 
 

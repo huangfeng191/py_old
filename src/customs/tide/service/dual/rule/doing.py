@@ -10,6 +10,7 @@ from tache import *
 
 from customs.tide.service.utils.wrap import *
 from customs.tide.service.gather.log import *
+from customs.tide.service.persistence.pd import *
 
 class CellDoing:
     def __init__(self,cell_layer,chain,chains=None):
@@ -36,6 +37,16 @@ class CellDoing:
                     source["table"]["query"].update(carousel)
 
                 data = rule_doing_aggregate(source.get("table"), rule)
+        elif basket.get("ruleType") =="pandas":
+            if source.get("type")=="table":
+                if carousel:
+                    if "query" not in rule:
+                        rule["query"]={}
+                    rule["query"].update(carousel)
+                data=rule_doing_table(source.get("table"),rule)
+            P=PandasDo(carousel,rule,data)
+            data=P.go()
+            pass
         return data
 
 

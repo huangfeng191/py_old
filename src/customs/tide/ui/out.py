@@ -26,7 +26,7 @@ class TideOutRecord:
 
 
 
-
+# 查询记录 
 @wildcard("/tide/out/record/")
 class TideOutRecordCRUD(CRUD):
     def __init__(self):

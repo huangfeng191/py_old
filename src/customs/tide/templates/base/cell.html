@@ -43,49 +43,47 @@ Date : 2020/2/4
   var oConfig = {
     columns: [
       [
-        { "field": "sn", "title": "规则编码", "width": 100, },
-        { "field": "nm", "title": "规则名称", "width": 100, },
-        { "field": "level", "title": "规则等级", "width": 100, binding: "cell_level" },
-        { "field": "cycle", "title": "周期", "width": 100, binding: "cycle" },
-        { "field": "loopType", "title": "循环类型", "width": 100, binding: "loopType" },
-        { "field": "loopConfig", "title": "循环配置", "width": 100, },
-        { "field": "sourceType", "title": "源类型", "width": 100, binding: "sourceType" },
-        { "field": "sourceConfig", "title": "源配置", "width": 100, },
-        { "field": "ruleType", "title": "计算规则", "width": 100, binding: "ruleType" },
-        { "field": "ruleConfig", "title": "计算配置", "width": 100, },
-        { "field": "outType", "title": "输出规则", "width": 100, binding: "outType" },
-        { "field": "outConfig", "title": "输出配置", "width": 100, },
-        { "field": "w", "title": "排序", "width": 100, },
-        { "field": "refresh", "title": "刷新", "width": 100, binding: "refresh" },
-        { "field": "classify", "title": "分类", "width": 100, },
-        { "field": "desc", "title": "描述", "width": 100, },
-        { "field": "pid", "title": "pid", "width": 100, },
+      { "field": "sn","title": "规则编码", "width": 100, },
+{ "field": "nm","title": "规则名称", "width": 100, },
+{ "field": "level","title": "规则等级", "width": 100,binding:"cell_level" },
+{ "field": "cycle","title": "周期", "width": 100,binding:"cycle" },
+{ "field": "loopType","title": "循环类型", "width": 100,binding:"loopType" },
+{ "field": "loopConfig","title": "循环配置", "width": 100, },
+{ "field": "sourceType","title": "源类型", "width": 100,binding:"sourceType" },
+{ "field": "sourceConfig","title": "源配置", "width": 100, },
+{ "field": "ruleType","title": "计算规则", "width": 100,binding:"ruleType" },
+{ "field": "ruleConfig","title": "计算配置", "width": 100, },
+{ "field": "subjoin","title": "计算附加", "width": 100, },
+{ "field": "outType","title": "输出规则", "width": 100,binding:"outType" },
+{ "field": "outConfig","title": "输出配置", "width": 100, },
+{ "field": "w","title": "排序", "width": 100, },
+{ "field": "refresh","title": "刷新", "width": 100,binding:"refresh" },
+{ "field": "classify","title": "分类", "width": 100, },
+{ "field": "desc","title": "描述", "width": 100, },
+{ "field": "pid","title": "pid", "width": 100, },
       ]
     ],
     form: [{
       "Title": "",
       "Inputs": [
-        [{ "Field": "sn", "Name": "规则编码", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "nm", "Name": "规则名称", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "level", "Name": "规则等级", ShowType: "combo", DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },
-        ],
-        [{ "Field": "cycle", "Name": "周期", ShowType: "combo", DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "loopType", "Name": "循环类型", ShowType: "combo", DataType: "String", Ext: "loopType", "Required": false, RowSpan: 1, ColSpan: " " },
-        ],
-        [{ "Field": "loopConfig", "Name": "循环配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-        [{ "Field": "sourceType", "Name": "源类型", ShowType: "combo", DataType: "String", Ext: "sourceType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-        [{ "Field": "sourceConfig", "Name": "源配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-        [{ "Field": "ruleType", "Name": "计算规则", ShowType: "combo", DataType: "String", Ext: "ruleType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-        [{ "Field": "ruleConfig", "Name": "计算配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-        [{ "Field": "outType", "Name": "输出规则", ShowType: "combo", DataType: "String", Ext: "outType", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-        [{ "Field": "outConfig", "Name": "输出配置", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-        [{ "Field": "w", "Name": "排序", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "refresh", "Name": "刷新", ShowType: "combo", DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
-          { "Field": "classify", "Name": "分类", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
-        ],
-        [{ "Field": "desc", "Name": "描述", ShowType: "textarea", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" }, ],
-        [{ "Field": "pid", "Name": "pid", ShowType: "text", DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" }, ],
-      ]
+      [{ "Field": "sn", "Name": "规则编码", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "nm", "Name": "规则名称", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "level", "Name": "规则等级", ShowType: "combo",DataType: "String", Ext: "cell_level", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "cycle", "Name": "周期", ShowType: "combo",DataType: "String", Ext: "cycle", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "loopType", "Name": "循环类型", ShowType: "combo",DataType: "String", Ext: "loopType", "Required": false, RowSpan: 1, ColSpan: " " },],
+[{ "Field": "loopConfig", "Name": "循环配置", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "sourceType", "Name": "源类型", ShowType: "combo",DataType: "String", Ext: "sourceType", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "sourceConfig", "Name": "源配置", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "ruleType", "Name": "计算规则", ShowType: "combo",DataType: "String", Ext: "ruleType", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "ruleConfig", "Name": "计算配置", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "subjoin", "Name": "计算附加", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "outType", "Name": "输出规则", ShowType: "combo",DataType: "String", Ext: "outType", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "outConfig", "Name": "输出配置", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "w", "Name": "排序", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "refresh", "Name": "刷新", ShowType: "combo",DataType: "String", Ext: "refresh", "Required": false, RowSpan: 1, ColSpan: "1" },
+{ "Field": "classify", "Name": "分类", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],
+[{ "Field": "desc", "Name": "描述", ShowType: "textarea",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "3" },],
+[{ "Field": "pid", "Name": "pid", ShowType: "text",DataType: "String", Ext: "", "Required": false, RowSpan: 1, ColSpan: "1" },],      ]
     }],
     props: [],
     quics: [],
@@ -128,15 +126,15 @@ Date : 2020/2/4
             this.Button.Hide(["filter", "order"]);
             var jDom = this.Container;
             var view = this.Core.View;
-            var showName="doing";
-            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            var showName = "doing";
+            jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
             on('click', function(event) {
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
-                tideService.base.link.CRUD.post(showName,{"record":selRow}).done(function(ret) {
+                tideService.base.link.CRUD.post(showName, { "record": selRow }).done(function(ret) {
                   view.ShowMessage("delighted");
                 })
-              }else{
+              } else {
                 view.ShowMessage("Please select link row ");
               }
             })
@@ -168,7 +166,7 @@ Date : 2020/2/4
 
                 }
               })
-              
+
 
 
             },
@@ -242,16 +240,16 @@ Date : 2020/2/4
         View: {
           AfterRender: function() {
             this.Button.Hide(["filter", "order"]);
-         
+
             var jDom = this.Container;
             var view = this.Core.View;
 
 
 
 
-            
-            var showName="copy";
-            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+
+            var showName = "copy";
+            jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
             on("click", function(event) {
               var row = view.Grid.CurrentRow;
 
@@ -271,11 +269,11 @@ Date : 2020/2/4
                 }
                 var toData = $(event.target).data("copyInfo")
                 toData["toPid"] = pid
-                tideService.base.cell.CRUD.post("copy",toData).done(function(json) {
+                tideService.base.cell.CRUD.post("copy", toData).done(function(json) {
                   $(event.target).html("copy");
                   if (json) {
                     view.ShowMessage("operate success ")
-                    
+
                     view.Grid.Query();
                   }
                 })
@@ -286,17 +284,17 @@ Date : 2020/2/4
 
             })
 
-             showName="doing";
-            jDom.find('.right_container').prepend('<button command='+showName+'>'+showName+'</button>').find('[command='+showName+']').
+            showName = "doing";
+            jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
             on('click', function(event) {
               var selRow = view.Grid.CurrentRow;
               if (selRow) {
-                tideService.base.cell.CRUD.post("doing",{"record":selRow}).done(function(ret) {
+                tideService.base.cell.CRUD.post("doing", { "record": selRow }).done(function(ret) {
                   view.ShowMessage("delighted");
                 })
-              }else{
+              } else {
                 view.ShowMessage("Please select cell row ");
-                
+
               }
             })
 
@@ -324,7 +322,7 @@ Date : 2020/2/4
               }
 
               var FC = $(".my_dialog") || this.Container;
-             
+
               Object.keys(PCRUD.View.Field).forEach(function(k) {
                 var v = PCRUD.View.Field[k];
                 if (v && v.ColSpan > 1) {
@@ -343,15 +341,18 @@ Date : 2020/2/4
                   if (v.Field == "outConfig") {
                     $ele.height("180px")
                   }
+                  if (v.Field == "subjoin") {
+                    $ele.height("180px")
+                  }
 
 
                 }
               })
               var userAgent = navigator.userAgent;
               if (userAgent.indexOf("Firefox") > -1) { //判断是否Firefox浏览器
-                FC.find(".group_container>.group").width( FC.find(".group_container>.group").width()+12)
+                FC.find(".group_container>.group").width(FC.find(".group_container>.group").width() + 12)
               }
-             
+
 
             },
             BeforeGet: function(Record, u, Valids) {},

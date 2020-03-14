@@ -364,6 +364,14 @@ class TideCellOthers:
                    a.append("%s %s"%(s,"float"))
                 else:
                     a.append("%s %s" % (s, s))
+        if o.get("carousel"):
+            for s in o.get("carousel").keys():
+                if type(o.get("carousel").get(s)) != dict:
+                    if type(o.get("carousel").get(s)) == int:
+                        a.append("carousel.%s %s" % (s, "float"))
+                    else:
+                        a.append("carousel.%s %s" % (s, s))
+
 
         return {
             "sn":key.get("sn"),
