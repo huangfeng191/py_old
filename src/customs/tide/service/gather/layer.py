@@ -53,7 +53,8 @@ class Layer:
                     else:
                         basket[s]={}
                 for s in ["subjoin"]:
-                    basket[s]=config.get(s,"").split("\n")
+                    if config.get(s):
+                        basket[s]=config.get(s,"").split("\n")
         except:
             print "解析参数错误"
             raise Exception("解析参数错误 gather.Layer.parseBasket")

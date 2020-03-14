@@ -359,8 +359,8 @@ class TideCellOthers:
         a=[]
 
         for s in o.keys():
-            if type (o.get(s))!=dict :
-                if type (o.get(s)) == int :
+            if type (o.get(s))!=dict  and s not in ["created","changed"]:
+                if type (o.get(s)) == int or type (o.get(s)) == float :
                    a.append("%s %s"%(s,"float"))
                 else:
                     a.append("%s %s" % (s, s))

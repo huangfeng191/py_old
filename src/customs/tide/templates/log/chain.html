@@ -311,8 +311,9 @@ Date : 2020/3/7
     init("step");
     init("link");
     init("cell");
-
-    $("#" + personal.topHook).data("component").View.Grid.Query()
+    if($("#" + personal.topHook).data("component")){
+      $("#" + personal.topHook).data("component").View.Grid.Query()
+    }
 
 
   });

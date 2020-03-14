@@ -145,7 +145,7 @@ function CRUDSetting(text, option) {
             var properties = []
             this.rows.forEach(function(row) {
 
-                var property = `{ "Field": "${row.sn}", "Name": "${row.nm}", "ShowType": "${row.showType}","DataType": "${row.dataType}","FilterEnabled": true }`;
+                var property = `{ "Field": "${row.sn}", "Name": "${row.nm}", "ShowType": "${row.showType}","DataType": "${row.dataType}","FilterEnabled": true,"OrderEnabled": true }`;
                 property = JSON.parse(property);
                 if (row.dataType == "combo" || row.dataType == "datetime") {
                     property["Ext"] = row.fmt

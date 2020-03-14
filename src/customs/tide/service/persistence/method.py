@@ -21,6 +21,12 @@ def rule_doing_table(table,rule={}):
     arrange={"query":{}}
     if table.get("query"):
         arrange["query"]=compressObject(table.get("query"))
+        for s in ["query","sorts"]:
+            if s == "query":
+                q = compressObject(table.get("query", {}))
+                arrange[s].update(q)
+            elif s == "sorts":
+                arrange["order"] = table.get("sorts", {}).get("order")
     if rule:
         for s in ["query","sorts","limits"]:
             if s=="query":
@@ -30,7 +36,8 @@ def rule_doing_table(table,rule={}):
                 arrange["size"]=rule.get("limits",{}).get("size")
 
             elif s=="sorts":
-                arrange["order"]=rule.get("sorts",{}).get("order")
+                if rule.get("sorts",{}).get("order"):
+                    arrange["order"]=rule.get("sorts",{}).get("order")
     ret = None
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)

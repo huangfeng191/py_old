@@ -118,6 +118,8 @@ class CellOutConfig:
 
         o = take["table"]
         o["nm"]=config.get("nm")
+        if config.get("sorts"):
+            o["sorts"]=config.get("sorts")
 
 
 
