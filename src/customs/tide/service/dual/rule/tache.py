@@ -91,7 +91,7 @@ class CellRuleConfig:
             rule=self.config
         elif self.type =="pandas":
             rule = self.config
-            rule["subjoin"]=self.basket.get("subjoin",[])
+            rule["subjoin"]=self.basket.get("subjoin","")
         return rule
 
 
