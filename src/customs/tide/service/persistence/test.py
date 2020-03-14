@@ -8,6 +8,7 @@
 from method import *
 from customs.tide.service.persistence import *
 from customs.tide.service.gather.layer import *
+from pd import *
 def test_Class_EmphasisTake():
     '''
     测试 chain 的 上下级
@@ -30,3 +31,18 @@ def test_Class_EmphasisTake():
         print e
     print layer
     print 2
+
+
+def test_Class_PandasDo():
+    source={
+        "table":{
+            "nm":"index_basic"
+        }
+    }
+    rule={
+
+    }
+    carousel=None
+    Pd=PandasDo(source,carousel,rule)
+    Pd.go()
+    print 1

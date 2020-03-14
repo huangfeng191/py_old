@@ -57,9 +57,18 @@ class TideBaseLinkCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
           if act == 'doing':
               return self.doing(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
 
+    def copy(self, record=None, **kwArgs):
+        if not record:
+            raise Exception("need toPid")
+        record = self.module.get(record.get("_id"))
+        if record:
+            del record["_id"]
+        return self.action("insert", record=record)
     def doing(self, record=None, *args, **kwArgs):
         task = TaskRun(record.get("_id"), "link", None)
         re = task.go()
@@ -76,9 +85,17 @@ class TideBaseStepCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
           if act == 'doing':
               return self.doing(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
-
+    def copy(self, record=None, **kwArgs):
+        if not record:
+            raise Exception("need toPid")
+        record = self.module.get(record.get("_id"))
+        if record:
+            del record["_id"]
+        return self.action("insert", record=record)
     def doing(self, record=None, *args, **kwArgs):
         task = TaskRun(record.get("_id"), "step", None)
         re = task.go()
@@ -91,9 +108,17 @@ class TideBaseMeasureCRUD(CRUD):
     def action(self, act, *args, **kwArgs):
           if act == 'doing':
               return self.doing(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
           else:
               return CRUD.action(self, act, *args, **kwArgs)
-
+    def copy(self, record=None, **kwArgs):
+        if not record:
+            raise Exception("need toPid")
+        record = self.module.get(record.get("_id"))
+        if record:
+            del record["_id"]
+        return self.action("insert", record=record)
     def doing(self, record=None, *args, **kwArgs):
         task = TaskRun(record.get("_id"), "measure", None)
         re = task.go()
@@ -103,23 +128,31 @@ class TideBaseMeasureCRUD(CRUD):
 class TidebasePlan:
     def GET(self, _cid = None, *args, **kwargs):
         return tide_base["base/plan"]()
-    def action(self, act, *args, **kwArgs):
-          if act == 'doing':
-              return self.doing(*args, **kwArgs)
-          else:
-              return CRUD.action(self, act, *args, **kwArgs)
 
-    def doing(self, record=None, *args, **kwArgs):
-        task = TaskRun(record.get("_id"), "plan", None)
-        re = task.go()
-        return re
 
 
 @wildcard("/tide/base/plan/")
 class TideBasePlanCRUD(CRUD):
     def __init__(self):
         self.module = tide_plan
-
+    def action(self, act, *args, **kwArgs):
+          if act == 'doing':
+              return self.doing(*args, **kwArgs)
+          if act == 'copy':
+              return self.copy(*args, **kwArgs)
+          else:
+              return CRUD.action(self, act, *args, **kwArgs)
+    def copy(self, record=None, **kwArgs):
+        if not record:
+            raise Exception("need toPid")
+        record = self.module.get(record.get("_id"))
+        if record:
+            del record["_id"]
+        return self.action("insert", record=record)
+    def doing(self, record=None, *args, **kwArgs):
+        task = TaskRun(record.get("_id"), "plan", None)
+        re = task.go()
+        return re
 
 
 

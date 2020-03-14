@@ -26,7 +26,7 @@ class EmphasisTake:
         take=self.take
         ret=None
         if self.type=="table":
-            # 未了能正确取 jump 数据
+            # 为了能正确取 jump 数据
             c=queryTideTableParse(config,take)
 
             ret=rule_doing_table(c,None)

@@ -32,7 +32,7 @@ class QueryParsed:
                  value
                  assist:""   // if null get field
                  regulates
-                operate
+                 operate
                     "lte" ...
 
     '''
@@ -41,9 +41,11 @@ class QueryParsed:
         self.config = config or {}
         self.layer=layer
         self.chains=chains
-    def parseTypeDate(self,restrain,**kwargs):
+    def parseTypeDate(self,restrain=None,**kwargs):
         t="";
-        if restrain=="extend":
+        if restrain==None or not restrain:
+            t=kwargs.get("value")
+        elif restrain=="extend":
             t=self.layer.get("fetch").get("key").get("t")
         else:
             t=getCycleToT(restrain)
@@ -70,14 +72,6 @@ class QueryParsed:
 
         return ret
 
-    def parseTypeSlot(self,**kwargs):
-        pass
-    # 1. LayerLog  get take
-    # 2. CellLog 通过 这个能力
-    # 3. getData
-
-    def praseOperate(self):
-        pass
 
     # @method_in_wrapper("queryParse.get ")
     def get(self):
@@ -179,9 +173,25 @@ class OriginConfig:
         self.layer = layer
         self.chains=chains
 
-    def getJumpData(self):
-        self.config
-        return {}
+    def getJumpParse(self,config):
+
+        J=JumpParse(config.get("hook"),config.get("fetchKey"),self.layer)
+        layerLog=J.getLog()
+        take = layerLog.getTake()
+        if take.get("type") == "table":
+            take["table"] = queryTideTableParse(take.get(take.get("type")), take)  # 为了能正确的解析查询数据
+        return take
+    def getLogParse(self):
+        hookId = self.layer.get("hookId")
+        level = "cell"
+        front_chain = self.chains.getFrontChainByCellId(hookId)
+        front_take = front_chain.get(level).get("take")
+        con={
+            "hook":level,
+            "fetchKey":front_take.get("key")
+        }
+        ret=self.getJumpParse(con)
+        return ret
 
     def get(self):
         '''
@@ -202,11 +212,14 @@ class OriginConfig:
             SP = OriginParsed(self.config["type"], self.config, self.layer,self.chains)
             source = SP.get()
         elif self.type == "jump":
-            out = self.getJumpData()
-            SP = OriginParsed(out["type"], out[out["type"]], self.layer,self.chains)
+            take= self.getJumpParse(self.config)
+
+            SP = OriginParsed(take["type"], take, self.layer,self.chains)
             source = SP.get()
         elif self.type == "slot":
-            pass
+            take = self.getLogParse()
+            SP = OriginParsed(take["type"], take, self.layer, self.chains)
+            source = SP.get()
 
         return source
 
@@ -360,3 +373,33 @@ class TideCellOthers:
 
         }
 
+class JumpParse:
+    def __init__(self, hook, fetchKey,layer):
+        self.hook=hook
+        self.fetchKey=fetchKey
+        self.layer=layer
+
+    def parseFetchKey(self, fetchKey):
+        key = {}
+        for s in ["level", "levelSn", "sn"]:
+            key[s] = fetchKey[s]
+        if fetchKey.get("cycleLikely") == "extend":
+            key["t"] = self.layer.get("fetch").get("key").get("t")
+            key["cycle"] = self.layer.get("fetch").get("key").get("cycle")
+        else:
+            for s in ["t", "cycle"]:
+                key[s] = fetchKey[s]
+        return key
+
+    def getLog(self):
+        key=self.parseFetchKey(self.fetchKey)
+        layerLog = LayerLog(self.hook, key)
+        return layerLog
+    def getData(self):
+        log=self.getLog()
+        take = log.getTake()
+        fetch = {"key": take.get("key")}
+        cellLog = CellLog(fetch)
+        ret = cellLog.getData()
+
+        return ret

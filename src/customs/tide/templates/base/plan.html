@@ -99,9 +99,9 @@ Date : 2020/3/7
       { "field": "refresh", "title": "刷新", "width": 100, binding: "refresh" },
       { "field": "w", "title": "排序", "width": 100, },
       { "field": "classify", "title": "分类", "width": 100, },
+      { "field": "_id", "title": "_id", "width": 170, },
+      { "field": "pid", "title": "pid", "width": 170, },
       { "field": "desc", "title": "描述", "width": 100, },
-      { "field": "pid", "title": "pid", "width": 100, },
-      { "field": "_id", "title": "_id", "width": 100, },
     ]
     initial.Form[0].Inputs = [
       [
@@ -142,7 +142,22 @@ Date : 2020/3/7
       AfterRender: function() {
         var jDom = this.Container;
         var view = this.Core.View;
-        var showName = "doing";
+        var showName = "copy";
+        jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
+        on("click", function(event) {
+          var selRow = view.Grid.CurrentRow;
+          if (selRow) {
+            tideService.base[view.Container.attr("id")].CRUD.post("copy", { "record": selRow }).done(function(ret) {
+              view.Grid.Query();
+              view.ShowMessage("delighted");
+            })
+          } else {
+            view.ShowMessage("Please select  row ");
+          }
+        })
+
+
+        showName = "doing";
         jDom.find('.right_container').prepend('<button command=' + showName + '>' + showName + '</button>').find('[command=' + showName + ']').
         on('click', function(event) {
           var selRow = view.Grid.CurrentRow;
@@ -164,9 +179,9 @@ Date : 2020/3/7
           if (IsNew) {
             var pRow = personal.getParentGridRowById(grid_id)
             if (!pRow) {
-             
+
               V.ShowMessage("请选择父对象");
-              V.FormContainer.closest(".my_dialog").css("display","none")
+              V.FormContainer.closest(".my_dialog").css("display", "none")
               return false
             }
           }

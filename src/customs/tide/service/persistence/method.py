@@ -18,7 +18,7 @@ rule_doing_methods=[("table",{}),("aggregate",{})]
 # rule_doing_(ruleType)
 def rule_doing_table(table,rule={}):
 
-    arrange={}
+    arrange={"query":{}}
     if table.get("query"):
         arrange["query"]=compressObject(table.get("query"))
     if rule:
@@ -35,6 +35,8 @@ def rule_doing_table(table,rule={}):
     if(table and table.get("nm")):
         l=eval(table.get("nm")).items(**arrange)
         ret=list(l)
+        for r in ret:
+            del r["_id"]
     return ret
 
 
