@@ -15,22 +15,26 @@ from customs.tide.service.bean.out import *
 
 
 class PandasDo:
-    def __init__(self,carousel,rule ,data=None):
+    def __init__(self,carousel,rule ,data=None,loop_one=None):
         self.data=data
         self.carousel=carousel
         self.rule=rule
+        self.loop_one=loop_one
         self.df=None
+        self.df_loop=None
     def tableToDataFrame(self):
 
         df = pd.DataFrame(list(self.data or []))
         self.df=df
+        if self.loop_one:
+            self.df_loop = None
         pass
     def do_subjoin(self,df):
         if df.empty:
             return None
         commands=self.rule.get("subjoin")
         out={}
-        for r in self.rule.get("out").get("fields"):
+        for r in self.rule.get("out").get("fields",[]):
             out[r]=0
         exec(commands)
         # df['temp'] = df['change']

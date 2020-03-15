@@ -916,7 +916,7 @@ jQuery.extend(jQuery.CRUD,
 				                        }
 				                    }
 
-				                    Content.push("<tr><td style=\"font-size: 16px; text-align: center; height: 32px; padding: 4px;border:solid 0.5pt #000000;\" colspan=\"" + Fields.length + "\">" + _title + "</td></tr>");
+				                    // Content.push("<tr><td style=\"font-size: 16px; text-align: center; height: 32px; padding: 4px;border:solid 0.5pt #000000;\" colspan=\"" + Fields.length + "\">" + _title + "</td></tr>");
 
 				                    var DataColumns = {};
 				                    var Opts = V.Grid.Element.datagrid("options");

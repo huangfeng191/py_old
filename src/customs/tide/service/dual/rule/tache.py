@@ -18,7 +18,8 @@ class CellLoopConfig:
         self.config = basket.get("loopConfig")
         self.origin = OriginConfig(self.type, self.config, self.layer,self.chains)
         self.layer["loop"]={
-            "fields":self.config.get(self.type ).get("fields")
+            "fields":self.config.get(self.type ).get("fields"),
+            "carousel": self.config.get(self.type).get("carousel")
         }
 
     def getLoop(self):

@@ -20,7 +20,7 @@ class CellDoing:
         self.chain=chain
         self.chains=chains
     #  调用实际的方法
-    def method(self,basket,source,carousel,rule):
+    def method(self,basket,source,carousel,rule,loop_one):
         data=None
         if basket.get("ruleType")=="table":
             if source.get("type")=="table":
@@ -44,7 +44,7 @@ class CellDoing:
                         rule["query"]={}
                     rule["query"].update(carousel)
                 data=rule_doing_table(source.get("table"),rule)
-            P=PandasDo(carousel,rule,data)
+            P=PandasDo(carousel,rule,data,loop_one)
             data=P.go()
             pass
         return data
@@ -61,7 +61,7 @@ class CellDoing:
         pass
 
     @runtime_times_wrapper("cell.carousel ",1000)
-    def newResolve(self,basket, source,carousel, rule,Out,**kwargs):
+    def newResolve(self,basket, source,carousel, rule,Out,loop_one,**kwargs):
         '''
             1. 获取规则数据
             2. 保存数据
@@ -78,7 +78,7 @@ class CellDoing:
         '''
         fetch = self.layer.get("fetch")
         take = self.layer.get("take")
-        data = self.method(basket, source, carousel, rule)
+        data = self.method(basket, source, carousel, rule,loop_one)
         data = Out.go(data)  # 根据输出 处理数据
         self.dealData(fetch, take, carousel, data)  # 保存数据
 
@@ -132,10 +132,12 @@ class CellDoing:
         d_layer=self.cell_layer.getLayer()
         loop_data=[None]
         refer=[]
+        loop_fields=[]
         if basket.get("loopType"):
             L = CellLoopConfig(d_layer,self.chains)
             loop_data= L.getData()
-            refer = L.getLoop().get("fields")
+            refer = L.getLoop().get("carousel")
+            loop_fields = L.getLoop().get("fields") or []
         S = CellSourceConfig(d_layer,self.chains)
         source = S.get()
 
@@ -156,7 +158,10 @@ class CellDoing:
             carousel={}
             for field in refer:
                 carousel[field]=r.get(field)
-            self.newResolve(basket, source, carousel, rule, Out,**kwargs)
+            loop_one={}
+            for field in loop_fields:
+                loop_one[field] = r.get(field)
+            self.newResolve(basket, source, carousel, rule, Out,loop_one,**kwargs)
             
         cellLog = CellLog(**{"layer": d_layer, "isNew": True})
         cellLog.save()
