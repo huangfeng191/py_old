@@ -114,7 +114,7 @@ def rulePart(params,send_params={}):
                 # basic 接口表里的字段
                 # type:loop basic 接口表字段   from 其他表字段  from_k 其他表字段主键
                 # 此处可以添加参数，
-                one_com={"basic": k, "type": r2.get("type"), "from": r2.get("from"), "from_k": r2.get("from_k"), "from_q": r2.get("from_q")}
+                one_com={"basic": k, "type": r2.get("type"), "from": r2.get("from"), "from_k": r2.get("from_k"), "from_q": r2.get("from_q"),"combo":r2.get("combo",1)}
                 variable.append(one_com)
             elif r2.get("type") == "date":
                 # type：date  basic 接口表字段   from_k  从哪个字段获取， send_params 从那个字段获取的条件
@@ -140,12 +140,29 @@ def ruleCombine(variable=[],normal=[],must={},ret=[]):
     for r_c in variable:    
         if r_c.get("type") == "loop":
             l = eval(r_c.get("from")).items(query=r_c.get("from_q"), fields=[r_c.get("from_k")], _sort=[(r_c.get("from_k"), 1)])
-        for r_l in l:
-            must[r_c.get("basic")] = r_l.get(r_c.get("from_k"))
-            ret.append(deepcopy(must))
+            combo=r_c.get("combo")
+            if combo==1:
+                for r_l in l:
+                    must[r_c.get("basic")] = r_l.get(r_c.get("from_k"))
+                    ret.append(deepcopy(must))
+            else:
+                k=[]
+                l=list(l)
+                for i in range(0,len(l)):
+                    r_l=l[i]
+                    if ((i+1)%combo ==0) or (i== len(l)-1) :
+                        k.append(r_l.get(r_c.get("from_k")))
+                        must[r_c.get("basic")] = ",".join(k)
+                        ret.append(deepcopy(must))
+                        k=[]
+                    else:
+                        k.append(r_l.get(r_c.get("from_k")))
+
+            pass
 
 
-# send_params 暂未实现
+
+                    # send_params 暂未实现
 # 返回的数组是需要调用多少次接口
 def analysisParams(configRow,config_params,send_params=None,**kwargs) :
     params=None
@@ -199,7 +216,7 @@ def getProInfo(table_nm,logId,config_param={},send_param={},**kwargs):
                 handleDate(table_nm,fields,configRow,**r)
                 i_step+=1
                 if i_step % (int(i_count/100) or 1)==0 :
-                  print "总共%d,完成%d"%(i_count,i_step)
+                  print "总共%d,完成%d,time:%d"%(i_count,i_step,time.time()-limit["time"])
                   if r:
                       r=json.dumps(r)
                   pro_interface_log.upsert(**{"_id": logId, "i_step": i_step,"last_param":r})
