@@ -36,7 +36,7 @@ export default {
         let d = params.data[3];
          let house = CRUD("nms", "house");
         house
-          .post("list", { record: { community: d.address } })
+          .post("list", { record: { community: d.address  }})
           .done(function(v) {
             self.detailList = v.rows;
             self.dialogVisible = true;
@@ -52,7 +52,9 @@ export default {
       let option = set;
 
       let house = CRUD("nms", "house");
-      house.query({ size: 999 }).done(function(v) {
+      house.query({ size: 999 ,
+         
+          }).done(function(v) {
         let data = v.rows.map(function(one) {
           let a = [one.location.lng, one.location.lat];
           a.push(one.avg);

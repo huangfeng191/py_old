@@ -6,7 +6,9 @@
     <div class="house-detail">
       <el-table
         :data="detailList"
-        style="width: 100%;min-height:500px;"
+         height="550"
+         border
+        style="width: 100%;"
        
       >
         <el-table-column
@@ -17,6 +19,17 @@
           :width="r.width||100"
         >
         </el-table-column>
+
+
+        <el-table-column
+      fixed="right"
+      label="操作"
+      width="100">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+      </template>
+    </el-table-column>
+
 
       </el-table>
     </div>
@@ -59,8 +72,8 @@ export default {
         { title: "address", field: "address" },
         { title: "advantage", field: "advantage" },
         { title: "salesman", field: "salesman" },
-        { title: "url", field: "url" ,width:"200"},
-        { title: "url_md5", field: "url_md5" },
+        // { title: "url", field: "url" ,width:"200"},
+        // { title: "url_md5", field: "url_md5" },
         { title: "create_time", field: "create_time" },
            { title: "id", field: "id" },
       ],
@@ -70,7 +83,12 @@ export default {
   created() {},
   mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+      handleClick(row){
+          window.open(row.url)
+          debugger
+      }
+  },
   watch: {},
   components: {}
 };
