@@ -1,7 +1,22 @@
 var path=require("path")
 var proxy = {};
+var server_house="http://localhost:82"
+mods_house=[
+  "**/*.json"
+]
+for (let i = 0; i < mods_house.length; i++) {
+  const mod = mods_house[i];
+  proxy[mod] = {
+    target: server_house,
+    changeOrigin: true,//是否跨域
+    secure: false
+  };
+}
+
 // var mods = ["**/*.json","/stock/interfaceconfig.html"];
-var mods = ["**/*.json","**/ctx.js", "/ctx.js",
+var mods = [
+  // "**/*.json",
+"**/ctx.js", "/ctx.js",
 "/static/Scripts/****",
 "/static/stock/****",
 "/static/prostock/****",
@@ -23,6 +38,7 @@ var mods = ["**/*.json","**/ctx.js", "/ctx.js",
 "/v.png","/upload","/export","/logout.html"];
 
 var server="http://localhost:51";
+
 for (let i = 0; i < mods.length; i++) {
   const mod = mods[i];
   proxy[mod] = {
@@ -31,6 +47,9 @@ for (let i = 0; i < mods.length; i++) {
     secure: false
   };
 }
+
+
+
 module.exports = {
     build: {
       // index: path.resolve(__dirname, '../dist/templates/index.html'),

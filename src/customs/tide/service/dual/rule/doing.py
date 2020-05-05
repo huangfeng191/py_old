@@ -11,6 +11,7 @@ from tache import *
 from customs.tide.service.utils.wrap import *
 from customs.tide.service.gather.log import *
 from customs.tide.service.persistence.pd import *
+import misc.utils as utils
 
 class CellDoing:
     def __init__(self,cell_layer,chain,chains=None):
@@ -55,7 +56,11 @@ class CellDoing:
         config=take.get(take.get("type"))
         if take.get("type")=="table":
             deleteTideLog("cell", fetch.get("key", {}))
-            deleteTideTable(config.get("nm"),take.get("key"))
+            q={}
+            if fetch.get("option").get("refresh")=="overlay":
+                if fetch.get("overlay"):
+                    q={fetch.get("overlay")["field"]:fetch.get("overlay")["value"]}
+            deleteTideTable(config.get("nm"),take.get("key"),q)
         elif take.get("type")=="log":
             deleteTideLog(config.get("hook"),fetch.get("key", {}))
         pass
@@ -120,6 +125,8 @@ class CellDoing:
         fetch=self.layer.get("fetch")
         refresh=fetch.get("option").get("refresh")
         if refresh=="keep":
+            # TODO:
+            # 查找历史
             pass
         else:
             self.accrue(**kwargs)

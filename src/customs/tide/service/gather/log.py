@@ -29,6 +29,8 @@ class CellLog:
         layer=self.layer
         if "basket" in layer:
             del layer["basket"]
+        if "overlay" in layer["fetch"]:
+            del layer["fetch"]["overlay"]
         self.module.upsert(**layer)
         self.bindLayer(layer.get("fetch"))
 

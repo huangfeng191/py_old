@@ -108,12 +108,24 @@ class QueryParsed:
                     value=d.get(v.get("assist",k))
 
                 condition["value"]=value
+                if v.get("overlay")==1:
+                    O=OverlayParse(self.layer)
+                    v1=O.go()
+                    if v1 and  utils.YMD(v1,'%Y%m%d')>value:
+                        condition["value"]=utils.YMD(v1,'%Y%m%d')
+                        if condition.get("operate")==">=":
+                            condition["operate"]=">"
+                        self.layer["fetch"]["overlay"]=  {"field":k,"value":None}
                 conditions.append(condition)
             else:
                 q[k]=v
         q_c=parseConditions(conditions)
         if q_c.get("$and"):
             q.update(q_c.get("$and",{}))
+        field_overlay=self.layer["fetch"].get("overlay")
+        if field_overlay:
+            if q.get(field_overlay.get("field")) :
+                field_overlay["value"]=q.get(field_overlay.get("field"))
         return q
 
 
@@ -411,3 +423,13 @@ class JumpParse:
         ret = cellLog.getData()
 
         return ret
+
+class OverlayParse:
+    def __init__(self,  layer,**kwargs):
+        self.layer= layer
+        self.fetch=layer.get("fetch")
+
+    def go(self):
+        one=getTideLog("cell", self.fetch.get("key", {}))
+        return one.get("changed")
+

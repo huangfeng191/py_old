@@ -61,9 +61,16 @@ def deleteTideLog(hook,key):
     fetchKey = tide_utils.compressObject({"fetch.key": key})
     eval("tide_%s_log" % hook).delete(fetchKey,multi=True)
 
+def getTideLog(hook,key):
+    fetchKey = tide_utils.compressObject({"fetch.key": key})
+    return eval("tide_%s_log" % hook).one(fetchKey,multi=True)
 
-def deleteTideTable(nm,key):
+
+def deleteTideTable(nm,key,query={}):
+
     k = tide_utils.compressObject({"key": key})
+    if query:
+        k.update(query)
     level=key.get("level")
     eval("%s_%s"%(nm,level)).delete( k, multi=True)
 
