@@ -1,6 +1,10 @@
 <template>
   <div class="house-house">
     <div id="main"></div>
+    <house-detail
+      :dialogVisible="dialogVisible"
+      :detailList="detailList"
+    ></house-detail>
   </div>
 
 </template>
@@ -9,11 +13,14 @@
 var echarts = require("echarts");
 var bmap = require("echarts/extension/bmap/bmap");
 import { CRUD } from "../../modules/service";
-import set from "./set.js"
+import set from "./set.js";
+import HouseDetail from "./detail.vue";
 export default {
   props: {},
   data() {
     return {
+      detailList: [],
+      dialogVisible: false,
       dom: "",
       target: ""
     };
@@ -21,33 +28,46 @@ export default {
   created() {},
   mounted() {
     let self = this;
-    debugger
+    debugger;
     self.dom = document.getElementById("main");
+    self.target = echarts.init(self.dom);
+    self.target.on("click", function(params) {
+      if (params.componentSubType == "effectScatter") {
+        let d = params.data[3];
+         let house = CRUD("nms", "house");
+        house
+          .post("list", { record: { community: d.address } })
+          .done(function(v) {
+            self.detailList = v.rows;
+            self.dialogVisible = true;
+          });
+      }
+    });
     self.init();
   },
   computed: {},
   methods: {
     init() {
-        let self=this;
-        let option=set
-      self.target = echarts.init(self.dom);
-      let house=CRUD("nms","house")
-      house.query({size:999}).done(function(v){
-        
-        let data= v.rows.map(function(one){
-            let a=[one.location.lng,one.location.lat]
-            a.push(one.avg)
-            a.push(one)
-            return a 
-        })
-        option["series"][0].data=data
-         self.target.setOption(option);
-    })
-     
+      let self = this;
+      let option = set;
+
+      let house = CRUD("nms", "house");
+      house.query({ size: 999 }).done(function(v) {
+        let data = v.rows.map(function(one) {
+          let a = [one.location.lng, one.location.lat];
+          a.push(one.avg);
+          a.push(one);
+          return a;
+        });
+        option["series"][0].data = data;
+        self.target.setOption(option);
+      });
     }
   },
   watch: {},
-  components: {}
+  components: {
+    HouseDetail
+  }
 };
 </script>
 <style lang="less" >
