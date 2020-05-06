@@ -2,7 +2,7 @@
   <div class="house-house">
     <div id="main"></div>
     <house-detail
-      :dialogVisible="dialogVisible"
+      ref="houseDetail"
       :detailList="detailList"
     ></house-detail>
   </div>
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       detailList: [],
-      dialogVisible: false,
+     
       dom: "",
       target: ""
     };
@@ -39,7 +39,7 @@ export default {
           .post("list", { record: { community: d.address  }})
           .done(function(v) {
             self.detailList = v.rows;
-            self.dialogVisible = true;
+            self.$refs.houseDetail.init()
           });
       }
     });

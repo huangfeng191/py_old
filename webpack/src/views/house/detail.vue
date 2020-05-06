@@ -45,15 +45,12 @@ export default {
          type:Array
           
       },
-      "dialogVisible":{
-           type:Boolean,
-            default:false
-          
-      }
+ 
       
   },
   data() {
     return {
+      dialogVisible:false,
       colunms: [
      
         { title: "total_price", field: "total_price" },
@@ -84,6 +81,9 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    init(){
+      this.dialogVisible=true
+    },
       handleClick(row){
           window.open(row.url)
           debugger

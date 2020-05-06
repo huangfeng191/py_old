@@ -49,8 +49,8 @@ export default {
                     shadowColor: '#333'
                 }
             },
-            zlevel: 10,
-            z:10
+            zlevel: 100,
+            z:100
         }
     ]
 }
