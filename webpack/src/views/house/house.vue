@@ -28,7 +28,6 @@ export default {
   created() {},
   mounted() {
     let self = this;
-    debugger;
     self.dom = document.getElementById("main");
     self.target = echarts.init(self.dom);
     self.target.on("click", function(params) {
@@ -36,7 +35,12 @@ export default {
         let d = params.data[3];
          let house = CRUD("nms", "house");
         house
-          .post("list", { record: { community: d.address  }})
+          .post("list", { record: { community: d.address  ,
+          conditions:[
+               {"Field": "building_area", "Value": 80, "Group": 1, "Operate": ">=", "Relation": "and"},
+           {"Field": "building_area", "Value": 110, "Group": 1, "Operate": "<=", "Relation": "and"},
+            {"Field": "building_time", "Value": "2014年", "Group": 1, "Operate": ">=", "Relation": "and"}
+          ]}})
           .done(function(v) {
             self.detailList = v.rows;
             self.$refs.houseDetail.init()
@@ -53,7 +57,11 @@ export default {
 
       let house = CRUD("nms", "house");
       house.query({ size: 999 ,
-         
+         conditions:[
+           {"Field": "building_area", "Value": 80, "Group": 1, "Operate": ">=", "Relation": "and"},
+           {"Field": "building_area", "Value": 110, "Group": 1, "Operate": "<=", "Relation": "and"},
+            {"Field": "building_time", "Value": "2014年", "Group": 1, "Operate": ">=", "Relation": "and"}
+         ]
           }).done(function(v) {
         let data = v.rows.map(function(one) {
           let a = [one.location.lng, one.location.lat];
