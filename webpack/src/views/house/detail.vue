@@ -33,7 +33,7 @@
       label="操作"
       width="100">
       <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button @click="handleClick(scope.row)" type="text" size="small" style="padding-left:10px">查看</el-button>
         <el-button @click="handleMark(scope.row,'store')" type="text" size="small">收藏</el-button>
         <el-button @click="handleMark(scope.row,'shield')" type="text" size="small">屏蔽</el-button>
         <el-button @click="handleMark(scope.row,'')" type="text" size="small">取消</el-button>
@@ -81,7 +81,7 @@ export default {
         { title: "advantage", field: "advantage" },
         { title: "salesman", field: "salesman" },
         //  { title: "marked", field: "marked" },
-        // { title: "url", field: "url" ,width:"200"},
+        { title: "url", field: "url" ,width:"200"},
         // { title: "url_md5", field: "url_md5" },
         { title: "create_time", field: "create_time" },
            { title: "id", field: "id" },
@@ -109,7 +109,8 @@ export default {
       
     },
       handleClick(row){
-          window.open(row.url)
+        var url=row.url.split("&now_time")[0]
+          window.open(url)
           
       }
   },
